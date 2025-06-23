@@ -147,3 +147,4 @@ C:\Users\conmo\Repo\TradeNetics\bin\Debug\net9.0\runtimes\osx-x64\native\libLibT
 C:\Users\conmo\Repo\TradeNetics\bin\Debug\net9.0\runtimes\win-x64\native\LibTorchSharp.dll
 C:\Users\conmo\Repo\TradeNetics\obj\Debug\net9.0\TradeNetics.csproj.AssemblyReference.cache
 C:\Users\conmo\Repo\TradeNetics\obj\Debug\net9.0\TradeNet.5EBBB84E.Up2Date
+C:\Users\conmo\Repo\TradeNetics\obj\Debug\net9.0\TradeNetics.sourcelink.json
