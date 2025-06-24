@@ -1,6 +1,6 @@
                                 TradeNectics - A Small Trader Project
 <p align="center">
-  <a href="https://ibb.co/KzDjRzhr"><img src="https://i.ibb.co/S7cXW7y3/70f164b2-71a0-4ee9-83b0-7a1b7d340729.png" alt="70f164b2-71a0-4ee9-83b0-7a1b7d340729" border="0"></a>
+  <a href="https://ibb.co/Q3ydM9YZ"><img src="https://i.ibb.co/Xrc8tXF9/Gemini-Generated-Image-9268na9268na9268.png" alt="Gemini-Generated-Image-9268na9268na9268" border="0"></a>
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/Version-1.0.0-brightgreen?style=for-the-badge" />
