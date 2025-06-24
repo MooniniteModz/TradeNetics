@@ -1,3 +1,5 @@
+⚡ TradeNectics
+Next-Generation AI-Powered Cryptocurrency Trading Engine
 <p align="center">
   <img src="https://raw.githubusercontent.com/yourusername/tradenectics/main/assets/tradenectics-logo.svg" alt="TradeNectics Logo" width="500"/>
 </p>
@@ -18,7 +20,7 @@
 ╔╦╗┬─┐┌─┐┌┬┐┌─┐╔╗╔┌─┐┌─┐┌┬┐┬┌─┐┌─┐
  ║ ├┬┘├─┤ ││├┤ ║║║├┤ │   │ ││  └─┐
  ╩ ┴└─┴ ┴─┴┘└─┘╝╚╝└─┘└─┘ ┴ ┴└─┘└─┘
-
+    ARTIFICIAL INTELLIGENCE MEETS TRADING
 </div>
 <p align="center">
   <a href="#overview">Overview</a> •
@@ -29,26 +31,6 @@
   <a href="#community">Community</a>
 </p>
 
-
-🤖 TradeNecticts
-<p align="center">
-  <img src="https://img.shields.io/badge/C%23-12.0-blue?style=for-the-badge&logo=csharp" />
-  <img src="https://img.shields.io/badge/.NET-8.0-purple?style=for-the-badge&logo=dotnet" />
-  <img src="https://img.shields.io/badge/ML.NET-3.0-orange?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/PostgreSQL-16-316192?style=for-the-badge&logo=postgresql" />
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
-</p>
-<p align="center">
-  <strong>An intelligent cryptocurrency trading bot powered by machine learning</strong>
-</p>
-<p align="center">
-  <a href="#features">Features</a> •
-  <a href="#architecture">Architecture</a> •
-  <a href="#getting-started">Getting Started</a> •
-  <a href="#configuration">Configuration</a> •
-  <a href="#api-documentation">API</a> •
-  <a href="#contributing">Contributing</a>
-</p>
 
 📊 Overview
 CryptoTrader Bot is an automated cryptocurrency trading system that combines technical analysis, machine learning, and risk management to execute trades on the Binance exchange. Built with C# and ML.NET, it features paper trading capabilities, comprehensive backtesting, and real-time portfolio management.
