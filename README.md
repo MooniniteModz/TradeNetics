@@ -1,4 +1,4 @@
-                                TradeNectics - A Small Trader Project
+- A Small Trader Project
 <p align="center">
  <a href="https://ibb.co/mVyyRyfm"><img src="https://i.ibb.co/NdNNFNcX/logo-Photo-Grid.png" alt="logo-Photo-Grid" border="0"></a>
 </p>
