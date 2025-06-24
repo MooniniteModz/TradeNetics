@@ -1,4 +1,4 @@
-TradeNectics
+🤖 TradeNecticts
 <p align="center">
   <img src="https://img.shields.io/badge/C%23-12.0-blue?style=for-the-badge&logo=csharp" />
   <img src="https://img.shields.io/badge/.NET-8.0-purple?style=for-the-badge&logo=dotnet" />
