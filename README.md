@@ -1,5 +1,4 @@
-TradeNectics
-A Small Trader Project
+                                TradeNectics - A Small Trader Project
 <p align="center">
   <img src="https://raw.githubusercontent.com/yourusername/tradenectics/main/assets/tradenectics-logo.svg" alt="TradeNectics Logo" width="500"/>
 </p>
