@@ -1,6 +1,6 @@
                                 TradeNectics - A Small Trader Project
 <p align="center">
-  <img src="https://raw.githubusercontent.com/yourusername/tradenectics/main/assets/tradenectics-logo.svg" alt="TradeNectics Logo" width="500"/>
+  <img src="https://ibb.co/KzDjRzhr" alt="TradeNectics Logo" width="500"/>
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/Version-1.0.0-brightgreen?style=for-the-badge" />
