@@ -1,3 +1,35 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/yourusername/tradenectics/main/assets/tradenectics-logo.svg" alt="TradeNectics Logo" width="500"/>
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/Version-1.0.0-brightgreen?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/C%23-12.0-blue?style=for-the-badge&logo=csharp" />
+  <img src="https://img.shields.io/badge/.NET-8.0-purple?style=for-the-badge&logo=dotnet" />
+  <img src="https://img.shields.io/badge/ML.NET-3.0-orange?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/PostgreSQL-16-316192?style=for-the-badge&logo=postgresql" />
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
+</p>
+<p align="center">
+  <img src="https://img.shields.io/github/stars/yourusername/tradenectics?style=social" />
+  <img src="https://img.shields.io/github/forks/yourusername/tradenectics?style=social" />
+  <img src="https://img.shields.io/github/watchers/yourusername/tradenectics?style=social" />
+</p>
+<div align="center">
+╔╦╗┬─┐┌─┐┌┬┐┌─┐╔╗╔┌─┐┌─┐┌┬┐┬┌─┐┌─┐
+ ║ ├┬┘├─┤ ││├┤ ║║║├┤ │   │ ││  └─┐
+ ╩ ┴└─┴ ┴─┴┘└─┘╝╚╝└─┘└─┘ ┴ ┴└─┘└─┘
+
+</div>
+<p align="center">
+  <a href="#overview">Overview</a> •
+  <a href="#features">Features</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#performance">Performance</a> •
+  <a href="#docs">Documentation</a> •
+  <a href="#community">Community</a>
+</p>
+
+
 🤖 TradeNecticts
 <p align="center">
   <img src="https://img.shields.io/badge/C%23-12.0-blue?style=for-the-badge&logo=csharp" />
