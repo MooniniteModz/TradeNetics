@@ -17,10 +17,6 @@ Next-Generation AI-Powered Cryptocurrency Trading Engine
   <img src="https://img.shields.io/github/watchers/yourusername/tradenectics?style=social" />
 </p>
 <div align="center">
-╔╦╗┬─┐┌─┐┌┬┐┌─┐╔╗╔┌─┐┌─┐┌┬┐┬┌─┐┌─┐
- ║ ├┬┘├─┤ ││├┤ ║║║├┤ │   │ ││  └─┐
- ╩ ┴└─┴ ┴─┴┘└─┘╝╚╝└─┘└─┘ ┴ ┴└─┘└─┘
-    ARTIFICIAL INTELLIGENCE MEETS TRADING
 </div>
 <p align="center">
   <a href="#overview">Overview</a> •
