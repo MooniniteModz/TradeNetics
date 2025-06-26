@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -34,7 +34,6 @@ public class TradingConfiguration
     public decimal MaxDailyLoss { get; set; } = 0.10m; // 10% daily loss limit
     public string[] TradingSymbols { get; set; } = { "BTCUSDT", "ETHUSDT", "ADAUSDT" };
 }
-
 
 // --- Database Models ---
 public class MarketData
@@ -99,7 +98,6 @@ public class PortfolioSnapshot
     public decimal RiskScore { get; set; }
 }
 
-
 // --- Database Context ---
 public class TradingContext : DbContext
 {
@@ -133,7 +131,6 @@ public class TradingContext : DbContext
     }
 }
 
-
 // --- ML.NET Data Models ---
 public class CryptoFeatures
 {
@@ -164,7 +161,6 @@ public class TrainingData : CryptoFeatures
 {
     public string Label { get; set; } = ""; // "BUY", "SELL", "HOLD"
 }
-
 
 // --- API Models ---
 public class TickerPrice
@@ -268,11 +264,10 @@ public class BacktestResults
     public List<TradeRecord> Trades { get; set; } = new();
 }
 
-
 // --- Interfaces ---
 public interface IMarketDataRepository
 {
-    Task SaveMarketDataAsync(gg marketData);
+    Task SaveMarketDataAsync(MarketData marketData);
     Task<List<MarketData>> GetMarketDataAsync(string symbol, DateTime from, DateTime to);
     Task<List<TrainingData>> GetTrainingDataAsync();
 }
@@ -309,39 +304,38 @@ public interface IMLTradingModel
     Task LoadModelAsync(string filePath);
 }
 
-
 // --- Technical Analysis Helper ---
 public static class TechnicalAnalysis
 {
     public static float CalculateRSI(List<decimal> prices, int period = 14)
     {
         if (prices.Count < period + 1) return 50f;
-
+        
         var gains = new List<decimal>();
         var losses = new List<decimal>();
-
+        
         for (int i = 1; i < prices.Count; i++)
         {
             var change = prices[i] - prices[i - 1];
             gains.Add(change > 0 ? change : 0);
             losses.Add(change < 0 ? Math.Abs(change) : 0);
         }
-
+        
         var avgGain = gains.TakeLast(period).Average();
         var avgLoss = losses.TakeLast(period).Average();
-
+        
         if (avgLoss == 0) return 100f;
-
+        
         var rs = avgGain / avgLoss;
         return (float)(100 - (100 / (1 + rs)));
     }
-
+    
     public static float CalculateMovingAverage(List<decimal> prices, int period)
     {
         if (prices.Count < period) return (float)prices.Average();
         return (float)prices.TakeLast(period).Average();
     }
-
+    
     public static (float upper, float lower) CalculateBollingerBands(List<decimal> prices, int period = 20, float multiplier = 2f)
     {
         if (prices.Count < period)
@@ -349,45 +343,44 @@ public static class TechnicalAnalysis
             var avg = (float)prices.Average();
             return (avg, avg);
         }
-
+        
         var recentPrices = prices.TakeLast(period).ToList();
         var sma = (float)recentPrices.Average();
         var variance = recentPrices.Select(p => Math.Pow((double)(p - (decimal)sma), 2)).Average();
         var stdDev = (float)Math.Sqrt(variance);
-
+        
         return (sma + (multiplier * stdDev), sma - (multiplier * stdDev));
     }
-
+    
     public static (float macd, float signal) CalculateMACD(List<decimal> prices, int fastPeriod = 12, int slowPeriod = 26, int signalPeriod = 9)
     {
         if (prices.Count < slowPeriod) return (0f, 0f);
-
+        
         var fastEMA = CalculateEMA(prices, fastPeriod);
         var slowEMA = CalculateEMA(prices, slowPeriod);
         var macd = fastEMA - slowEMA;
-
+        
         var macdLine = new List<decimal> { (decimal)macd };
         var signal = CalculateMovingAverage(macdLine, Math.Min(signalPeriod, macdLine.Count));
-
+        
         return (macd, signal);
     }
-
+    
     private static float CalculateEMA(List<decimal> prices, int period)
     {
         if (prices.Count < period) return (float)prices.Average();
-
+        
         var multiplier = 2.0f / (period + 1);
         var ema = (float)prices.Take(period).Average();
-
+        
         for (int i = period; i < prices.Count; i++)
         {
             ema = ((float)prices[i] * multiplier) + (ema * (1 - multiplier));
         }
-
+        
         return ema;
     }
 }
-
 
 // --- Repository Implementation ---
 public class MarketDataRepository : IMarketDataRepository
@@ -571,7 +564,6 @@ public class MLTradingModel : IMLTradingModel
     }
 }
 
-
 // --- Risk Manager Implementation ---
 public class RiskManager : IRiskManager
 {
@@ -591,7 +583,7 @@ public class RiskManager : IRiskManager
 
         if (positionSizePercent > _config.MaxPositionSize)
         {
-            _logger.LogWarning("Order rejected: Position size {Size}% exceeds maximum {Max}%",
+            _logger.LogWarning("Order rejected: Position size {Size}% exceeds maximum {Max}%", 
                 positionSizePercent * 100, _config.MaxPositionSize * 100);
             return false;
         }
@@ -604,7 +596,7 @@ public class RiskManager : IRiskManager
         // Kelly Criterion-based position sizing
         var baseSize = _config.MaxPositionSize * portfolioValue;
         var adjustedSize = baseSize * confidence;
-
+        
         return Math.Min(adjustedSize, _config.MaxPositionSize * portfolioValue);
     }
 
@@ -624,7 +616,6 @@ public class RiskManager : IRiskManager
         return false;
     }
 }
-
 
 // --- Portfolio Manager Implementation ---
 public class PortfolioManager : IPortfolioManager
@@ -688,7 +679,7 @@ public class PortfolioManager : IPortfolioManager
         try
         {
             var portfolio = await GetCurrentPortfolioAsync();
-
+            
             var snapshot = new PortfolioSnapshot
             {
                 Timestamp = DateTime.UtcNow,
@@ -728,7 +719,6 @@ public class PortfolioManager : IPortfolioManager
     }
 }
 
-
 // --- Enhanced Crypto Trading Service ---
 public class CryptoTraderService : ICryptoTraderService
 {
@@ -738,9 +728,9 @@ public class CryptoTraderService : ICryptoTraderService
     private readonly IMarketDataRepository _marketDataRepository;
     private readonly ILogger<CryptoTraderService> _logger;
     private readonly IAsyncPolicy _retryPolicy;
-
+    
     public CryptoTraderService(
-        TradingConfiguration config,
+        TradingConfiguration config, 
         IMLTradingModel mlModel,
         IMarketDataRepository marketDataRepository,
         ILogger<CryptoTraderService> logger)
@@ -749,12 +739,12 @@ public class CryptoTraderService : ICryptoTraderService
         _mlModel = mlModel;
         _marketDataRepository = marketDataRepository;
         _logger = logger;
-
+        
         _httpClient.BaseAddress = new Uri(_config.BaseApiUrl);
         _httpClient.DefaultRequestHeaders.Accept.Clear();
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         _httpClient.DefaultRequestHeaders.Add("X-MBX-APIKEY", _config.ApiKey);
-
+        
         // Create retry policy with exponential backoff
         _retryPolicy = Policy
             .Handle<HttpRequestException>()
@@ -766,7 +756,7 @@ public class CryptoTraderService : ICryptoTraderService
                     _logger.LogWarning("Retry {RetryCount} after {Delay}ms", retryCount, timespan.TotalMilliseconds);
                 });
     }
-
+    
     private string CreateSignature(string queryString)
     {
         var keyBytes = Encoding.UTF8.GetBytes(_config.ApiSecret);
@@ -777,7 +767,7 @@ public class CryptoTraderService : ICryptoTraderService
             return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
         }
     }
-
+    
     public async Task<TickerPrice?> GetPriceAsync(string symbol)
     {
         string endpoint = $"/api/v3/ticker/price?symbol={symbol.ToUpper()}";
@@ -788,7 +778,7 @@ public class CryptoTraderService : ICryptoTraderService
                 HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
-
+                
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 return JsonSerializer.Deserialize<TickerPrice>(responseBody, options);
             });
@@ -799,7 +789,7 @@ public class CryptoTraderService : ICryptoTraderService
             return null;
         }
     }
-
+    
     public async Task<Ticker24hr?> Get24hrTickerAsync(string symbol)
     {
         string endpoint = $"/api/v3/ticker/24hr?symbol={symbol.ToUpper()}";
@@ -810,7 +800,7 @@ public class CryptoTraderService : ICryptoTraderService
                 HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
-
+                
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 return JsonSerializer.Deserialize<Ticker24hr>(responseBody, options);
             });
@@ -821,7 +811,7 @@ public class CryptoTraderService : ICryptoTraderService
             return null;
         }
     }
-
+    
     public async Task<List<KlineData>> GetKlineDataAsync(string symbol, string interval = "1h", int limit = 100)
     {
         string endpoint = $"/api/v3/klines?symbol={symbol.ToUpper()}&interval={interval}&limit={limit}";
@@ -832,10 +822,10 @@ public class CryptoTraderService : ICryptoTraderService
                 HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
-
+                
                 var jsonArray = JsonSerializer.Deserialize<decimal[][]>(responseBody);
                 if (jsonArray == null) return new List<KlineData>();
-
+                
                 return jsonArray.Select(k => new KlineData
                 {
                     OpenTime = (long)k[0],
@@ -858,29 +848,29 @@ public class CryptoTraderService : ICryptoTraderService
             return new List<KlineData>();
         }
     }
-
+    
     public async Task<string> GetMLPredictionAsync(string symbol)
     {
         try
         {
             var ticker24hr = await Get24hrTickerAsync(symbol);
             if (ticker24hr == null) return "HOLD";
-
+            
             var klineData = await GetKlineDataAsync(symbol);
             if (klineData.Count < 26) return "HOLD";
-
+            
             var features = ExtractFeatures(symbol, ticker24hr, klineData);
             if (features == null) return "HOLD";
-
+            
             // Save market data to database
             await SaveMarketDataAsync(symbol, ticker24hr, klineData, features);
-
+            
             var prediction = _mlModel.PredictAction(features);
-
+            
             _logger.LogInformation("ML Prediction for {Symbol}: {Prediction}", symbol, prediction.PredictedAction);
             _logger.LogInformation("Features - RSI: {RSI:F2}, Price Change: {PriceChange:F2}%, Volume Ratio: {VolumeRatio:F2}",
                 features.RSI, features.PriceChange24h, features.VolumeRatio);
-
+            
             return prediction.PredictedAction;
         }
         catch (Exception e)
@@ -889,7 +879,7 @@ public class CryptoTraderService : ICryptoTraderService
             return "HOLD";
         }
     }
-
+    
     private async Task SaveMarketDataAsync(string symbol, Ticker24hr ticker, List<KlineData> klineData, CryptoFeatures features)
     {
         var latest = klineData.Last();
@@ -911,12 +901,12 @@ public class CryptoTraderService : ICryptoTraderService
             Signal = features.Signal,
             VolumeRatio = features.VolumeRatio,
             PriceChange24h = ticker.PriceChangePercent,
-            VolumeChange24h = features.VolumeChange24h
+            VolumeChange24h = (decimal)features.VolumeChange24h
         };
 
         await _marketDataRepository.SaveMarketDataAsync(marketData);
     }
-
+    
     private CryptoFeatures? ExtractFeatures(string symbol, Ticker24hr ticker24hr, List<KlineData> klineData)
     {
         if (klineData.Count < 26)
@@ -924,19 +914,19 @@ public class CryptoTraderService : ICryptoTraderService
             _logger.LogWarning("Insufficient price history for {Symbol}", symbol);
             return null;
         }
-
+        
         var closePrices = klineData.Select(k => k.Close).ToList();
         var volumes = klineData.Select(k => k.Volume).ToList();
-
+        
         var rsi = TechnicalAnalysis.CalculateRSI(closePrices);
         var ma5 = TechnicalAnalysis.CalculateMovingAverage(closePrices, 5);
         var ma20 = TechnicalAnalysis.CalculateMovingAverage(closePrices, 20);
         var (bollUpper, bollLower) = TechnicalAnalysis.CalculateBollingerBands(closePrices);
         var (macd, signal) = TechnicalAnalysis.CalculateMACD(closePrices);
-
-        var volumeRatio = volumes.Count >= 2 ?
+        
+        var volumeRatio = volumes.Count >= 2 ? 
             (float)(volumes.Last() / volumes[^2]) : 1f;
-
+        
         return new CryptoFeatures
         {
             Price = (float)ticker24hr.LastPrice,
@@ -953,14 +943,14 @@ public class CryptoTraderService : ICryptoTraderService
             VolumeRatio = volumeRatio
         };
     }
-
+    
     public async Task<OrderResponse?> PlaceOrderAsync(OrderRequest orderRequest)
     {
         if (_config.PaperTradingMode)
         {
             _logger.LogInformation("PAPER TRADE: Would place {Side} order for {Quantity} {Symbol}",
                 orderRequest.Side, orderRequest.Quantity, orderRequest.Symbol);
-
+            
             // Simulate order response for paper trading
             return new OrderResponse
             {
@@ -976,15 +966,15 @@ public class CryptoTraderService : ICryptoTraderService
                 Type = orderRequest.Type
             };
         }
-
+        
         string endpoint = "/api/v3/order";
         orderRequest.Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-
+        
         var queryParams = new StringBuilder();
         queryParams.Append($"symbol={orderRequest.Symbol.ToUpper()}");
         queryParams.Append($"&side={orderRequest.Side.ToUpper()}");
         queryParams.Append($"&type={orderRequest.Type.ToUpper()}");
-
+        
         if (orderRequest.Type == "LIMIT")
         {
             queryParams.Append($"&timeInForce={orderRequest.TimeInForce.ToUpper()}");
@@ -995,27 +985,27 @@ public class CryptoTraderService : ICryptoTraderService
         {
             queryParams.Append($"&quantity={orderRequest.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
         }
-
+        
         queryParams.Append($"&timestamp={orderRequest.Timestamp}");
-
+        
         string signature = CreateSignature(queryParams.ToString());
         string fullQueryString = $"{queryParams.ToString()}&signature={signature}";
-
+        
         var requestContent = new StringContent("", Encoding.UTF8, "application/x-www-form-urlencoded");
-
+        
         try
         {
             return await _retryPolicy.ExecuteAsync(async () =>
             {
                 HttpResponseMessage response = await _httpClient.PostAsync($"{endpoint}?{fullQueryString}", requestContent);
                 string responseBody = await response.Content.ReadAsStringAsync();
-
+                
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogError("Error placing order: {StatusCode} - {Response}", response.StatusCode, responseBody);
                     return null;
                 }
-
+                
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 return JsonSerializer.Deserialize<OrderResponse>(responseBody, options);
             });
@@ -1026,29 +1016,29 @@ public class CryptoTraderService : ICryptoTraderService
             return null;
         }
     }
-
+    
     public async Task<AccountBalance[]?> GetAccountBalancesAsync()
     {
         string endpoint = "/api/v3/account";
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         string queryString = $"timestamp={timestamp}";
-
+        
         string signature = CreateSignature(queryString);
         string fullQueryString = $"{queryString}&signature={signature}";
-
+        
         try
         {
             return await _retryPolicy.ExecuteAsync(async () =>
             {
                 HttpResponseMessage response = await _httpClient.GetAsync($"{endpoint}?{fullQueryString}");
                 string responseBody = await response.Content.ReadAsStringAsync();
-
+                
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogError("Error fetching account balances: {StatusCode} - {Response}", response.StatusCode, responseBody);
                     return null;
                 }
-
+                
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 using (JsonDocument doc = JsonDocument.Parse(responseBody))
                 {
@@ -1069,7 +1059,6 @@ public class CryptoTraderService : ICryptoTraderService
     }
 }
 
-
 // --- Backtesting Engine ---
 public class BacktestEngine
 {
@@ -1078,7 +1067,7 @@ public class BacktestEngine
     private readonly ILogger<BacktestEngine> _logger;
 
     public BacktestEngine(
-        IMarketDataRepository marketDataRepository,
+        IMarketDataRepository marketDataRepository, 
         IMLTradingModel mlModel,
         ILogger<BacktestEngine> logger)
     {
@@ -1090,7 +1079,7 @@ public class BacktestEngine
     public async Task<BacktestResults> RunBacktestAsync(DateTime startDate, DateTime endDate, string[] symbols)
     {
         _logger.LogInformation("Running backtest from {StartDate} to {EndDate}", startDate, endDate);
-
+        
         var results = new BacktestResults
         {
             StartDate = startDate,
@@ -1105,7 +1094,7 @@ public class BacktestEngine
         foreach (var symbol in symbols)
         {
             var marketData = await _marketDataRepository.GetMarketDataAsync(symbol, startDate, endDate);
-
+            
             foreach (var data in marketData)
             {
                 var features = new CryptoFeatures
@@ -1135,7 +1124,7 @@ public class BacktestEngine
                         trade.ExecutedAt = data.Timestamp;
                         trade.ConfidenceScore = confidence;
                         results.Trades.Add(trade);
-
+                        
                         // Update balance and positions
                         if (trade.Side == "BUY")
                         {
@@ -1165,10 +1154,10 @@ public class BacktestEngine
 
         results.TotalReturn = (finalValue - initialBalance) / initialBalance;
         results.TotalTrades = results.Trades.Count;
-        results.WinRate = results.Trades.Count > 0 ?
+        results.WinRate = results.Trades.Count > 0 ? 
             results.Trades.Count(t => t.PnL > 0) / (decimal)results.Trades.Count : 0;
 
-        _logger.LogInformation("Backtest completed. Total return: {Return:P2}, Win rate: {WinRate:P2}",
+        _logger.LogInformation("Backtest completed. Total return: {Return:P2}, Win rate: {WinRate:P2}", 
             results.TotalReturn, results.WinRate);
 
         return results;
@@ -1213,7 +1202,6 @@ public class BacktestEngine
     }
 }
 
-
 // --- Trading Bot Service ---
 public class TradingBotService : BackgroundService
 {
@@ -1256,7 +1244,7 @@ public class TradingBotService : BackgroundService
             {
                 await RunTradingCycleAsync();
                 await _portfolioManager.SavePortfolioSnapshotAsync();
-
+                
                 // Wait 5 minutes before next cycle
                 await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
             }
@@ -1271,7 +1259,7 @@ public class TradingBotService : BackgroundService
     private async Task InitializeModelAsync()
     {
         string modelPath = "crypto_trading_model.zip";
-
+        
         if (File.Exists(modelPath))
         {
             await _mlModel.LoadModelAsync(modelPath);
@@ -1292,18 +1280,18 @@ public class TradingBotService : BackgroundService
         // For now, we'll generate synthetic data
         var random = new Random(42);
         var trainingData = new List<TrainingData>();
-
+        
         for (int i = 0; i < 1000; i++)
         {
             var rsi = random.Next(0, 100);
             var priceChange = (random.NextDouble() - 0.5) * 10;
             var volume = random.Next(1000, 10000);
-
+            
             string label;
             if (rsi < 30 && priceChange < -2) label = "BUY";
             else if (rsi > 70 && priceChange > 2) label = "SELL";
             else label = "HOLD";
-
+            
             trainingData.Add(new TrainingData
             {
                 Price = (float)(40000 + random.Next(-5000, 5000)),
@@ -1321,16 +1309,16 @@ public class TradingBotService : BackgroundService
                 Label = label
             });
         }
-
+        
         return trainingData;
     }
 
     private async Task RunTradingCycleAsync()
     {
         _logger.LogInformation("Starting trading cycle...");
-
+        
         var portfolio = await _portfolioManager.GetCurrentPortfolioAsync();
-
+        
         foreach (string symbol in _config.TradingSymbols)
         {
             try
@@ -1347,17 +1335,17 @@ public class TradingBotService : BackgroundService
     private async Task ProcessSymbolAsync(string symbol, Portfolio portfolio)
     {
         _logger.LogInformation("Analyzing {Symbol}...", symbol);
-
+        
         var prediction = await _traderService.GetMLPredictionAsync(symbol);
         var currentPrice = await _traderService.GetPriceAsync(symbol);
-
+        
         if (currentPrice == null)
         {
             _logger.LogWarning("Could not get price for {Symbol}", symbol);
             return;
         }
 
-        _logger.LogInformation("{Symbol}: Price=${Price:F2}, Prediction={Prediction}",
+        _logger.LogInformation("{Symbol}: Price=${Price:F2}, Prediction={Prediction}", 
             symbol, currentPrice.Price, prediction);
 
         if (prediction == "BUY")
@@ -1373,7 +1361,7 @@ public class TradingBotService : BackgroundService
     private async Task ExecuteBuyOrderAsync(string symbol, decimal price, Portfolio portfolio)
     {
         var quantity = _config.SymbolQuantities.GetValueOrDefault(symbol, 0.001m);
-
+        
         var orderRequest = new OrderRequest
         {
             Symbol = symbol,
@@ -1386,11 +1374,11 @@ public class TradingBotService : BackgroundService
         if (_riskManager.CanPlaceOrder(orderRequest, portfolio.TotalValue))
         {
             var orderResponse = await _traderService.PlaceOrderAsync(orderRequest);
-
+            
             if (orderResponse != null)
             {
                 await RecordTradeAsync(orderResponse, "BUY", portfolio.TotalValue);
-                _logger.LogInformation("BUY order executed: {OrderId} for {Quantity} {Symbol}",
+                _logger.LogInformation("BUY order executed: {OrderId} for {Quantity} {Symbol}", 
                     orderResponse.OrderId, orderResponse.ExecutedQty, symbol);
             }
         }
@@ -1404,11 +1392,11 @@ public class TradingBotService : BackgroundService
     {
         // Check if we have position to sell
         var balance = portfolio.Balances.FirstOrDefault(b => b.Asset == symbol.Replace("USDT", ""));
-
+        
         if (balance?.Free > 0)
         {
             var quantity = Math.Min(balance.Free, _config.SymbolQuantities.GetValueOrDefault(symbol, 0.001m));
-
+            
             var orderRequest = new OrderRequest
             {
                 Symbol = symbol,
@@ -1419,11 +1407,11 @@ public class TradingBotService : BackgroundService
             };
 
             var orderResponse = await _traderService.PlaceOrderAsync(orderRequest);
-
+            
             if (orderResponse != null)
             {
                 await RecordTradeAsync(orderResponse, "SELL", portfolio.TotalValue);
-                _logger.LogInformation("SELL order executed: {OrderId} for {Quantity} {Symbol}",
+                _logger.LogInformation("SELL order executed: {OrderId} for {Quantity} {Symbol}", 
                     orderResponse.OrderId, orderResponse.ExecutedQty, symbol);
             }
         }
@@ -1453,21 +1441,20 @@ public class TradingBotService : BackgroundService
     }
 }
 
-
-// --- Entry Point ---
+// --- Program Entry Point ---
 public class Program
 {
     public static async Task Main(string[] args)
     {
         var host = CreateHostBuilder(args).Build();
-
+        
         // Ensure database is created
         using (var scope = host.Services.CreateScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<TradingContext>();
             await context.Database.EnsureCreatedAsync();
         }
-
+        
         await host.RunAsync();
     }
 
@@ -1483,11 +1470,11 @@ public class Program
                 // Configuration
                 var tradingConfig = new TradingConfiguration();
                 context.Configuration.GetSection("Trading").Bind(tradingConfig);
-
+                
                 // Ensure API keys are loaded from environment variables
                 tradingConfig.ApiKey = Environment.GetEnvironmentVariable("BINANCE_API_KEY") ?? tradingConfig.ApiKey;
                 tradingConfig.ApiSecret = Environment.GetEnvironmentVariable("BINANCE_API_SECRET") ?? tradingConfig.ApiSecret;
-
+                
                 services.AddSingleton(tradingConfig);
 
                 // Database
