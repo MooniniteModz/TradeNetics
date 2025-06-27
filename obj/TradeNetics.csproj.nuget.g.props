@@ -14,18 +14,8 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)torchsharp\0.102.7\buildTransitive\net6.0\TorchSharp.props" Condition="Exists('$(NuGetPackageRoot)torchsharp\0.102.7\buildTransitive\net6.0\TorchSharp.props')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore\9.0.6\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore\9.0.6\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.ml\4.0.2\build\netstandard2.0\Microsoft.ML.props" Condition="Exists('$(NuGetPackageRoot)microsoft.ml\4.0.2\build\netstandard2.0\Microsoft.ML.props')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.codeanalysis.analyzers\3.3.4\buildTransitive\Microsoft.CodeAnalysis.Analyzers.props" Condition="Exists('$(NuGetPackageRoot)microsoft.codeanalysis.analyzers\3.3.4\buildTransitive\Microsoft.CodeAnalysis.Analyzers.props')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.extensions.configuration.usersecrets\9.0.6\buildTransitive\net8.0\Microsoft.Extensions.Configuration.UserSecrets.props" Condition="Exists('$(NuGetPackageRoot)microsoft.extensions.configuration.usersecrets\9.0.6\buildTransitive\net8.0\Microsoft.Extensions.Configuration.UserSecrets.props')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore.design\9.0.6\build\net8.0\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore.design\9.0.6\build\net8.0\Microsoft.EntityFrameworkCore.Design.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.0\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.0\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.ml\3.0.0\build\netstandard2.0\Microsoft.ML.props" Condition="Exists('$(NuGetPackageRoot)microsoft.ml\3.0.0\build\netstandard2.0\Microsoft.ML.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.extensions.configuration.usersecrets\8.0.0\buildTransitive\net6.0\Microsoft.Extensions.Configuration.UserSecrets.props" Condition="Exists('$(NuGetPackageRoot)microsoft.extensions.configuration.usersecrets\8.0.0\buildTransitive\net6.0\Microsoft.Extensions.Configuration.UserSecrets.props')" />
   </ImportGroup>
-  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgMicrosoft_ML_DnnImageFeaturizer_ResNet50 Condition=" '$(PkgMicrosoft_ML_DnnImageFeaturizer_ResNet50)' == '' ">C:\Users\conmo\.nuget\packages\microsoft.ml.dnnimagefeaturizer.resnet50\0.22.2</PkgMicrosoft_ML_DnnImageFeaturizer_ResNet50>
-    <PkgMicrosoft_ML_DnnImageFeaturizer_ResNet18 Condition=" '$(PkgMicrosoft_ML_DnnImageFeaturizer_ResNet18)' == '' ">C:\Users\conmo\.nuget\packages\microsoft.ml.dnnimagefeaturizer.resnet18\0.22.2</PkgMicrosoft_ML_DnnImageFeaturizer_ResNet18>
-    <PkgMicrosoft_ML_DnnImageFeaturizer_ResNet101 Condition=" '$(PkgMicrosoft_ML_DnnImageFeaturizer_ResNet101)' == '' ">C:\Users\conmo\.nuget\packages\microsoft.ml.dnnimagefeaturizer.resnet101\0.22.2</PkgMicrosoft_ML_DnnImageFeaturizer_ResNet101>
-    <PkgMicrosoft_ML_DnnImageFeaturizer_AlexNet Condition=" '$(PkgMicrosoft_ML_DnnImageFeaturizer_AlexNet)' == '' ">C:\Users\conmo\.nuget\packages\microsoft.ml.dnnimagefeaturizer.alexnet\0.22.2</PkgMicrosoft_ML_DnnImageFeaturizer_AlexNet>
-    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\conmo\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.4</PkgMicrosoft_CodeAnalysis_Analyzers>
-  </PropertyGroup>
 </Project>
