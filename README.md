@@ -1,211 +1,99 @@
-- A Small Trader Project
-<p align="center">
- <a href="https://ibb.co/mVyyRyfm"><img src="https://i.ibb.co/NdNNFNcX/logo-Photo-Grid.png" alt="logo-Photo-Grid" border="0"></a>
-</p>
-<p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-brightgreen?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/C%23-12.0-blue?style=for-the-badge&logo=csharp" />
-  <img src="https://img.shields.io/badge/.NET-8.0-purple?style=for-the-badge&logo=dotnet" />
-  <img src="https://img.shields.io/badge/ML.NET-3.0-orange?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/PostgreSQL-16-316192?style=for-the-badge&logo=postgresql" />
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
-</p>
-<p align="center">
-  <img src="https://img.shields.io/github/stars/yourusername/tradenectics?style=social" />
-  <img src="https://img.shields.io/github/forks/yourusername/tradenectics?style=social" />
-  <img src="https://img.shields.io/github/watchers/yourusername/tradenectics?style=social" />
-</p>
-<div align="center">
-</div>
-<p align="center">
-  <a href="#overview">Overview</a> •
-  <a href="#features">Features</a> •
-  <a href="#quick-start">Quick Start</a> •
-  <a href="#performance">Performance</a> •
-  <a href="#docs">Documentation</a> •
-  <a href="#community">Community</a>
-</p>
+# TradeNetics - Design Documentation
 
+This document outlines the architecture and design of the TradeNetics application. The project is structured to be modular, testable, and maintainable, following modern .NET best practices.
 
-📊 Overview
-CryptoTrader Bot is an automated cryptocurrency trading system that combines technical analysis, machine learning, and risk management to execute trades on the Binance exchange. Built with C# and ML.NET, it features paper trading capabilities, comprehensive backtesting, and real-time portfolio management.
-🎯 Key Highlights
+## High-Level Architecture
 
-Machine Learning Predictions: Uses ML.NET to predict BUY/SELL/HOLD signals
-Technical Indicators: RSI, MACD, Bollinger Bands, Moving Averages
-Risk Management: Position sizing, stop-loss, maximum drawdown protection
-Paper Trading Mode: Test strategies without real money
-Backtesting Engine: Validate strategies on historical data
-Real-time Monitoring: Portfolio tracking and performance metrics
+The application is a .NET Core background service that continuously runs a trading cycle. It uses a layered architecture with a clear separation of concerns:
 
-✨ Features
-Trading Capabilities
+- **Dependency Injection:** The application heavily relies on dependency injection to manage the lifecycle of services and decouple components. This is configured in `Program.cs`.
+- **Service-Oriented:** Functionality is broken down into distinct services, each with a single responsibility (e.g., interacting with the crypto exchange, managing the portfolio, making ML predictions).
+- **Repository Pattern:** Database access is abstracted through a repository pattern (`IMarketDataRepository`), separating the application's business logic from the data access layer (Entity Framework Core).
+- **Configuration-Driven:** Key parameters are managed through `appsettings.json` and environment variables, allowing for easy adjustments without changing the code.
 
-✅ Multi-Symbol Trading: Trade multiple cryptocurrency pairs simultaneously
-✅ 24/7 Automated Trading: Runs continuously as a background service
-✅ Smart Order Execution: Market and limit orders with retry logic
-✅ Position Management: Automatic position sizing based on Kelly Criterion
+## Project Structure and Namespaces
 
-Technical Analysis
+The code is organized into logical namespaces and corresponding files to make it easy to navigate and understand.
 
-✅ RSI (Relative Strength Index): Overbought/oversold detection
-✅ MACD: Trend following and momentum
-✅ Bollinger Bands: Volatility-based trading signals
-✅ Moving Averages: 5-day and 20-day SMAs
-✅ Volume Analysis: Volume ratio and spike detection
+```
+TradeNetics_Refactored/
+├── TradeNetics.csproj
+├── Program.cs
+├── Models.cs
+├── DataModels.cs
+├── MLModels.cs
+├── ApiModels.cs
+├── Interfaces.cs
+├── TechnicalAnalysis.cs
+├── MarketDataRepository.cs
+├── MLTradingModel.cs
+├── RiskManager.cs
+├── PortfolioManager.cs
+├── CryptoTraderService.cs
+├── BacktestEngine.cs
+└── TradingBotService.cs
+```
 
-Machine Learning
+### Namespaces
 
-✅ Multiclass Classification: SDCA Maximum Entropy algorithm
-✅ Feature Engineering: 12+ technical indicators as features
-✅ Model Retraining: Automated periodic model updates
-✅ Confidence Scoring: Trade only high-confidence predictions
+#### `TradeNetics` (Root Namespace)
+- **`Program.cs`**: The application's entry point. It is responsible for:
+    - Setting up the dependency injection container.
+    - Configuring services, logging, and application settings.
+    - Loading the `TradingConfiguration` and ensuring API keys are present as environment variables.
+    - Initializing the database.
+    - Starting the `TradingBotService`.
 
-Risk Management
+#### `TradeNetics.Models`
+This namespace contains all the Plain Old C# Object (POCO) models used throughout the application.
+- **`Models.cs`**: Contains core configuration and enums.
+    - `TradingConfiguration`: Holds all application settings.
+    - `TradeAction`, `OrderType`: Enums to avoid "magic strings".
+- **`ApiModels.cs`**: Contains models that map directly to the Binance API responses (e.g., `TickerPrice`, `OrderResponse`).
+- **`MLModels.cs`**: Defines the data structures for the ML.NET model (`CryptoFeatures`, `TradingPrediction`).
 
-✅ Position Sizing: Max 2% portfolio risk per trade
-✅ Stop-Loss: Configurable percentage-based stops
-✅ Daily Loss Limits: Prevents excessive drawdown
-✅ Portfolio Diversification: Multi-asset support
+#### `TradeNetics.Data`
+This namespace is responsible for all data persistence concerns.
+- **`DataModels.cs`**:
+    - Defines the database entities (`MarketData`, `TradeRecord`, etc.).
+    - `TradingContext`: The Entity Framework Core `DbContext` for interacting with the PostgreSQL database. It defines the table schemas and relationships.
 
-🏗️ Architecture
-mermaidgraph TB
-    A[Binance API] -->|Market Data| B[Trading Service]
-    B --> C[Technical Analysis]
-    C --> D[ML Model]
-    D --> E[Trading Signals]
-    E --> F[Risk Manager]
-    F --> G[Order Execution]
-    G --> A
-    
-    H[PostgreSQL] --> I[Historical Data]
-    I --> J[Backtesting Engine]
-    I --> D
-    
-    B --> H
-    G --> H
-Technology Stack
+#### `TradeNetics.Interfaces`
+This file defines the contracts (interfaces) for all the services. Using interfaces is key to achieving loose coupling and enabling testability.
+- `ICryptoTraderService`: Contract for interacting with the crypto exchange API.
+- `IMarketDataRepository`: Contract for database operations.
+- `IRiskManager`: Contract for enforcing risk management rules.
+- `IPortfolioManager`: Contract for portfolio calculations and tracking.
+- `IMLTradingModel`: Contract for the machine learning model's lifecycle (train, predict, save, load).
 
-Language: C# 12.0 / .NET 8.0
-ML Framework: ML.NET 3.0
-Database: PostgreSQL with Entity Framework Core
-API Integration: Binance REST API
-Resilience: Polly for retry policies
-Logging: Serilog with file and console sinks
-Testing: xUnit, Moq, FluentAssertions
+#### `TradeNetics.Services`
+This namespace contains the concrete implementations of the interfaces defined in `TradeNetics.Interfaces`.
+- **`TradingBotService.cs`**: The main background service that orchestrates the entire trading process. It runs in a continuous loop.
+- **`CryptoTraderService.cs`**: Implements `ICryptoTraderService`. Handles all HTTP requests to the Binance API, including signing requests and handling retries with Polly.
+- **`MarketDataRepository.cs`**: Implements `IMarketDataRepository`. Uses the `TradingContext` to perform CRUD operations on the database.
+- **`MLTradingModel.cs`**: Implements `IMLTradingModel`. Manages training the ML.NET model, making predictions, and saving/loading the model from a file.
+- **`PortfolioManager.cs`**: Implements `IPortfolioManager`. Calculates portfolio value, PnL, and other metrics.
+- **`RiskManager.cs`**: Implements `IRiskManager`. Checks if proposed trades adhere to the configured risk parameters (e.g., max position size).
+- **`BacktestEngine.cs`**: A service for simulating trading strategies on historical data to evaluate performance.
 
-🚀 Getting Started
-Prerequisites
+#### `TradeNetics.Helpers`
+- **`TechnicalAnalysis.cs`**: A static utility class containing methods for calculating technical indicators like RSI, Moving Averages, Bollinger Bands, and MACD.
 
-.NET 8.0 SDK or later
-PostgreSQL 14+ or a free PostgreSQL service (Supabase, Neon, etc.)
-Binance API credentials (get from Binance)
+## Workflow
 
-Installation
-
-Clone the repository
-
-bashgit clone https://github.com/yourusername/cryptotrader-bot.git
-cd cryptotrader-bot
-
-Install dependencies
-
-bashdotnet restore
-
-Set up environment variables
-
-bashexport BINANCE_API_KEY="your-api-key"
-export BINANCE_API_SECRET="your-api-secret"
-
-Configure database connection
-
-json// appsettings.json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Database=TradingBot;Username=postgres;Password=yourpassword"
-  }
-}
-
-Run database migrations
-
-bashdotnet ef database update
-
-Start the bot
-
-bashdotnet run
-⚙️ Configuration
-Trading Parameters
-json{
-  "Trading": {
-    "TradingSymbols": ["BTCUSDT", "ETHUSDT", "ADAUSDT"],
-    "MinConfidenceScore": 0.7,
-    "MaxPositionSize": 0.02,
-    "StopLossPercent": 0.05,
-    "MaxDailyLoss": 0.10,
-    "PaperTradingMode": true,
-    "ModelRetrainingInterval": "7.00:00:00"
-  }
-}
-Risk Management Settings
-ParameterDefaultDescriptionMaxPositionSize2%Maximum percentage of portfolio per positionStopLossPercent5%Stop-loss trigger percentageMaxDailyLoss10%Maximum allowed daily drawdownMinConfidenceScore0.7Minimum ML confidence to execute trades
-📈 Performance Metrics
-The bot tracks and stores:
-
-P&L: Real-time profit/loss tracking
-Win Rate: Percentage of profitable trades
-Sharpe Ratio: Risk-adjusted returns
-Maximum Drawdown: Largest peak-to-trough decline
-Trade History: Complete audit trail
-
-🧪 Backtesting
-Run historical simulations to validate strategies:
-csharpvar backtester = serviceProvider.GetRequiredService<BacktestEngine>();
-var results = await backtester.RunBacktestAsync(
-    startDate: DateTime.Now.AddMonths(-6),
-    endDate: DateTime.Now,
-    symbols: new[] { "BTCUSDT", "ETHUSDT" }
-);
-
-Console.WriteLine($"Total Return: {results.TotalReturn:P2}");
-Console.WriteLine($"Win Rate: {results.WinRate:P2}");
-Console.WriteLine($"Max Drawdown: {results.MaxDrawdown:P2}");
-🔒 Security
-
-API credentials stored as environment variables
-HMAC-SHA256 request signing
-SSL/TLS for all API communications
-No credentials in code or logs
-
-📊 Monitoring
-Logging
-
-Structured logging with Serilog
-Daily rotating log files
-Real-time console output
-Performance metrics tracking
-
-Database Schema
-
-MarketData: Historical price and indicator data
-TradeRecords: Executed trades with P&L
-ModelPerformance: ML model metrics
-PortfolioSnapshots: Portfolio value over time
-
-🤝 Contributing
-We welcome contributions! Please see our Contributing Guidelines for details.
-
-Fork the repository
-Create your feature branch (git checkout -b feature/AmazingFeature)
-Commit your changes (git commit -m 'Add some AmazingFeature')
-Push to the branch (git push origin feature/AmazingFeature)
-Open a Pull Request
-
-📝 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-⚠️ Disclaimer
-IMPORTANT: This software is for educational purposes only. Cryptocurrency trading carries substantial risk of loss. The developers are not responsible for any financial losses incurred through the use of this software. Always test strategies thoroughly in paper trading mode before risking real capital.
-🙏 Acknowledgments
-
-Binance API for market data
-ML.NET for machine learning capabilities
-TA-Lib for technical analysis inspiration
+1.  **Initialization**: `Program.cs` builds the host, registers all services, and starts `TradingBotService`.
+2.  **Model Loading**: `TradingBotService` first attempts to load a pre-trained `crypto_trading_model.zip`. If it doesn't exist, it generates synthetic data and trains a new model.
+3.  **Trading Cycle**: The service enters a loop that runs every 5 minutes.
+4.  **Portfolio Assessment**: It calls `IPortfolioManager` to get the current state of the portfolio.
+5.  **Symbol Analysis**: For each symbol in the configuration (`TradingSymbols`):
+    a. It calls `ICryptoTraderService.GetMLPredictionAsync()`.
+    b. This service fetches the latest market data (prices, klines) from the API.
+    c. It uses `TechnicalAnalysis` helper to calculate indicators and create a `CryptoFeatures` object.
+    d. It passes the features to `IMLTradingModel.PredictAction()` to get a "BUY", "SELL", or "HOLD" prediction.
+6.  **Decision & Execution**:
+    a. Based on the prediction, `TradingBotService` decides whether to place an order.
+    b. For a "BUY" order, it consults `IRiskManager.CanPlaceOrder()` to ensure the trade is within risk limits.
+    c. If the order is approved, it calls `ICryptoTraderService.PlaceOrderAsync()`.
+    d. The response from the executed order is used to create a `TradeRecord` which is saved to the database via the `TradingContext`.
+7.  **Snapshot**: After each full cycle, `IPortfolioManager.SavePortfolioSnapshotAsync()` is called to record the portfolio's value over time.
+8.  **Loop**: The service waits for the configured interval and starts the cycle again.

@@ -1,0 +1,52 @@
+{
+    "$schema": "https://cdn.statically.io/gh/nguyenngoclongdev/cdn/main/schema/v10/terminal-keeper.json",
+    "theme": "tribe",
+    "active": "default",
+    "activateOnStartup": true,
+    "keepExistingTerminals": false,
+    "sessions": {
+        "default": [
+            {
+                "name": "Powershell",
+                "autoExecuteCommands": true,
+                "icon": "person",
+                "color": "terminal.ansiGreen",
+                "commands": [
+                    "echo Powershell"
+                ]
+            },
+            [
+                {
+                    "name": "WSL-Ubuntu",
+                    "commands": [
+                        ""
+                    ]
+                }
+            ],
+            [
+                {
+                    "name": "Docker",
+                    "commands": [
+                        ""
+                    ]
+                }
+            ],
+            [
+                {
+                    "name": "C# Debugger",
+                    "commands": [
+                        "Dotnet Debugger "
+                    ]
+                }
+            ]
+        ],
+        "saved-session": [
+            {
+                "name": "connect",
+                "commands": [
+                    ""
+                ]
+            }
+        ]
+    }
+}
