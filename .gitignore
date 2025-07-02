@@ -1,0 +1,51 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/packages/
+/node_modules/
+/lib/
+/bin/
+/obj/
+
+# local user files
+*.user
+*.userosscache
+*.sln.docstates
+
+# build results
+[Bb]in/
+[Oo]bj/
+[Rr]elease/
+[Dd]ebug/
+build/
+Build/
+build/
+artifacts/
+
+# secrets
+/secrets/
+secrets.json
+appsettings.Development.json
+
+# Rider
+.idea/
+*.sln.iml
+*.sln.DotSettings.user
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.sln.opts
+
+# logs
+logs/
+*.log
+
+# testing
+*.testresult
+/TestResults/
+
+# misc
+*.zip
+*.DS_Store
