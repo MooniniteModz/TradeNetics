@@ -8,7 +8,7 @@ using TradeNetics.Data;
 using TradeNetics.Models;
 using TradeNetics.Interfaces;
 
-public class Program
+public class TraderConsole
 {
     public static async Task Main(string[] args)
     {

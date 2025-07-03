@@ -1,0 +1,47 @@
+@page "/tradehistory"
+@using TradeNetics.WebApp.Data
+@inject TradeHistoryService TradeHistoryService
+
+<h1>Trade History</h1>
+
+@if (_trades == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Exchange</th>
+                <th>Symbol</th>
+                <th>Side</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var trade in _trades)
+            {
+                <tr>
+                    <td>@trade.Timestamp</td>
+                    <td>@trade.Exchange</td>
+                    <td>@trade.Symbol</td>
+                    <td>@trade.Side</td>
+                    <td>@trade.Price.ToString("C")</td>
+                    <td>@trade.Quantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Trade> _trades;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _trades = await TradeHistoryService.GetTradesAsync();
+    }
+}

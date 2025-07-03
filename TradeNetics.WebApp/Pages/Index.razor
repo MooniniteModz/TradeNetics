@@ -1,0 +1,48 @@
+﻿@page "/"
+@using TradeNetics.WebApp.Data
+@inject TradingBotStatusService TradingBotStatusService
+
+<h1>Dashboard</h1>
+
+@if (_status == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Bot Status</h5>
+                    <p class="card-text">@(_status.IsRunning ? "Running" : "Stopped")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Profit</h5>
+                    <p class="card-text">@_status.TotalProfit.ToString("C")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Trades</h5>
+                    <p class="card-text">@_status.TotalTrades</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private TradingBotStatus _status;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _status = await TradingBotStatusService.GetStatusAsync();
+    }
+}

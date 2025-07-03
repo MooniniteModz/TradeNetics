@@ -1,3 +1,5 @@
+using TradeNetics.Data;
+
 namespace TradeNetics.Models
 {
     public class TickerPrice

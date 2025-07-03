@@ -1,0 +1,41 @@
+@page "/configuration"
+@using TradeNetics.WebApp.Data
+@inject ConfigurationService ConfigurationService
+
+<h1>Configuration</h1>
+
+<EditForm Model="@_configuration" OnValidSubmit="SaveConfiguration">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="apiKey">API Key</label>
+        <InputText id="apiKey" class="form-control" @bind-Value="_configuration.ApiKey" />
+    </div>
+
+    <div class="form-group">
+        <label for="apiSecret">API Secret</label>
+        <InputText id="apiSecret" class="form-control" @bind-Value="_configuration.ApiSecret" />
+    </div>
+
+    <div class="form-group">
+        <label for="exchange">Exchange</label>
+        <InputText id="exchange" class="form-control" @bind-Value="_configuration.Exchange" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</EditForm>
+
+@code {
+    private ConfigurationModel _configuration = new ConfigurationModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _configuration = await ConfigurationService.GetConfiguration();
+    }
+
+    private async Task SaveConfiguration()
+    {
+        await ConfigurationService.SaveConfiguration(_configuration);
+    }
+}
