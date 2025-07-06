@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TradeNetics.Shared.Interfaces;
+using TradeNetics.Shared.Services;
 using TradeNetics.WebApp.Data;
+using TradeNetics.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<ConfigurationService>();
 builder.Services.AddSingleton<TradingBotStatusService>();
 builder.Services.AddSingleton<TradeHistoryService>();
+
+// Shared Services
+builder.Services.AddTradeNeticsSharedServices(builder.Configuration);
 
 var app = builder.Build();
 

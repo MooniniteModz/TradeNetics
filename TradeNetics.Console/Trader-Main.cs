@@ -3,10 +3,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using TradeNetics.Services;
-using TradeNetics.Data;
-using TradeNetics.Models;
-using TradeNetics.Interfaces;
+using TradeNetics.Shared.Services;
+using TradeNetics.Shared.Data;
+using TradeNetics.Shared.Models;
+using TradeNetics.Shared.Interfaces;
+using TradeNetics.Console.Services;
+using TradeNetics.Shared.Extensions;
 
 public class TraderConsole
 {
@@ -17,7 +19,7 @@ public class TraderConsole
         // Ensure database is created
         using (var scope = host.Services.CreateScope())
         {
-            var context = scope.ServiceProvider.GetRequiredService<TradingContext>();
+            var context = scope.ServiceProvider.GetRequiredService<TradingDbContext>();
             await context.Database.EnsureCreatedAsync();
         }
 
@@ -29,6 +31,7 @@ public class TraderConsole
             .ConfigureAppConfiguration((context, config) =>
             {
                 config.AddJsonFile("appsettings.json", optional: false);
+                config.AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true);
                 config.AddEnvironmentVariables();
             })
             .ConfigureServices((context, services) =>
@@ -37,20 +40,24 @@ public class TraderConsole
                 var tradingConfig = new TradingConfiguration();
                 context.Configuration.GetSection("Trading").Bind(tradingConfig);
 
-                // Ensure API keys are loaded from environment variables
+                // Load API keys from environment variables (optional for testing)
                 tradingConfig.ApiKey = Environment.GetEnvironmentVariable("BINANCE_API_KEY") 
-                    ?? throw new InvalidOperationException("Binance API key not found in environment variables.");
+                    ?? "test-api-key";
                 tradingConfig.ApiSecret = Environment.GetEnvironmentVariable("BINANCE_API_SECRET")
-                    ?? throw new InvalidOperationException("Binance API secret not found in environment variables.");
+                    ?? "test-api-secret";
+                
+                // Warn if using test keys
+                if (tradingConfig.ApiKey == "test-api-key" || tradingConfig.ApiSecret == "test-api-secret")
+                {
+                    Console.WriteLine("WARNING: Using test API keys. Set BINANCE_API_KEY and BINANCE_API_SECRET environment variables for production.");
+                }
 
                 services.AddSingleton(tradingConfig);
 
-                // Database
-                services.AddDbContext<TradingContext>(options =>
-                    options.UseNpgsql(context.Configuration.GetConnectionString("DefaultConnection")));
+                // Shared Services
+                services.AddTradeNeticsSharedServices(context.Configuration);
 
-                // Services
-                services.AddScoped<IMarketDataRepository, MarketDataRepository>();
+                // Console Specific Services
                 services.AddScoped<ICryptoTraderService, CryptoTraderService>();
                 services.AddScoped<IRiskManager, RiskManager>();
                 services.AddScoped<IPortfolioManager, PortfolioManager>();

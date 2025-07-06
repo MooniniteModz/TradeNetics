@@ -5,14 +5,14 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
-using TradeNetics.Data;
-using TradeNetics.Helpers;
-using TradeNetics.Interfaces;
-using TradeNetics.Models;
+using TradeNetics.Shared.Data;
+using TradeNetics.Shared.Helpers;
+using TradeNetics.Shared.Interfaces;
+using TradeNetics.Shared.Models;
 
-namespace TradeNetics.Services
+namespace TradeNetics.Console.Services
 {
-    public class CryptoTraderService : ICryptoTraderService
+    public class CryptoTraderService : ICryptoTraderService, IDisposable
     {
         private static readonly HttpClient _httpClient = new HttpClient();
         private readonly TradingConfiguration _config;
@@ -27,30 +27,44 @@ namespace TradeNetics.Services
             IMarketDataRepository marketDataRepository,
             ILogger<CryptoTraderService> logger)
         {
-            _config = config;
-            _mlModel = mlModel;
-            _marketDataRepository = marketDataRepository;
-            _logger = logger;
+            _config = config ?? throw new ArgumentNullException(nameof(config));
+            _mlModel = mlModel ?? throw new ArgumentNullException(nameof(mlModel));
+            _marketDataRepository = marketDataRepository ?? throw new ArgumentNullException(nameof(marketDataRepository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
+            ConfigureHttpClient();
+            _retryPolicy = CreateRetryPolicy();
+        }
+
+        private void ConfigureHttpClient()
+        {
             _httpClient.BaseAddress = new Uri(_config.BaseApiUrl);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _httpClient.DefaultRequestHeaders.Add("X-MBX-APIKEY", _config.ApiKey);
+            _httpClient.Timeout = TimeSpan.FromSeconds(30); // Add timeout
+        }
 
-            // Create retry policy with exponential backoff
-            _retryPolicy = Policy
+        private AsyncRetryPolicy CreateRetryPolicy()
+        {
+            return Policy
                 .Handle<HttpRequestException>()
+                .Or<TaskCanceledException>() // Handle timeout exceptions
                 .WaitAndRetryAsync(
                     retryCount: 3,
                     sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                     onRetry: (outcome, timespan, retryCount, context) =>
                     {
-                        _logger.LogWarning("Retry {RetryCount} after {Delay}ms", retryCount, timespan.TotalMilliseconds);
+                        _logger.LogWarning("Retry {RetryCount} after {Delay}ms for {Exception}", 
+                            retryCount, timespan.TotalMilliseconds, outcome.InnerException?.Message);
                     });
         }
 
         private string CreateSignature(string queryString)
         {
+            if (string.IsNullOrEmpty(_config.ApiSecret))
+                throw new InvalidOperationException("API Secret is not configured");
+
             var keyBytes = Encoding.UTF8.GetBytes(_config.ApiSecret);
             using (var hmac = new HMACSHA256(keyBytes))
             {
@@ -62,12 +76,15 @@ namespace TradeNetics.Services
 
         public async Task<TickerPrice?> GetPriceAsync(string symbol)
         {
+            if (string.IsNullOrWhiteSpace(symbol))
+                throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
             string endpoint = $"/api/v3/ticker/price?symbol={symbol.ToUpper()}";
             try
             {
                 return await _retryPolicy.ExecuteAsync(async () =>
                 {
-                    HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
+                    using var response = await _httpClient.GetAsync(endpoint);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
 
@@ -84,12 +101,15 @@ namespace TradeNetics.Services
 
         public async Task<Ticker24hr?> Get24hrTickerAsync(string symbol)
         {
+            if (string.IsNullOrWhiteSpace(symbol))
+                throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
             string endpoint = $"/api/v3/ticker/24hr?symbol={symbol.ToUpper()}";
             try
             {
                 return await _retryPolicy.ExecuteAsync(async () =>
                 {
-                    HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
+                    using var response = await _httpClient.GetAsync(endpoint);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
 
@@ -106,12 +126,18 @@ namespace TradeNetics.Services
 
         public async Task<List<KlineData>> GetKlineDataAsync(string symbol, string interval = "1h", int limit = 100)
         {
+            if (string.IsNullOrWhiteSpace(symbol))
+                throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
+            if (limit <= 0 || limit > 1000)
+                throw new ArgumentException("Limit must be between 1 and 1000", nameof(limit));
+
             string endpoint = $"/api/v3/klines?symbol={symbol.ToUpper()}&interval={interval}&limit={limit}";
             try
             {
                 return await _retryPolicy.ExecuteAsync(async () =>
                 {
-                    HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
+                    using var response = await _httpClient.GetAsync(endpoint);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
 
@@ -143,16 +169,32 @@ namespace TradeNetics.Services
 
         public async Task<string> GetMLPredictionAsync(string symbol)
         {
+            if (string.IsNullOrWhiteSpace(symbol))
+                throw new ArgumentException("Symbol cannot be null or empty", nameof(symbol));
+
             try
             {
                 var ticker24hr = await Get24hrTickerAsync(symbol);
-                if (ticker24hr == null) return "HOLD";
+                if (ticker24hr == null)
+                {
+                    _logger.LogWarning("Could not fetch 24hr ticker for {Symbol}, defaulting to HOLD", symbol);
+                    return "HOLD";
+                }
 
                 var klineData = await GetKlineDataAsync(symbol);
-                if (klineData.Count < 26) return "HOLD";
+                if (klineData.Count < 26)
+                {
+                    _logger.LogWarning("Insufficient kline data for {Symbol} (got {Count}, need 26+), defaulting to HOLD", 
+                        symbol, klineData.Count);
+                    return "HOLD";
+                }
 
                 var features = ExtractFeatures(symbol, ticker24hr, klineData);
-                if (features == null) return "HOLD";
+                if (features == null)
+                {
+                    _logger.LogWarning("Could not extract features for {Symbol}, defaulting to HOLD", symbol);
+                    return "HOLD";
+                }
 
                 // Save market data to database
                 await SaveMarketDataAsync(symbol, ticker24hr, klineData, features);
@@ -174,70 +216,96 @@ namespace TradeNetics.Services
 
         private async Task SaveMarketDataAsync(string symbol, Ticker24hr ticker, List<KlineData> klineData, CryptoFeatures features)
         {
-            var latest = klineData.Last();
-            var marketData = new MarketData
+            try
             {
-                Symbol = symbol,
-                Timestamp = DateTimeOffset.FromUnixTimeMilliseconds(latest.CloseTime).DateTime,
-                Open = latest.Open,
-                High = latest.High,
-                Low = latest.Low,
-                Close = latest.Close,
-                Volume = latest.Volume,
-                RSI = features.RSI,
-                MovingAverage5 = features.MovingAverage5,
-                MovingAverage20 = features.MovingAverage20,
-                BollingerUpper = features.BollingerUpper,
-                BollingerLower = features.BollingerLower,
-                MACD = features.MACD,
-                Signal = features.Signal,
-                VolumeRatio = features.VolumeRatio,
-                PriceChange24h = ticker.PriceChangePercent,
-                VolumeChange24h = features.VolumeChange24h
-            };
+                var latest = klineData.Last();
+                var marketData = new MarketData
+                {
+                    Symbol = symbol,
+                    Timestamp = DateTimeOffset.FromUnixTimeMilliseconds(latest.CloseTime).DateTime,
+                    Open = latest.Open,
+                    High = latest.High,
+                    Low = latest.Low,
+                    Close = latest.Close,
+                    Volume = latest.Volume,
+                    RSI = (float)(decimal)features.RSI,
+                    MovingAverage5 = (float)(float)(decimal)features.MovingAverage5,
+                    MovingAverage20 = (float)(decimal)features.MovingAverage20,
+                    BollingerUpper = (float)(decimal)features.BollingerUpper,
+                    BollingerLower = (float)(decimal)features.BollingerLower,
+                    MACD = (float)(decimal)features.MACD,
+                    Signal = (float)(decimal)features.Signal,
+                    VolumeRatio = (float)(decimal)features.VolumeRatio,
+                    PriceChange24h = ticker.PriceChangePercent,
+                    VolumeChange24h = (decimal)features.VolumeChange24h
+                };
 
-            await _marketDataRepository.SaveMarketDataAsync(marketData);
+                await _marketDataRepository.SaveMarketDataAsync(marketData);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error saving market data for {Symbol}", symbol);
+                // Don't throw - this shouldn't stop trading
+            }
         }
 
         private CryptoFeatures? ExtractFeatures(string symbol, Ticker24hr ticker24hr, List<KlineData> klineData)
         {
             if (klineData.Count < 26)
             {
-                _logger.LogWarning("Insufficient price history for {Symbol}", symbol);
+                _logger.LogWarning("Insufficient price history for {Symbol} (got {Count}, need 26+)", symbol, klineData.Count);
                 return null;
             }
 
-            var closePrices = klineData.Select(k => k.Close).ToList();
-            var volumes = klineData.Select(k => k.Volume).ToList();
-
-            var rsi = TechnicalAnalysis.CalculateRSI(closePrices);
-            var ma5 = TechnicalAnalysis.CalculateMovingAverage(closePrices, 5);
-            var ma20 = TechnicalAnalysis.CalculateMovingAverage(closePrices, 20);
-            var (bollUpper, bollLower) = TechnicalAnalysis.CalculateBollingerBands(closePrices);
-            var (macd, signal) = TechnicalAnalysis.CalculateMACD(closePrices);
-
-            var volumeRatio = volumes.Count >= 2 ?
-                (float)(volumes.Last() / volumes[^2]) : 1f;
-
-            return new CryptoFeatures
+            try
             {
-                Price = (float)ticker24hr.LastPrice,
-                Volume = (float)ticker24hr.Volume,
-                PriceChange24h = (float)ticker24hr.PriceChangePercent,
-                VolumeChange24h = volumeRatio,
-                RSI = rsi,
-                MovingAverage5 = ma5,
-                MovingAverage20 = ma20,
-                BollingerUpper = bollUpper,
-                BollingerLower = bollLower,
-                MACD = macd,
-                Signal = signal,
-                VolumeRatio = volumeRatio
-            };
+                var closePrices = klineData.Select(k => k.Close).ToList();
+                var volumes = klineData.Select(k => k.Volume).ToList();
+
+                var rsi = TechnicalAnalysis.CalculateRSI(closePrices);
+                var ma5 = TechnicalAnalysis.CalculateMovingAverage(closePrices, 5);
+                var ma20 = TechnicalAnalysis.CalculateMovingAverage(closePrices, 20);
+                var (bollUpper, bollLower) = TechnicalAnalysis.CalculateBollingerBands(closePrices);
+                var (macd, signal) = TechnicalAnalysis.CalculateMACD(closePrices);
+
+                // FIX: Proper decimal to float conversion
+                var volumeRatio = volumes.Count >= 2 ?
+                    (volumes.Last() / volumes[^2]) : 1m;
+
+                return new CryptoFeatures
+                {
+                    Price = (float)ticker24hr.LastPrice,
+                    Volume = (float)ticker24hr.Volume,
+                    PriceChange24h = (float)ticker24hr.PriceChangePercent,
+                    VolumeChange24h = volumeRatio, // No cast needed, both are decimal
+                    RSI = (float)rsi, // Cast decimal to float
+                    MovingAverage5 = (float)ma5, // Cast decimal to float
+                    MovingAverage20 = (float)ma20, // Cast decimal to float
+                    BollingerUpper = (float)bollUpper, // Cast decimal to float
+                    BollingerLower = (float)bollLower, // Cast decimal to float
+                    MACD = (float)macd, // Cast decimal to float
+                    Signal = (float)signal, // Cast decimal to float
+                    VolumeRatio = (float)volumeRatio // Cast decimal to float
+                };
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error extracting features for {Symbol}", symbol);
+                return null;
+            }
         }
 
         public async Task<OrderResponse?> PlaceOrderAsync(OrderRequest orderRequest)
         {
+            if (orderRequest == null)
+                throw new ArgumentNullException(nameof(orderRequest));
+
+            if (string.IsNullOrWhiteSpace(orderRequest.Symbol))
+                throw new ArgumentException("Symbol cannot be null or empty", nameof(orderRequest));
+
+            if (orderRequest.Quantity <= 0)
+                throw new ArgumentException("Quantity must be greater than 0", nameof(orderRequest));
+
             if (_config.PaperTradingMode)
             {
                 _logger.LogInformation("PAPER TRADE: Would place {Side} order for {Quantity} {Symbol}",
@@ -269,6 +337,9 @@ namespace TradeNetics.Services
 
             if (orderRequest.Type == "LIMIT")
             {
+                if (orderRequest.Price == null)
+                    throw new ArgumentException("Price is required for LIMIT orders", nameof(orderRequest));
+
                 queryParams.Append($"&timeInForce={orderRequest.TimeInForce.ToUpper()}");
                 queryParams.Append($"&quantity={orderRequest.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
                 queryParams.Append($"&price={orderRequest.Price?.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
@@ -289,7 +360,7 @@ namespace TradeNetics.Services
             {
                 return await _retryPolicy.ExecuteAsync(async () =>
                 {
-                    HttpResponseMessage response = await _httpClient.PostAsync($"{endpoint}?{fullQueryString}", requestContent);
+                    using var response = await _httpClient.PostAsync($"{endpoint}?{fullQueryString}", requestContent);
                     string responseBody = await response.Content.ReadAsStringAsync();
 
                     if (!response.IsSuccessStatusCode)
@@ -322,7 +393,7 @@ namespace TradeNetics.Services
             {
                 return await _retryPolicy.ExecuteAsync(async () =>
                 {
-                    HttpResponseMessage response = await _httpClient.GetAsync($"{endpoint}?{fullQueryString}");
+                    using var response = await _httpClient.GetAsync($"{endpoint}?{fullQueryString}");
                     string responseBody = await response.Content.ReadAsStringAsync();
 
                     if (!response.IsSuccessStatusCode)
@@ -348,6 +419,12 @@ namespace TradeNetics.Services
                 _logger.LogError(e, "Request error fetching account balances");
                 return null;
             }
+        }
+
+        // Add proper disposal
+        public void Dispose()
+        {
+            _httpClient?.Dispose();
         }
     }
 }

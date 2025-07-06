@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.ML;
-using TradeNetics.Interfaces;
-using TradeNetics.Models;
+using TradeNetics.Shared.Interfaces;
+using TradeNetics.Shared.Models;
 
-namespace TradeNetics.Services
+namespace TradeNetics.Console.Services
 {
     public class MLTradingModel : IMLTradingModel
     {
@@ -17,7 +17,7 @@ namespace TradeNetics.Services
             _logger = logger;
         }
 
-        public async Task TrainModelAsync(List<TrainingData> trainingData)
+        public void TrainModel(List<TrainingData> trainingData)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace TradeNetics.Services
             return predictionEngine.Predict(trainingData);
         }
 
-        public async Task SaveModelAsync(string filePath)
+        public void SaveModel(string filePath)
         {
             if (_model == null)
                 throw new InvalidOperationException("Model must be trained before saving");
@@ -88,7 +88,7 @@ namespace TradeNetics.Services
             _logger.LogInformation("Model saved to {FilePath}", filePath);
         }
 
-        public async Task LoadModelAsync(string filePath)
+        public void LoadModel(string filePath)
         {
             if (File.Exists(filePath))
             {

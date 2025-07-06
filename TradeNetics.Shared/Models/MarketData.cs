@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
-namespace TradeNetics.Data
+namespace TradeNetics.Shared.Models
 {
     public class MarketData
     {
@@ -63,37 +62,5 @@ namespace TradeNetics.Data
         public decimal TotalPnL { get; set; }
         public string AssetAllocation { get; set; } = ""; // JSON string
         public decimal RiskScore { get; set; }
-    }
-
-    public class TradingContext : DbContext
-    {
-        public TradingContext(DbContextOptions<TradingContext> options) : base(options) { }
-
-        public DbSet<MarketData> MarketData { get; set; }
-        public DbSet<TradeRecord> TradeRecords { get; set; }
-        public DbSet<ModelPerformance> ModelPerformances { get; set; }
-        public DbSet<PortfolioSnapshot> PortfolioSnapshots { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<MarketData>()
-                .HasIndex(m => new { m.Symbol, m.Timestamp })
-                .IsUnique();
-
-            modelBuilder.Entity<TradeRecord>()
-                .HasIndex(t => t.ExecutedAt);
-
-            modelBuilder.Entity<PortfolioSnapshot>()
-                .HasIndex(p => p.Timestamp);
-
-            // Configure decimal precision for financial data
-            modelBuilder.Entity<MarketData>()
-                .Property(m => m.Close)
-                .HasPrecision(18, 8);
-
-            modelBuilder.Entity<TradeRecord>()
-                .Property(t => t.Price)
-                .HasPrecision(18, 8);
-        }
     }
 }

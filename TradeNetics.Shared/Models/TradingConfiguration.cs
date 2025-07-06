@@ -1,4 +1,4 @@
-namespace TradeNetics.Models
+namespace TradeNetics.Shared.Models
 {
     public class TradingConfiguration
     {
@@ -8,6 +8,7 @@ namespace TradeNetics.Models
         public Dictionary<string, decimal> SymbolQuantities { get; set; } = new();
         public decimal MinConfidenceScore { get; set; } = 0.7m;
         public bool PaperTradingMode { get; set; } = true;
+        public bool TradingEnabled { get; set; } = false;
         public TimeSpan ModelRetrainingInterval { get; set; } = TimeSpan.FromDays(7);
         public decimal MaxPositionSize { get; set; } = 0.02m; // 2% of portfolio
         public decimal StopLossPercent { get; set; } = 0.05m; // 5% stop loss

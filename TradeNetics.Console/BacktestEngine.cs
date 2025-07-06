@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Logging;
-using TradeNetics.Data;
-using TradeNetics.Interfaces;
-using TradeNetics.Models;
+using TradeNetics.Shared.Data;
+using TradeNetics.Shared.Interfaces;
+using TradeNetics.Shared.Models;
 
-namespace TradeNetics.Services
+namespace TradeNetics.Console.Services
 {
     public class BacktestEngine
     {
@@ -50,7 +50,7 @@ namespace TradeNetics.Services
                         Price = (float)data.Close,
                         Volume = (float)data.Volume,
                         PriceChange24h = (float)data.PriceChange24h,
-                        VolumeChange24h = (float)data.VolumeChange24h,
+                        VolumeChange24h = data.VolumeChange24h,
                         RSI = data.RSI,
                         MovingAverage5 = data.MovingAverage5,
                         MovingAverage20 = data.MovingAverage20,
@@ -64,7 +64,7 @@ namespace TradeNetics.Services
                     var prediction = _mlModel.PredictAction(features);
                     var confidence = prediction.Confidence?.Max() ?? 0f;
 
-                    if (confidence > _config.MinConfidenceScore)
+                    if (confidence > (float)_config.MinConfidenceScore)
                     {
                         var trade = SimulateTrade(symbol, prediction.PredictedAction, data.Close, currentBalance, positions);
                         if (trade != null)
@@ -95,7 +95,7 @@ namespace TradeNetics.Services
             {
                 if (position.Value > 0)
                 {
-                    var latestPrice = await GetLatestPrice(position.Key);
+                    var latestPrice = GetLatestPrice(position.Key);
                     finalValue += position.Value * latestPrice;
                 }
             }
@@ -143,7 +143,7 @@ namespace TradeNetics.Services
             return null;
         }
 
-        private async Task<decimal> GetLatestPrice(string symbol)
+        private decimal GetLatestPrice(string symbol)
         {
             // This would normally fetch from API, for simulation return a placeholder
             return 50000m; // Placeholder price

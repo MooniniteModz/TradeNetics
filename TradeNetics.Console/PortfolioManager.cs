@@ -1,18 +1,19 @@
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using TradeNetics.Data;
-using TradeNetics.Interfaces;
-using TradeNetics.Models;
+using TradeNetics.Shared.Data;
+using TradeNetics.Shared.Interfaces;
+using TradeNetics.Shared.Models;
 
-namespace TradeNetics.Services
+namespace TradeNetics.Console.Services
 {
     public class PortfolioManager : IPortfolioManager
     {
         private readonly ICryptoTraderService _traderService;
-        private readonly TradingContext _context;
+        private readonly TradingDbContext _context;
         private readonly ILogger<PortfolioManager> _logger;
 
-        public PortfolioManager(ICryptoTraderService traderService, TradingContext context, ILogger<PortfolioManager> logger)
+        public PortfolioManager(ICryptoTraderService traderService, TradingDbContext context, ILogger<PortfolioManager> logger)
         {
             _traderService = traderService;
             _context = context;

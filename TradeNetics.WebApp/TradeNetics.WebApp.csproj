@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TradeNetics.csproj" />
+    
+    <ProjectReference Include="..\TradeNetics.Shared\TradeNetics.Shared.csproj" />
   </ItemGroup>
 
 </Project>

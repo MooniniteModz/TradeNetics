@@ -1,4 +1,4 @@
-namespace TradeNetics.Helpers
+namespace TradeNetics.Shared.Helpers
 {
     public static class TechnicalAnalysis
     {

@@ -1,10 +1,10 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using TradeNetics.Data;
-using TradeNetics.Interfaces;
-using TradeNetics.Models;
+using TradeNetics.Shared.Data;
+using TradeNetics.Shared.Interfaces;
+using TradeNetics.Shared.Models;
 
-namespace TradeNetics.Services
+namespace TradeNetics.Console.Services
 {
     public class TradingBotService : BackgroundService
     {
@@ -13,7 +13,7 @@ namespace TradeNetics.Services
         private readonly IPortfolioManager _portfolioManager;
         private readonly IMLTradingModel _mlModel;
         private readonly TradingConfiguration _config;
-        private readonly TradingContext _context;
+        private readonly TradingDbContext _context;
         private readonly ILogger<TradingBotService> _logger;
 
         public TradingBotService(
@@ -22,7 +22,7 @@ namespace TradeNetics.Services
             IPortfolioManager portfolioManager,
             IMLTradingModel mlModel,
             TradingConfiguration config,
-            TradingContext context,
+            TradingDbContext context,
             ILogger<TradingBotService> logger)
         {
             _traderService = traderService;
@@ -39,7 +39,7 @@ namespace TradeNetics.Services
             _logger.LogInformation("Trading bot service started");
 
             // Initialize or load ML model
-            await InitializeModelAsync();
+            InitializeModel();
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -59,25 +59,25 @@ namespace TradeNetics.Services
             }
         }
 
-        private async Task InitializeModelAsync()
+        private void InitializeModel()
         {
             string modelPath = "crypto_trading_model.zip";
 
             if (File.Exists(modelPath))
             {
-                await _mlModel.LoadModelAsync(modelPath);
+                _mlModel.LoadModel(modelPath);
                 _logger.LogInformation("Loaded existing ML model");
             }
             else
             {
                 _logger.LogInformation("Training new ML model...");
-                var trainingData = await GenerateTrainingDataAsync();
-                await _mlModel.TrainModelAsync(trainingData);
-                await _mlModel.SaveModelAsync(modelPath);
+                var trainingData = GenerateTrainingData();
+                _mlModel.TrainModel(trainingData);
+                _mlModel.SaveModel(modelPath);
             }
         }
 
-        private async Task<List<TrainingData>> GenerateTrainingDataAsync()
+        private List<TrainingData> GenerateTrainingData()
         {
             // In a real implementation, you would load historical data from your database
             // For now, we'll generate synthetic data
@@ -100,7 +100,7 @@ namespace TradeNetics.Services
                     Price = (float)(40000 + random.Next(-5000, 5000)),
                     Volume = volume,
                     PriceChange24h = (float)priceChange,
-                    VolumeChange24h = (float)(0.8 + random.NextDouble() * 0.4),
+                    VolumeChange24h = (decimal)(0.8 + random.NextDouble() * 0.4),
                     RSI = rsi,
                     MovingAverage5 = (float)(40000 + random.Next(-1000, 1000)),
                     MovingAverage20 = (float)(40000 + random.Next(-2000, 2000)),

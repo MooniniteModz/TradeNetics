@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Logging;
-using TradeNetics.Interfaces;
-using TradeNetics.Models;
+using TradeNetics.Shared.Interfaces;
+using TradeNetics.Shared.Models;
 
-namespace TradeNetics.Services
+namespace TradeNetics.Console.Services
 {
     public class RiskManager : IRiskManager
     {

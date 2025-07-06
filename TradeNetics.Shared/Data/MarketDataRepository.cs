@@ -1,17 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using TradeNetics.Data;
-using TradeNetics.Interfaces;
-using TradeNetics.Models;
+using TradeNetics.Shared.Data;
+using TradeNetics.Shared.Interfaces;
+using TradeNetics.Shared.Models;
 
-namespace TradeNetics.Services
+namespace TradeNetics.Shared.Data
 {
     public class MarketDataRepository : IMarketDataRepository
     {
-        private readonly TradingContext _context;
+        private readonly TradingDbContext _context;
         private readonly ILogger<MarketDataRepository> _logger;
-
-        public MarketDataRepository(TradingContext context, ILogger<MarketDataRepository> logger)
+        public MarketDataRepository(TradingDbContext context, ILogger<MarketDataRepository> logger)
         {
             _context = context;
             _logger = logger;
@@ -67,7 +66,7 @@ namespace TradeNetics.Services
                 Price = (float)m.Close,
                 Volume = (float)m.Volume,
                 PriceChange24h = (float)m.PriceChange24h,
-                VolumeChange24h = (float)m.VolumeChange24h,
+                VolumeChange24h = m.VolumeChange24h,
                 RSI = m.RSI,
                 MovingAverage5 = m.MovingAverage5,
                 MovingAverage20 = m.MovingAverage20,
