@@ -5,7 +5,7 @@ namespace TradeNetics.Shared.Models
         public float Price { get; set; }
         public float Volume { get; set; }
         public float PriceChange24h { get; set; }
-        public decimal VolumeChange24h { get; set; }
+        public float VolumeChange24h { get; set; }
         public float RSI { get; set; }
         public float MovingAverage5 { get; set; }
         public float MovingAverage20 { get; set; }

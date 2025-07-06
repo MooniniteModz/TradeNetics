@@ -50,7 +50,7 @@ namespace TradeNetics.Console.Services
                         Price = (float)data.Close,
                         Volume = (float)data.Volume,
                         PriceChange24h = (float)data.PriceChange24h,
-                        VolumeChange24h = data.VolumeChange24h,
+                        VolumeChange24h = (float)data.VolumeChange24h,
                         RSI = data.RSI,
                         MovingAverage5 = data.MovingAverage5,
                         MovingAverage20 = data.MovingAverage20,

@@ -4,7 +4,7 @@ namespace TradeNetics.Shared.Models
     {
         public string ApiKey { get; set; } = "";
         public string ApiSecret { get; set; } = "";
-        public string BaseApiUrl { get; set; } = "https://api.binance.com";
+        public string BaseApiUrl { get; set; } = "https://api.binance.us";
         public Dictionary<string, decimal> SymbolQuantities { get; set; } = new();
         public decimal MinConfidenceScore { get; set; } = 0.7m;
         public bool PaperTradingMode { get; set; } = true;

@@ -1,35 +1,451 @@
 @page "/configuration"
 @inject IConfigurationService ConfigurationService
 
-<h1>Configuration</h1>
+<PageTitle>Configuration - TradeNetics</PageTitle>
 
-<EditForm Model="@_configuration" OnValidSubmit="SaveConfiguration">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label for="apiKey">API Key</label>
-        <InputText id="apiKey" class="form-control" @bind-Value="_configuration.ApiKey" />
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 text-primary mb-3">
+                <i class="oi oi-cog"></i> Configuration
+            </h1>
+            <p class="lead text-muted">Manage your trading bot settings and ML parameters</p>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="apiSecret">API Secret</label>
-        <InputText id="apiSecret" class="form-control" @bind-Value="_configuration.ApiSecret" />
-    </div>
+    <EditForm Model="@_configuration" OnValidSubmit="SaveConfiguration">
+        <DataAnnotationsValidator />
+        
+        <div class="row">
+            <!-- API Configuration -->
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0"><i class="oi oi-key"></i> API Configuration</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group mb-3">
+                            <label for="apiKey" class="form-label">Binance API Key</label>
+                            <div class="input-group">
+                                <input type="@(_showApiKey ? "text" : "password")" 
+                                       id="apiKey" 
+                                       class="form-control" 
+                                       @bind="_configuration.ApiKey" 
+                                       placeholder="Enter your Binance API key" />
+                                <button class="btn btn-outline-secondary" type="button" 
+                                        @onclick="() => _showApiKey = !_showApiKey">
+                                    <i class="oi @(_showApiKey ? "oi-eye" : "oi-eye-closed")"></i>
+                                </button>
+                            </div>
+                            <div class="form-text">Your Binance API key for trading operations</div>
+                        </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-</EditForm>
+                        <div class="form-group mb-3">
+                            <label for="apiSecret" class="form-label">Binance API Secret</label>
+                            <div class="input-group">
+                                <input type="@(_showApiSecret ? "text" : "password")" 
+                                       id="apiSecret" 
+                                       class="form-control" 
+                                       @bind="_configuration.ApiSecret" 
+                                       placeholder="Enter your Binance API secret" />
+                                <button class="btn btn-outline-secondary" type="button" 
+                                        @onclick="() => _showApiSecret = !_showApiSecret">
+                                    <i class="oi @(_showApiSecret ? "oi-eye" : "oi-eye-closed")"></i>
+                                </button>
+                            </div>
+                            <div class="form-text">Your Binance API secret for secure authentication</div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="baseApiUrl" class="form-label">Base API URL</label>
+                            <input type="text" id="baseApiUrl" class="form-control" 
+                                   @bind="_configuration.BaseApiUrl" 
+                                   placeholder="https://api.binance.com" />
+                            <div class="form-text">Binance API endpoint URL</div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="oi oi-shield text-primary"></i>
+                            <strong>Security Notice:</strong> Your API keys are encrypted and stored securely. 
+                            Never share your API credentials with anyone.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trading Configuration -->
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="oi oi-dollar"></i> Trading Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="maxPositionSize" class="form-label">Max Position Size (%)</label>
+                                    <input type="number" id="maxPositionSize" class="form-control" 
+                                           @bind="_configuration.MaxPositionSize" 
+                                           step="0.01" min="0" max="1" />
+                                    <div class="form-text">Maximum % of portfolio per position</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="stopLossPercent" class="form-label">Stop Loss (%)</label>
+                                    <input type="number" id="stopLossPercent" class="form-control" 
+                                           @bind="_configuration.StopLossPercent" 
+                                           step="0.01" min="0" max="1" />
+                                    <div class="form-text">Stop loss percentage</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="maxDailyLoss" class="form-label">Max Daily Loss (%)</label>
+                                    <input type="number" id="maxDailyLoss" class="form-control" 
+                                           @bind="_configuration.MaxDailyLoss" 
+                                           step="0.01" min="0" max="1" />
+                                    <div class="form-text">Daily loss limit</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="backtestBalance" class="form-label">Backtest Balance</label>
+                                    <input type="number" id="backtestBalance" class="form-control" 
+                                           @bind="_configuration.BacktestInitialBalance" 
+                                           step="100" min="1000" />
+                                    <div class="form-text">Initial balance for backtesting</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="paperTradingMode" 
+                                   @bind="_configuration.PaperTradingMode">
+                            <label class="form-check-label" for="paperTradingMode">
+                                <strong>Paper Trading Mode</strong>
+                            </label>
+                            <div class="form-text">Simulate trades without real money</div>
+                        </div>
+
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="tradingEnabled" 
+                                   @bind="_configuration.TradingEnabled">
+                            <label class="form-check-label" for="tradingEnabled">
+                                <strong>Trading Enabled</strong>
+                            </label>
+                            <div class="form-text">Enable/disable all trading operations</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ML Configuration -->
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="oi oi-code"></i> Machine Learning Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label for="minConfidenceScore" class="form-label">Minimum Confidence Score</label>
+                                    <input type="number" id="minConfidenceScore" class="form-control" 
+                                           @bind="_configuration.MinConfidenceScore" 
+                                           step="0.01" min="0" max="1" />
+                                    <div class="form-text">Minimum ML model confidence for trades (0.0 - 1.0)</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label for="retrainingInterval" class="form-label">Model Retraining Interval (Days)</label>
+                                    <input type="number" id="retrainingInterval" class="form-control" 
+                                           @bind="_retrainingDays" 
+                                           min="1" max="30" />
+                                    <div class="form-text">How often to retrain the ML model</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label for="mlFeatureWindow" class="form-label">Feature Window (Hours)</label>
+                                    <input type="number" id="mlFeatureWindow" class="form-control" 
+                                           @bind="_featureWindowHours" 
+                                           min="1" max="168" />
+                                    <div class="form-text">Time window for feature extraction</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">ML.NET Algorithm Settings</h6>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="mlAlgorithm" class="form-label">Primary Algorithm</label>
+                                    <select id="mlAlgorithm" class="form-select" @bind="_selectedAlgorithm">
+                                        <option value="FastTree">FastTree (Gradient Boosting)</option>
+                                        <option value="LightGbm">LightGBM</option>
+                                        <option value="FastForest">Fast Forest</option>
+                                        <option value="Gam">Generalized Additive Models</option>
+                                    </select>
+                                    <div class="form-text">ML.NET algorithm for predictions</div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="numberOfTrees" class="form-label">Number of Trees</label>
+                                    <input type="number" id="numberOfTrees" class="form-control" 
+                                           @bind="_numberOfTrees" 
+                                           min="10" max="1000" />
+                                    <div class="form-text">Trees in ensemble models (FastTree, FastForest)</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Training Parameters</h6>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="learningRate" class="form-label">Learning Rate</label>
+                                    <input type="number" id="learningRate" class="form-control" 
+                                           @bind="_learningRate" 
+                                           step="0.001" min="0.001" max="1.0" />
+                                    <div class="form-text">Model learning rate (0.001 - 1.0)</div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="numberOfIterations" class="form-label">Training Iterations</label>
+                                    <input type="number" id="numberOfIterations" class="form-control" 
+                                           @bind="_numberOfIterations" 
+                                           min="10" max="10000" />
+                                    <div class="form-text">Number of training iterations</div>
+                                </div>
+
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="useEarlyStopping" 
+                                           @bind="_useEarlyStopping">
+                                    <label class="form-check-label" for="useEarlyStopping">
+                                        Enable Early Stopping
+                                    </label>
+                                    <div class="form-text">Stop training when validation error stops improving</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-secondary">
+                            <h6><i class="oi oi-info text-info"></i> ML Configuration Guide</h6>
+                            <ul class="mb-0">
+                                <li><strong>FastTree:</strong> Best for general-purpose regression with good performance</li>
+                                <li><strong>LightGBM:</strong> Fast training, good for large datasets</li>
+                                <li><strong>Fast Forest:</strong> Robust to overfitting, good baseline</li>
+                                <li><strong>Higher confidence scores:</strong> More conservative trading</li>
+                                <li><strong>More trees/iterations:</strong> Better accuracy but slower training</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trading Symbols Configuration -->
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="oi oi-layers"></i> Trading Symbols & Quantities</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Active Trading Symbols</h6>
+                                <div class="symbols-list">
+                                    @for (int i = 0; i < _configuration.TradingSymbols.Length; i++)
+                                    {
+                                        var index = i; // Capture for lambda
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" 
+                                                   @bind="_configuration.TradingSymbols[index]" 
+                                                   placeholder="e.g., BTCUSDT" />
+                                            <button class="btn btn-outline-danger" type="button" 
+                                                    @onclick="() => RemoveSymbol(index)">
+                                                <i class="oi oi-trash"></i>
+                                            </button>
+                                        </div>
+                                    }
+                                    <button type="button" class="btn btn-outline-primary btn-sm" 
+                                            @onclick="AddSymbol">
+                                        <i class="oi oi-plus"></i> Add Symbol
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Symbol Quantities</h6>
+                                <div class="form-text mb-3">
+                                    Configure default quantities for each trading symbol
+                                </div>
+                                @foreach (var symbol in _configuration.TradingSymbols.Where(s => !string.IsNullOrEmpty(s)))
+                                {
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text">@symbol</span>
+                                        <input type="number" class="form-control" 
+                                               value="@(_configuration.SymbolQuantities.ContainsKey(symbol) ? _configuration.SymbolQuantities[symbol] : 0.001m)"
+                                               @onchange="@((ChangeEventArgs e) => UpdateSymbolQuantity(symbol, e))"
+                                               step="0.000001" min="0" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <ValidationSummary class="text-danger" />
+                        @if (!string.IsNullOrEmpty(_saveMessage))
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="oi oi-check text-success"></i> @_saveMessage
+                                <button type="button" class="btn-close" @onclick="() => _saveMessage = string.Empty"></button>
+                            </div>
+                        }
+                    </div>
+                    
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary me-2" @onclick="ResetToDefaults">
+                            <i class="oi oi-reload"></i> Reset to Defaults
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-lg" disabled="@_isSaving">
+                            @if (_isSaving)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                            }
+                            <i class="oi oi-check"></i> Save Configuration
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</div>
 
 @code {
     private TradingConfiguration _configuration = new TradingConfiguration();
+    private bool _showApiKey = false;
+    private bool _showApiSecret = false;
+    private bool _isSaving = false;
+    private string _saveMessage = string.Empty;
+    
+    // ML Settings bindings
+    private int _retrainingDays = 7;
+    private int _featureWindowHours = 24;
+    private string _selectedAlgorithm = "FastTree";
+    private int _numberOfTrees = 100;
+    private double _learningRate = 0.1;
+    private int _numberOfIterations = 100;
+    private bool _useEarlyStopping = true;
 
     protected override async Task OnInitializedAsync()
     {
-        _configuration = await ConfigurationService.GetConfiguration();
+        await LoadConfiguration();
+        
+        // Convert TimeSpan to days for UI
+        _retrainingDays = _configuration.ModelRetrainingInterval.Days;
+    }
+
+    private async Task LoadConfiguration()
+    {
+        try
+        {
+            _configuration = await ConfigurationService.GetConfiguration();
+        }
+        catch
+        {
+            _configuration = new TradingConfiguration();
+        }
     }
 
     private async Task SaveConfiguration()
     {
-        await ConfigurationService.SaveConfiguration(_configuration);
+        _isSaving = true;
+        _saveMessage = string.Empty;
+        
+        try
+        {
+            // Update TimeSpan from days
+            _configuration.ModelRetrainingInterval = TimeSpan.FromDays(_retrainingDays);
+            
+            await ConfigurationService.SaveConfiguration(_configuration);
+            _saveMessage = "Configuration saved successfully!";
+            
+            // Auto-hide message after 3 seconds
+            await Task.Delay(3000);
+            _saveMessage = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            _saveMessage = $"Error saving configuration: {ex.Message}";
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private void AddSymbol()
+    {
+        var currentSymbols = _configuration.TradingSymbols.ToList();
+        currentSymbols.Add("");
+        _configuration.TradingSymbols = currentSymbols.ToArray();
+    }
+
+    private void RemoveSymbol(int index)
+    {
+        var currentSymbols = _configuration.TradingSymbols.ToList();
+        if (index >= 0 && index < currentSymbols.Count)
+        {
+            var symbol = currentSymbols[index];
+            currentSymbols.RemoveAt(index);
+            _configuration.TradingSymbols = currentSymbols.ToArray();
+            
+            // Remove from quantities if exists
+            if (!string.IsNullOrEmpty(symbol) && _configuration.SymbolQuantities.ContainsKey(symbol))
+            {
+                _configuration.SymbolQuantities.Remove(symbol);
+            }
+        }
+    }
+
+    private void UpdateSymbolQuantity(string symbol, ChangeEventArgs e)
+    {
+        if (decimal.TryParse(e.Value?.ToString(), out var quantity))
+        {
+            _configuration.SymbolQuantities[symbol] = quantity;
+        }
+    }
+
+    private async Task ResetToDefaults()
+    {
+        _configuration = new TradingConfiguration();
+        _retrainingDays = 7;
+        _featureWindowHours = 24;
+        _selectedAlgorithm = "FastTree";
+        _numberOfTrees = 100;
+        _learningRate = 0.1;
+        _numberOfIterations = 100;
+        _useEarlyStopping = true;
+        
+        await Task.Delay(1); // Async operation
+        StateHasChanged();
     }
 }

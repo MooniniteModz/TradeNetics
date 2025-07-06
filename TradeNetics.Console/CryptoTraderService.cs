@@ -277,7 +277,7 @@ namespace TradeNetics.Console.Services
                     Price = (float)ticker24hr.LastPrice,
                     Volume = (float)ticker24hr.Volume,
                     PriceChange24h = (float)ticker24hr.PriceChangePercent,
-                    VolumeChange24h = volumeRatio, // No cast needed, both are decimal
+                    VolumeChange24h = (float)volumeRatio, // Cast decimal to float
                     RSI = (float)rsi, // Cast decimal to float
                     MovingAverage5 = (float)ma5, // Cast decimal to float
                     MovingAverage20 = (float)ma20, // Cast decimal to float

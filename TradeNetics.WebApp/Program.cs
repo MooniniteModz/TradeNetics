@@ -14,6 +14,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<TradingBotStatusService>();
 builder.Services.AddSingleton<TradeHistoryService>();
+builder.Services.AddSingleton<MockCryptoDataService>();
+builder.Services.AddHttpClient<RealCryptoDataService>();
 
 // Shared Services
 builder.Services.AddTradeNeticsSharedServices(builder.Configuration);

@@ -100,7 +100,7 @@ namespace TradeNetics.Console.Services
                     Price = (float)(40000 + random.Next(-5000, 5000)),
                     Volume = volume,
                     PriceChange24h = (float)priceChange,
-                    VolumeChange24h = (decimal)(0.8 + random.NextDouble() * 0.4),
+                    VolumeChange24h = (float)(0.8 + random.NextDouble() * 0.4),
                     RSI = rsi,
                     MovingAverage5 = (float)(40000 + random.Next(-1000, 1000)),
                     MovingAverage20 = (float)(40000 + random.Next(-2000, 2000)),
