@@ -6,16 +6,16 @@ using TradeNetics.Shared.Models;
 
 namespace TradeNetics.WebApp.Data
 {
-    public class MockCryptoDataService
+    public class MockCryptoDataService : ICryptoDataService
     {
         private readonly Random _random = new();
         private readonly Dictionary<string, decimal> _basePrices = new()
         {
-            { "BTCUSDT", 43250.75m },
-            { "ETHUSDT", 2650.30m },
-            { "ADAUSDT", 0.485m },
-            { "LTCUSDT", 72.45m },
-            { "DOGEUSDT", 0.095m }
+            { "BTCUSDT", 120850.75m },  // Updated to current BTC range
+            { "ETHUSDT", 3040.30m },    // Updated to current ETH range  
+            { "ADAUSDT", 0.765m },      // Updated to current ADA range
+            { "LTCUSDT", 135.45m },     // Updated to current LTC range
+            { "DOGEUSDT", 0.389m }      // Updated to current DOGE range
         };
 
         public async Task<List<MarketData>> GetMarketDataAsync()
@@ -26,21 +26,32 @@ namespace TradeNetics.WebApp.Data
             
             foreach (var pair in _basePrices)
             {
-                var priceVariation = (decimal)(_random.NextDouble() * 0.1 - 0.05); // ±5% variation
+                var priceVariation = (decimal)(_random.NextDouble() * 0.06 - 0.03); // ±3% variation
                 var currentPrice = pair.Value * (1 + priceVariation);
-                var change24h = (decimal)(_random.NextDouble() * 10 - 5); // ±5% daily change
+                var change24h = (decimal)(_random.NextDouble() * 8 - 4); // ±4% daily change
+                
+                // Make volume proportional to price (higher value coins have higher volume)
+                var baseVolume = pair.Key switch
+                {
+                    "BTCUSDT" => 2000000000m,
+                    "ETHUSDT" => 1500000000m,
+                    "ADAUSDT" => 800000000m,
+                    "LTCUSDT" => 400000000m,
+                    "DOGEUSDT" => 1200000000m,
+                    _ => 500000000m
+                };
                 
                 marketData.Add(new MarketData
                 {
                     Symbol = pair.Key,
-                    Close = currentPrice,
-                    PriceChange24h = change24h,
-                    VolumeChange24h = (decimal)(_random.NextDouble() * 1000000000), // Random volume
+                    Close = Math.Round(currentPrice, pair.Key.Contains("USDT") && currentPrice < 1 ? 6 : 2),
+                    PriceChange24h = Math.Round(change24h, 2),
+                    VolumeChange24h = Math.Round(baseVolume * (decimal)(_random.NextDouble() * 0.4 + 0.8), 0), // ±20% volume variation
                     Timestamp = DateTime.UtcNow,
-                    Open = currentPrice * 0.95m,
-                    High = currentPrice * 1.02m,
-                    Low = currentPrice * 0.98m,
-                    Volume = (decimal)(_random.NextDouble() * 500000000)
+                    Open = Math.Round(currentPrice * (1 - change24h / 100), pair.Key.Contains("USDT") && currentPrice < 1 ? 6 : 2),
+                    High = Math.Round(currentPrice * 1.025m, pair.Key.Contains("USDT") && currentPrice < 1 ? 6 : 2),
+                    Low = Math.Round(currentPrice * 0.975m, pair.Key.Contains("USDT") && currentPrice < 1 ? 6 : 2),
+                    Volume = Math.Round(baseVolume * (decimal)(_random.NextDouble() * 0.4 + 0.8), 0)
                 });
             }
             

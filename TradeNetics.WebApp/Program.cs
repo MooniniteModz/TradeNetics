@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using TradeNetics.Shared.Interfaces;
 using TradeNetics.Shared.Services;
 using TradeNetics.WebApp.Data;
@@ -14,8 +15,12 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<TradingBotStatusService>();
 builder.Services.AddSingleton<TradeHistoryService>();
-builder.Services.AddSingleton<MockCryptoDataService>();
+builder.Services.AddScoped<MockCryptoDataService>();
 builder.Services.AddHttpClient<RealCryptoDataService>();
+
+// Register ICryptoDataService - temporarily use mock data due to regional restrictions
+// Switch this back to RealCryptoDataService when APIs are accessible
+builder.Services.AddScoped<ICryptoDataService, MockCryptoDataService>();
 
 // Shared Services
 builder.Services.AddTradeNeticsSharedServices(builder.Configuration);

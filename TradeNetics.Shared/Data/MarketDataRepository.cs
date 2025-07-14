@@ -66,7 +66,7 @@ namespace TradeNetics.Shared.Data
                 Price = (float)m.Close,
                 Volume = (float)m.Volume,
                 PriceChange24h = (float)m.PriceChange24h,
-                VolumeChange24h = (float)m.VolumeChange24h,
+                VolumeChange24h = (float)(decimal)m.VolumeChange24h,
                 RSI = m.RSI,
                 MovingAverage5 = m.MovingAverage5,
                 MovingAverage20 = m.MovingAverage20,

@@ -1,0 +1,6 @@
+C:\Users\conmo\Repo\TradeNetics\obj\Debug\net9.0\TradeNetics.csproj.AssemblyReference.cache
+C:\Users\conmo\Repo\TradeNetics\obj\Debug\net9.0\TradeNetics.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\conmo\Repo\TradeNetics\obj\Debug\net9.0\TradeNetics.AssemblyInfoInputs.cache
+C:\Users\conmo\Repo\TradeNetics\obj\Debug\net9.0\TradeNetics.AssemblyInfo.cs
+C:\Users\conmo\Repo\TradeNetics\obj\Debug\net9.0\TradeNetics.csproj.CoreCompileInputs.cache
+C:\Users\conmo\Repo\TradeNetics\obj\Debug\net9.0\TradeNetics.sourcelink.json

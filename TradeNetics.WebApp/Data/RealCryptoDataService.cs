@@ -11,18 +11,20 @@ using TradeNetics.Shared.Models;
 
 namespace TradeNetics.WebApp.Data
 {
-    public class RealCryptoDataService
+    public class RealCryptoDataService : ICryptoDataService
     {
         private readonly HttpClient _httpClient;
         private readonly IConfigurationService _configurationService;
         private readonly ILogger<RealCryptoDataService> _logger;
+        private readonly MockCryptoDataService _mockService;
         private TradingConfiguration? _config;
 
-        public RealCryptoDataService(HttpClient httpClient, IConfigurationService configurationService, ILogger<RealCryptoDataService> logger)
+        public RealCryptoDataService(HttpClient httpClient, IConfigurationService configurationService, ILogger<RealCryptoDataService> logger, MockCryptoDataService mockService)
         {
             _httpClient = httpClient;
             _configurationService = configurationService;
             _logger = logger;
+            _mockService = mockService;
         }
 
         private async Task<TradingConfiguration> GetConfigurationAsync()
@@ -43,6 +45,76 @@ namespace TradeNetics.WebApp.Data
                 _httpClient.DefaultRequestHeaders.Clear();
                 _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 _httpClient.DefaultRequestHeaders.Add("X-MBX-APIKEY", _config.ApiKey);
+            }
+        }
+
+        public async Task<List<MarketData>> GetMarketDataAsync()
+        {
+            try
+            {
+                // Use global Binance API for public market data (no auth required)
+                using var publicHttpClient = new HttpClient();
+                publicHttpClient.BaseAddress = new Uri("https://api.binance.com");
+                publicHttpClient.Timeout = TimeSpan.FromSeconds(30);
+                
+                // Get market data for common symbols
+                var symbols = new[] { "BTCUSDT", "ETHUSDT", "ADAUSDT", "LTCUSDT", "DOGEUSDT" };
+                var marketData = new List<MarketData>();
+
+                foreach (var symbol in symbols)
+                {
+                    try
+                    {
+                        // Get 24hr ticker statistics (includes price, change, volume)
+                        var response = await publicHttpClient.GetAsync($"/api/v3/ticker/24hr?symbol={symbol}");
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var content = await response.Content.ReadAsStringAsync();
+                            var ticker = JsonSerializer.Deserialize<Binance24hrTicker>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                            
+                            if (ticker != null)
+                            {
+                                marketData.Add(new MarketData
+                                {
+                                    Symbol = symbol,
+                                    Close = decimal.Parse(ticker.LastPrice),
+                                    Open = decimal.Parse(ticker.OpenPrice),
+                                    High = decimal.Parse(ticker.HighPrice),
+                                    Low = decimal.Parse(ticker.LowPrice),
+                                    Volume = decimal.Parse(ticker.Volume),
+                                    PriceChange24h = decimal.Parse(ticker.PriceChangePercent),
+                                    VolumeChange24h = decimal.Parse(ticker.QuoteVolume),
+                                    Timestamp = DateTime.UtcNow
+                                });
+                            }
+                        }
+                        else
+                        {
+                            _logger.LogWarning("Failed to get market data for {Symbol}: {StatusCode}", symbol, response.StatusCode);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Error fetching data for symbol {Symbol}", symbol);
+                    }
+                }
+
+                // If we got no data, return empty list with warning
+                if (marketData.Count == 0)
+                {
+                    _logger.LogWarning("No market data retrieved from Binance API, all symbols failed");
+                    return new List<MarketData>();
+                }
+
+                return marketData;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching market data from Binance API");
+                
+                // Return empty list instead of mock data
+                _logger.LogWarning("Market data unavailable due to API issues");
+                return new List<MarketData>();
             }
         }
 
@@ -77,10 +149,11 @@ namespace TradeNetics.WebApp.Data
             }
             catch
             {
+                // Return unavailable status instead of mock data
                 return new TradingBotStatus
                 {
                     IsRunning = false,
-                    Status = "Error connecting to API",
+                    Status = "Trading bot data unavailable",
                     TotalProfit = 0,
                     TotalTrades = 0,
                     LastUpdate = DateTime.Now
@@ -104,6 +177,7 @@ namespace TradeNetics.WebApp.Data
             }
             catch
             {
+                // Return empty list instead of mock data
                 return new List<TradeData>();
             }
         }
@@ -166,6 +240,7 @@ namespace TradeNetics.WebApp.Data
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching real portfolio holdings");
+                // Return empty list instead of mock data
                 return new List<PortfolioHolding>();
             }
         }
@@ -283,5 +358,11 @@ namespace TradeNetics.WebApp.Data
     {
         public string Symbol { get; set; } = "";
         public string PriceChangePercent { get; set; } = "0";
+        public string LastPrice { get; set; } = "0";
+        public string OpenPrice { get; set; } = "0";
+        public string HighPrice { get; set; } = "0";
+        public string LowPrice { get; set; } = "0";
+        public string Volume { get; set; } = "0";
+        public string QuoteVolume { get; set; } = "0";
     }
 }

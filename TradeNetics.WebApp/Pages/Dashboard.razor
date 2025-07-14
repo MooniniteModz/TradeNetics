@@ -242,8 +242,16 @@
                             <div class="display-6 text-muted mb-3">
                                 <i class="oi oi-info"></i>
                             </div>
-                            <h5 class="text-muted">No holdings found</h5>
-                            <p class="text-muted">Start trading to build your portfolio</p>
+                            @if (!string.IsNullOrEmpty(_configuration.ApiKey) && !string.IsNullOrEmpty(_configuration.ApiSecret))
+                            {
+                                <h5 class="text-muted">Portfolio data unavailable</h5>
+                                <p class="text-muted">Unable to retrieve portfolio information from the API at this time</p>
+                            }
+                            else
+                            {
+                                <h5 class="text-muted">No holdings found</h5>
+                                <p class="text-muted">Start trading to build your portfolio</p>
+                            }
                         </div>
                     }
                 </div>
@@ -647,6 +655,13 @@
             if (!string.IsNullOrEmpty(_configuration.ApiKey) && !string.IsNullOrEmpty(_configuration.ApiSecret))
             {
                 _portfolioHoldings = await RealCryptoDataService.GetPortfolioHoldingsAsync();
+                
+                // If real data returns empty but we have API credentials, it might be unavailable
+                if (!_portfolioHoldings.Any())
+                {
+                    // Portfolio is empty or data unavailable - use empty list to show appropriate message
+                    _portfolioHoldings = new List<TradeNetics.WebApp.Data.PortfolioHolding>();
+                }
             }
             else
             {

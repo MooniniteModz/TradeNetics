@@ -29,7 +29,7 @@ namespace TradeNetics.Console.Services
 
                 var portfolio = new Portfolio
                 {
-                    Balances = balances.Where(b => b.Free > 0 || b.Locked > 0).ToList()
+                    Balances = balances.Where(b => b.FreeDecimal > 0 || b.LockedDecimal > 0).ToList()
                 };
 
                 // Calculate total portfolio value in USDT
@@ -38,14 +38,14 @@ namespace TradeNetics.Console.Services
                 {
                     if (balance.Asset == "USDT")
                     {
-                        totalValue += balance.Total;
+                        totalValue += balance.TotalDecimal;
                     }
                     else
                     {
                         var price = await _traderService.GetPriceAsync($"{balance.Asset}USDT");
                         if (price != null)
                         {
-                            totalValue += balance.Total * price.Price;
+                            totalValue += balance.TotalDecimal * price.PriceDecimal;
                         }
                     }
                 }

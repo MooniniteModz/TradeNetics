@@ -1,0 +1,218 @@
+@page "/crypto-overview"
+@using TradeNetics.WebApp.Data
+@inject ICryptoDataService CryptoDataService
+@implements IDisposable
+
+<PageTitle>Crypto Overview - TradeNetics</PageTitle>
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4 text-primary mb-3">
+                <i class="oi oi-bar-chart"></i> Crypto Overview
+            </h1>
+            <p class="lead text-muted">Real-time cryptocurrency market data and analysis</p>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Market Summary Cards -->
+        <div class="row mb-4">
+            @if (marketData != null && marketData.Any())
+            {
+                @foreach (var crypto in marketData)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h5 class="card-title mb-0 fw-bold">@crypto.Symbol</h5>
+                                    <span class="badge @(crypto.PriceChange24h >= 0 ? "bg-success" : "bg-danger")">
+                                        @(crypto.PriceChange24h >= 0 ? "+" : "")@crypto.PriceChange24h.ToString("F2")%
+                                    </span>
+                                </div>
+                                <h3 class="text-primary mb-2">$@crypto.Close.ToString("N2")</h3>
+                                <div class="row text-muted small">
+                                    <div class="col-6">
+                                        <div>High: $@crypto.High.ToString("N2")</div>
+                                        <div>Low: $@crypto.Low.ToString("N2")</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div>Open: $@crypto.Open.ToString("N2")</div>
+                                        <div>Volume: @FormatVolume(crypto.Volume)</div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline-primary btn-sm mt-2 w-100" @onclick="() => SelectCrypto(crypto.Symbol)">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="alert alert-warning text-center" role="alert">
+                        <i class="oi oi-warning" style="font-size: 24px;"></i>
+                        <h4 class="mt-2">Market Data Unavailable</h4>
+                        <p class="mb-0">Unable to retrieve cryptocurrency market data at this time. Please check your internet connection or try again later.</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Detailed Chart View -->
+        @if (!string.IsNullOrEmpty(selectedCrypto))
+        {
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">
+                                <i class="oi oi-graph"></i> @selectedCrypto Detailed Analysis
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <!-- Chart Placeholder -->
+                                    <div class="chart-container" style="height: 400px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border: 2px dashed #dee2e6; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                        <div class="text-center text-muted">
+                                            <i class="oi oi-graph" style="font-size: 48px;"></i>
+                                            <h5 class="mt-3">@selectedCrypto Price Chart</h5>
+                                            <p>Interactive chart will be implemented here</p>
+                                            <small>Chart library integration pending</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    @if (selectedCryptoData != null)
+                                    {
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Market Statistics</h5>
+                                                <dl class="row">
+                                                    <dt class="col-sm-6">Current Price:</dt>
+                                                    <dd class="col-sm-6 fw-bold text-primary">$@selectedCryptoData.Close.ToString("N2")</dd>
+                                                    
+                                                    <dt class="col-sm-6">24h Change:</dt>
+                                                    <dd class="col-sm-6">
+                                                        <span class="@(selectedCryptoData.PriceChange24h >= 0 ? "text-success" : "text-danger")">
+                                                            @(selectedCryptoData.PriceChange24h >= 0 ? "+" : "")@selectedCryptoData.PriceChange24h.ToString("F2")%
+                                                        </span>
+                                                    </dd>
+                                                    
+                                                    <dt class="col-sm-6">24h High:</dt>
+                                                    <dd class="col-sm-6">$@selectedCryptoData.High.ToString("N2")</dd>
+                                                    
+                                                    <dt class="col-sm-6">24h Low:</dt>
+                                                    <dd class="col-sm-6">$@selectedCryptoData.Low.ToString("N2")</dd>
+                                                    
+                                                    <dt class="col-sm-6">24h Volume:</dt>
+                                                    <dd class="col-sm-6">@FormatVolume(selectedCryptoData.Volume)</dd>
+                                                    
+                                                    <dt class="col-sm-6">Last Updated:</dt>
+                                                    <dd class="col-sm-6">@selectedCryptoData.Timestamp.ToString("HH:mm:ss")</dd>
+                                                </dl>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="card mt-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Quick Actions</h5>
+                                                <div class="d-grid gap-2">
+                                                    <button class="btn btn-success btn-sm">Add to Watchlist</button>
+                                                    <button class="btn btn-primary btn-sm">Set Price Alert</button>
+                                                    <button class="btn btn-outline-secondary btn-sm">View Trading History</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    private List<MarketData>? marketData;
+    private bool isLoading = true;
+    private string selectedCrypto = "";
+    private MarketData? selectedCryptoData;
+    private Timer? refreshTimer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMarketData();
+        StartAutoRefresh();
+    }
+
+    private async Task LoadMarketData()
+    {
+        try
+        {
+            isLoading = true;
+            marketData = await CryptoDataService.GetMarketDataAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading market data: {ex.Message}");
+            marketData = new List<MarketData>();
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void SelectCrypto(string symbol)
+    {
+        selectedCrypto = symbol;
+        selectedCryptoData = marketData?.FirstOrDefault(m => m.Symbol == symbol);
+        StateHasChanged();
+    }
+
+    private void StartAutoRefresh()
+    {
+        refreshTimer = new Timer(async _ =>
+        {
+            await InvokeAsync(async () =>
+            {
+                await LoadMarketData();
+                StateHasChanged();
+            });
+        }, null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
+    }
+
+    private string FormatVolume(decimal volume)
+    {
+        if (volume >= 1_000_000_000)
+            return $"{volume / 1_000_000_000:F1}B";
+        else if (volume >= 1_000_000)
+            return $"{volume / 1_000_000:F1}M";
+        else if (volume >= 1_000)
+            return $"{volume / 1_000:F1}K";
+        else
+            return volume.ToString("N0");
+    }
+
+    public void Dispose()
+    {
+        refreshTimer?.Dispose();
+    }
+}

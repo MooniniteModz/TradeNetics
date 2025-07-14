@@ -40,18 +40,6 @@ public class TraderConsole
                 var tradingConfig = new TradingConfiguration();
                 context.Configuration.GetSection("Trading").Bind(tradingConfig);
 
-                // Load API keys from environment variables (optional for testing)
-                tradingConfig.ApiKey = Environment.GetEnvironmentVariable("BINANCE_API_KEY") 
-                    ?? "test-api-key";
-                tradingConfig.ApiSecret = Environment.GetEnvironmentVariable("BINANCE_API_SECRET")
-                    ?? "test-api-secret";
-                
-                // Warn if using test keys
-                if (tradingConfig.ApiKey == "test-api-key" || tradingConfig.ApiSecret == "test-api-secret")
-                {
-                    Console.WriteLine("WARNING: Using test API keys. Set BINANCE_API_KEY and BINANCE_API_SECRET environment variables for production.");
-                }
-
                 services.AddSingleton(tradingConfig);
 
                 // Shared Services

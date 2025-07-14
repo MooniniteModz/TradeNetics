@@ -100,7 +100,7 @@ namespace TradeNetics.Console.Services
                     Price = (float)(40000 + random.Next(-5000, 5000)),
                     Volume = volume,
                     PriceChange24h = (float)priceChange,
-                    VolumeChange24h = (float)(0.8 + random.NextDouble() * 0.4),
+                    VolumeChange24h = (float)(decimal)(0.8 + random.NextDouble() * 0.4),
                     RSI = rsi,
                     MovingAverage5 = (float)(40000 + random.Next(-1000, 1000)),
                     MovingAverage20 = (float)(40000 + random.Next(-2000, 2000)),
@@ -153,11 +153,11 @@ namespace TradeNetics.Console.Services
 
             if (prediction == "BUY")
             {
-                await ExecuteBuyOrderAsync(symbol, currentPrice.Price, portfolio);
+                await ExecuteBuyOrderAsync(symbol, currentPrice.PriceDecimal, portfolio);
             }
             else if (prediction == "SELL")
             {
-                await ExecuteSellOrderAsync(symbol, currentPrice.Price, portfolio);
+                await ExecuteSellOrderAsync(symbol, currentPrice.PriceDecimal, portfolio);
             }
         }
 
@@ -196,9 +196,9 @@ namespace TradeNetics.Console.Services
             // Check if we have position to sell
             var balance = portfolio.Balances.FirstOrDefault(b => b.Asset == symbol.Replace("USDT", ""));
 
-            if (balance?.Free > 0)
+            if (balance?.FreeDecimal > 0)
             {
-                var quantity = Math.Min(balance.Free, _config.SymbolQuantities.GetValueOrDefault(symbol, 0.001m));
+                var quantity = Math.Min(balance.FreeDecimal, _config.SymbolQuantities.GetValueOrDefault(symbol, 0.001m));
 
                 var orderRequest = new OrderRequest
                 {

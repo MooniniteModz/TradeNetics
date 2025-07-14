@@ -134,6 +134,7 @@ public async Task<List<PortfolioHolding>> GetPortfolioHoldingsAsync()
 }
 ```
 
+
 **Configuration Pattern**
 ```csharp
 public void ConfigureServices(IServiceCollection services)

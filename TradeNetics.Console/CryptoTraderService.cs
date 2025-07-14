@@ -15,34 +15,92 @@ namespace TradeNetics.Console.Services
     public class CryptoTraderService : ICryptoTraderService, IDisposable
     {
         private static readonly HttpClient _httpClient = new HttpClient();
-        private readonly TradingConfiguration _config;
+        private readonly TradingConfiguration _localConfig;
+        private readonly IConfigurationService _configurationService;
         private readonly IMLTradingModel _mlModel;
         private readonly IMarketDataRepository _marketDataRepository;
         private readonly ILogger<CryptoTraderService> _logger;
         private readonly AsyncRetryPolicy _retryPolicy;
+        private TradingConfiguration? _sharedConfig;
 
         public CryptoTraderService(
-            TradingConfiguration config,
+            TradingConfiguration localConfig,
+            IConfigurationService configurationService,
             IMLTradingModel mlModel,
             IMarketDataRepository marketDataRepository,
             ILogger<CryptoTraderService> logger)
         {
-            _config = config ?? throw new ArgumentNullException(nameof(config));
+            _localConfig = localConfig ?? throw new ArgumentNullException(nameof(localConfig));
+            _configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
             _mlModel = mlModel ?? throw new ArgumentNullException(nameof(mlModel));
             _marketDataRepository = marketDataRepository ?? throw new ArgumentNullException(nameof(marketDataRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            ConfigureHttpClient();
             _retryPolicy = CreateRetryPolicy();
         }
 
-        private void ConfigureHttpClient()
+        private async Task<TradingConfiguration> GetEffectiveConfigAsync()
         {
-            _httpClient.BaseAddress = new Uri(_config.BaseApiUrl);
-            _httpClient.DefaultRequestHeaders.Accept.Clear();
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.DefaultRequestHeaders.Add("X-MBX-APIKEY", _config.ApiKey);
-            _httpClient.Timeout = TimeSpan.FromSeconds(30); // Add timeout
+            if (_sharedConfig == null)
+            {
+                try
+                {
+                    _sharedConfig = await _configurationService.GetConfiguration();
+                    
+                    // If shared config has API keys, use them; otherwise use fallback to environment variables
+                    if (string.IsNullOrEmpty(_sharedConfig.ApiKey) || string.IsNullOrEmpty(_sharedConfig.ApiSecret))
+                    {
+                        _sharedConfig.ApiKey = Environment.GetEnvironmentVariable("BINANCE_API_KEY") ?? "test-api-key";
+                        _sharedConfig.ApiSecret = Environment.GetEnvironmentVariable("BINANCE_API_SECRET") ?? "test-api-secret";
+                        
+                        if (_sharedConfig.ApiKey == "test-api-key" || _sharedConfig.ApiSecret == "test-api-secret")
+                        {
+                            _logger.LogWarning("Using test API keys. Configure API keys in the WebApp or set BINANCE_API_KEY and BINANCE_API_SECRET environment variables.");
+                        }
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Using API keys from shared configuration");
+                    }
+                    
+                    // Merge with local trading configuration
+                    _sharedConfig.MaxPositionSize = _localConfig.MaxPositionSize;
+                    _sharedConfig.MaxDailyLoss = _localConfig.MaxDailyLoss;
+                    _sharedConfig.TradingEnabled = _localConfig.TradingEnabled;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to load shared configuration, using local config with environment variables");
+                    _sharedConfig = _localConfig;
+                    _sharedConfig.ApiKey = Environment.GetEnvironmentVariable("BINANCE_API_KEY") ?? "test-api-key";
+                    _sharedConfig.ApiSecret = Environment.GetEnvironmentVariable("BINANCE_API_SECRET") ?? "test-api-secret";
+                }
+            }
+            return _sharedConfig;
+        }
+
+        private async Task ConfigureHttpClientAsync()
+        {
+            var config = await GetEffectiveConfigAsync();
+            
+            // Only configure if not already configured or if configuration has changed
+            if (_httpClient.BaseAddress == null || _httpClient.BaseAddress.ToString() != config.BaseApiUrl)
+            {
+                if (_httpClient.BaseAddress == null)
+                {
+                    _httpClient.BaseAddress = new Uri(config.BaseApiUrl);
+                    _httpClient.DefaultRequestHeaders.Accept.Clear();
+                    _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    _httpClient.Timeout = TimeSpan.FromSeconds(30);
+                }
+            }
+            
+            // Update API key header (this can be changed after initial configuration)
+            _httpClient.DefaultRequestHeaders.Remove("X-MBX-APIKEY");
+            if (!string.IsNullOrEmpty(config.ApiKey))
+            {
+                _httpClient.DefaultRequestHeaders.Add("X-MBX-APIKEY", config.ApiKey);
+            }
         }
 
         private AsyncRetryPolicy CreateRetryPolicy()
@@ -60,18 +118,24 @@ namespace TradeNetics.Console.Services
                     });
         }
 
-        private string CreateSignature(string queryString)
+        private async Task<string> CreateSignatureAsync(string queryString)
         {
-            if (string.IsNullOrEmpty(_config.ApiSecret))
+            var config = await GetEffectiveConfigAsync();
+            if (string.IsNullOrEmpty(config.ApiSecret))
                 throw new InvalidOperationException("API Secret is not configured");
 
-            var keyBytes = Encoding.UTF8.GetBytes(_config.ApiSecret);
+            var keyBytes = Encoding.UTF8.GetBytes(config.ApiSecret);
             using (var hmac = new HMACSHA256(keyBytes))
             {
                 var queryBytes = Encoding.UTF8.GetBytes(queryString);
                 var hashBytes = hmac.ComputeHash(queryBytes);
                 return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
             }
+        }
+
+        private string CreateSignature(string queryString)
+        {
+            return CreateSignatureAsync(queryString).GetAwaiter().GetResult();
         }
 
         public async Task<TickerPrice?> GetPriceAsync(string symbol)
@@ -141,22 +205,22 @@ namespace TradeNetics.Console.Services
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
 
-                    var jsonArray = JsonSerializer.Deserialize<decimal[][]>(responseBody);
+                    var jsonArray = JsonSerializer.Deserialize<JsonElement[]>(responseBody);
                     if (jsonArray == null) return new List<KlineData>();
 
                     return jsonArray.Select(k => new KlineData
                     {
-                        OpenTime = (long)k[0],
-                        Open = k[1],
-                        High = k[2],
-                        Low = k[3],
-                        Close = k[4],
-                        Volume = k[5],
-                        CloseTime = (long)k[6],
-                        QuoteAssetVolume = k[7],
-                        NumberOfTrades = (int)k[8],
-                        TakerBuyBaseAssetVolume = k[9],
-                        TakerBuyQuoteAssetVolume = k[10]
+                        OpenTime = k[0].GetInt64(),
+                        Open = decimal.Parse(k[1].GetString()!),
+                        High = decimal.Parse(k[2].GetString()!),
+                        Low = decimal.Parse(k[3].GetString()!),
+                        Close = decimal.Parse(k[4].GetString()!),
+                        Volume = decimal.Parse(k[5].GetString()!),
+                        CloseTime = k[6].GetInt64(),
+                        QuoteAssetVolume = decimal.Parse(k[7].GetString()!),
+                        NumberOfTrades = k[8].GetInt32(),
+                        TakerBuyBaseAssetVolume = decimal.Parse(k[9].GetString()!),
+                        TakerBuyQuoteAssetVolume = decimal.Parse(k[10].GetString()!)
                     }).ToList();
                 });
             }
@@ -236,7 +300,7 @@ namespace TradeNetics.Console.Services
                     MACD = (float)(decimal)features.MACD,
                     Signal = (float)(decimal)features.Signal,
                     VolumeRatio = (float)(decimal)features.VolumeRatio,
-                    PriceChange24h = ticker.PriceChangePercent,
+                    PriceChange24h = ticker.PriceChangePercentDecimal,
                     VolumeChange24h = (decimal)features.VolumeChange24h
                 };
 
@@ -274,10 +338,10 @@ namespace TradeNetics.Console.Services
 
                 return new CryptoFeatures
                 {
-                    Price = (float)ticker24hr.LastPrice,
-                    Volume = (float)ticker24hr.Volume,
-                    PriceChange24h = (float)ticker24hr.PriceChangePercent,
-                    VolumeChange24h = (float)volumeRatio, // Cast decimal to float
+                    Price = (float)ticker24hr.LastPriceDecimal,
+                    Volume = (float)ticker24hr.VolumeDecimal,
+                    PriceChange24h = (float)ticker24hr.PriceChangePercentDecimal,
+                    VolumeChange24h = (float)(decimal)volumeRatio, // Cast decimal to float
                     RSI = (float)rsi, // Cast decimal to float
                     MovingAverage5 = (float)ma5, // Cast decimal to float
                     MovingAverage20 = (float)ma20, // Cast decimal to float
@@ -306,7 +370,8 @@ namespace TradeNetics.Console.Services
             if (orderRequest.Quantity <= 0)
                 throw new ArgumentException("Quantity must be greater than 0", nameof(orderRequest));
 
-            if (_config.PaperTradingMode)
+            var config = await GetEffectiveConfigAsync();
+            if (config.PaperTradingMode)
             {
                 _logger.LogInformation("PAPER TRADE: Would place {Side} order for {Quantity} {Symbol}",
                     orderRequest.Side, orderRequest.Quantity, orderRequest.Symbol);
@@ -351,7 +416,7 @@ namespace TradeNetics.Console.Services
 
             queryParams.Append($"&timestamp={orderRequest.Timestamp}");
 
-            string signature = CreateSignature(queryParams.ToString());
+            string signature = await CreateSignatureAsync(queryParams.ToString());
             string fullQueryString = $"{queryParams.ToString()}&signature={signature}";
 
             var requestContent = new StringContent("", Encoding.UTF8, "application/x-www-form-urlencoded");
@@ -382,11 +447,13 @@ namespace TradeNetics.Console.Services
 
         public async Task<AccountBalance[]?> GetAccountBalancesAsync()
         {
+            await ConfigureHttpClientAsync(); // Ensure HTTP client is configured with latest config
+            
             string endpoint = "/api/v3/account";
             long timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             string queryString = $"timestamp={timestamp}";
 
-            string signature = CreateSignature(queryString);
+            string signature = await CreateSignatureAsync(queryString);
             string fullQueryString = $"{queryString}&signature={signature}";
 
             try
@@ -427,4 +494,5 @@ namespace TradeNetics.Console.Services
             _httpClient?.Dispose();
         }
     }
+
 }
