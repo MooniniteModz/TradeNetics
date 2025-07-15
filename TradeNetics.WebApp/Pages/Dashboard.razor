@@ -3,7 +3,6 @@
 @using TradeNetics.WebApp.Data
 @inject IConfigurationService ConfigurationService
 @inject TradingBotStatusService StatusService
-@inject MockCryptoDataService MockCryptoDataService
 @inject RealCryptoDataService RealCryptoDataService
 @implements IDisposable
 
@@ -19,13 +18,13 @@
             @if (!string.IsNullOrEmpty(_configuration.ApiKey) && !string.IsNullOrEmpty(_configuration.ApiSecret))
             {
                 <div class="alert alert-success alert-sm">
-                    <i class="oi oi-check"></i> Connected to Binance API - Showing real data
+                    <i class="oi oi-check"></i> Connected to Binance API
                 </div>
             }
             else
             {
                 <div class="alert alert-warning alert-sm">
-                    <i class="oi oi-warning"></i> API credentials not configured - Showing demo data. <a href="/configuration">Configure API keys</a>
+                    <i class="oi oi-warning"></i> API credentials not configured. <a href="/configuration">Configure API keys</a>
                 </div>
             }
         </div>
@@ -545,8 +544,8 @@
     private List<TradingPair> _tradingPairs = new();
     private List<TradingPair> _activePairs = new();
     private List<TradeNetics.WebApp.Data.PortfolioHolding> _portfolioHoldings = new();
-    private decimal _totalPortfolioValue = 12450.75m;
-    private decimal _dailyPnL = 2.35m;
+    private decimal _totalPortfolioValue = 0m;
+    private decimal _dailyPnL = 0m;
     private bool _isTogglingBot = false;
     private bool _showAddCryptoModal = false;
     private string _newCryptoSymbol = string.Empty;
@@ -610,40 +609,8 @@
         }
         else
         {
-            // Fallback to static pairs
-            _tradingPairs = new List<TradingPair>
-            {
-                new TradingPair 
-                { 
-                    Symbol = "BTCUSDT", 
-                    BaseAsset = "BTC", 
-                    QuoteAsset = "USDT", 
-                    IsEnabled = true, 
-                    CurrentPrice = 43250.75m, 
-                    PriceChange24h = 2.45m,
-                    CurrentPosition = 0.0025m
-                },
-                new TradingPair 
-                { 
-                    Symbol = "ETHUSDT", 
-                    BaseAsset = "ETH", 
-                    QuoteAsset = "USDT", 
-                    IsEnabled = true, 
-                    CurrentPrice = 2650.30m, 
-                    PriceChange24h = -1.20m,
-                    CurrentPosition = 0.15m
-                },
-                new TradingPair 
-                { 
-                    Symbol = "ADAUSDT", 
-                    BaseAsset = "ADA", 
-                    QuoteAsset = "USDT", 
-                    IsEnabled = false, 
-                    CurrentPrice = 0.485m, 
-                    PriceChange24h = 3.80m,
-                    CurrentPosition = 0
-                }
-            };
+            // No trading pairs without API credentials
+            _tradingPairs = new List<TradingPair>();
         }
     }
 
@@ -665,7 +632,8 @@
             }
             else
             {
-                _portfolioHoldings = await MockCryptoDataService.GetPortfolioHoldingsAsync();
+                // No portfolio data without API credentials
+                _portfolioHoldings = new List<TradeNetics.WebApp.Data.PortfolioHolding>();
             }
             
             _totalPortfolioValue = _portfolioHoldings.Sum(h => h.UsdValue);
@@ -680,23 +648,10 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error loading portfolio: {ex.Message}");
-            // Fallback to mock data on error
-            try
-            {
-                _portfolioHoldings = await MockCryptoDataService.GetPortfolioHoldingsAsync();
-                _totalPortfolioValue = _portfolioHoldings.Sum(h => h.UsdValue);
-                if (_portfolioHoldings.Any())
-                {
-                    var avgChange = _portfolioHoldings.Average(h => h.Change24h);
-                    _dailyPnL = avgChange;
-                }
-            }
-            catch
-            {
-                _portfolioHoldings = new List<TradeNetics.WebApp.Data.PortfolioHolding>();
-                _totalPortfolioValue = 0;
-                _dailyPnL = 0;
-            }
+            // Set empty data on error
+            _portfolioHoldings = new List<TradeNetics.WebApp.Data.PortfolioHolding>();
+            _totalPortfolioValue = 0;
+            _dailyPnL = 0;
         }
     }
 

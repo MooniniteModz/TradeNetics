@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TradeNetics.Console")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4bb6a0479ee0644a9f4f57d46816d469f27b938c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b0f31c0fb443a1c347a652ccc4f23a67cf3d906c")]
 [assembly: System.Reflection.AssemblyProductAttribute("TradeNetics.Console")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TradeNetics.Console")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

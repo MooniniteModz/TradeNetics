@@ -12,15 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<TradingBotStatusService>();
 builder.Services.AddSingleton<TradeHistoryService>();
-builder.Services.AddScoped<MockCryptoDataService>();
 builder.Services.AddHttpClient<RealCryptoDataService>();
 
-// Register ICryptoDataService - temporarily use mock data due to regional restrictions
-// Switch this back to RealCryptoDataService when APIs are accessible
-builder.Services.AddScoped<ICryptoDataService, MockCryptoDataService>();
+// Register ICryptoDataService with real data service
+builder.Services.AddScoped<ICryptoDataService, RealCryptoDataService>();
 
 // Shared Services
 builder.Services.AddTradeNeticsSharedServices(builder.Configuration);
