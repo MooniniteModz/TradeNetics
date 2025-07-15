@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TradeNetics.Shared.Models;
 
@@ -8,128 +7,174 @@ namespace TradeNetics.WebApp.Data
 {
     public class MockCryptoDataService : ICryptoDataService
     {
-        private readonly Random _random = new();
-        private readonly Dictionary<string, decimal> _basePrices = new()
-        {
-            { "BTCUSDT", 120850.75m },  // Updated to current BTC range
-            { "ETHUSDT", 3040.30m },    // Updated to current ETH range  
-            { "ADAUSDT", 0.765m },      // Updated to current ADA range
-            { "LTCUSDT", 135.45m },     // Updated to current LTC range
-            { "DOGEUSDT", 0.389m }      // Updated to current DOGE range
-        };
-
         public async Task<List<MarketData>> GetMarketDataAsync()
         {
             await Task.Delay(100); // Simulate API call
             
-            var marketData = new List<MarketData>();
-            
-            foreach (var pair in _basePrices)
+            var mockData = new List<MarketData>
             {
-                var priceVariation = (decimal)(_random.NextDouble() * 0.06 - 0.03); // ±3% variation
-                var currentPrice = pair.Value * (1 + priceVariation);
-                var change24h = (decimal)(_random.NextDouble() * 8 - 4); // ±4% daily change
-                
-                // Make volume proportional to price (higher value coins have higher volume)
-                var baseVolume = pair.Key switch
+                new MarketData
                 {
-                    "BTCUSDT" => 2000000000m,
-                    "ETHUSDT" => 1500000000m,
-                    "ADAUSDT" => 800000000m,
-                    "LTCUSDT" => 400000000m,
-                    "DOGEUSDT" => 1200000000m,
-                    _ => 500000000m
-                };
-                
-                marketData.Add(new MarketData
-                {
-                    Symbol = pair.Key,
-                    Close = Math.Round(currentPrice, pair.Key.Contains("USDT") && currentPrice < 1 ? 6 : 2),
-                    PriceChange24h = Math.Round(change24h, 2),
-                    VolumeChange24h = Math.Round(baseVolume * (decimal)(_random.NextDouble() * 0.4 + 0.8), 0), // ±20% volume variation
+                    Id = 1,
+                    Symbol = "BTCUSDT",
                     Timestamp = DateTime.UtcNow,
-                    Open = Math.Round(currentPrice * (1 - change24h / 100), pair.Key.Contains("USDT") && currentPrice < 1 ? 6 : 2),
-                    High = Math.Round(currentPrice * 1.025m, pair.Key.Contains("USDT") && currentPrice < 1 ? 6 : 2),
-                    Low = Math.Round(currentPrice * 0.975m, pair.Key.Contains("USDT") && currentPrice < 1 ? 6 : 2),
-                    Volume = Math.Round(baseVolume * (decimal)(_random.NextDouble() * 0.4 + 0.8), 0)
-                });
-            }
+                    Open = 43250.50m,
+                    High = 43500.75m,
+                    Low = 42800.25m,
+                    Close = 43150.00m,
+                    Volume = 1250.75m,
+                    RSI = 55.2f,
+                    MovingAverage5 = 43100.0f,
+                    MovingAverage20 = 42900.0f,
+                    BollingerUpper = 43600.0f,
+                    BollingerLower = 42600.0f,
+                    MACD = 125.5f,
+                    Signal = 120.0f,
+                    VolumeRatio = 1.15f,
+                    PriceChange24h = 350.00m,
+                    VolumeChange24h = 125.50m
+                },
+                new MarketData
+                {
+                    Id = 2,
+                    Symbol = "ETHUSDT",
+                    Timestamp = DateTime.UtcNow,
+                    Open = 2650.25m,
+                    High = 2685.50m,
+                    Low = 2620.00m,
+                    Close = 2670.75m,
+                    Volume = 8500.25m,
+                    RSI = 62.8f,
+                    MovingAverage5 = 2665.0f,
+                    MovingAverage20 = 2640.0f,
+                    BollingerUpper = 2720.0f,
+                    BollingerLower = 2580.0f,
+                    MACD = 15.2f,
+                    Signal = 12.8f,
+                    VolumeRatio = 1.25f,
+                    PriceChange24h = 45.75m,
+                    VolumeChange24h = 380.00m
+                }
+            };
             
-            return marketData;
+            return mockData;
         }
 
         public async Task<List<PortfolioHolding>> GetPortfolioHoldingsAsync()
         {
             await Task.Delay(50);
             
-            var holdings = new List<PortfolioHolding>
+            return new List<PortfolioHolding>
             {
                 new PortfolioHolding
                 {
+                    Id = 1,
                     Symbol = "BTC",
-                    Name = "Bitcoin",
-                    Amount = 0.1825m + (decimal)(_random.NextDouble() * 0.01 - 0.005), // Small variation
-                    Price = _basePrices["BTCUSDT"] * (1 + (decimal)(_random.NextDouble() * 0.02 - 0.01)),
-                    Change24h = (decimal)(_random.NextDouble() * 6 - 3) // ±3%
+                    Quantity = 0.5m,
+                    AveragePrice = 42000.00m,
+                    CurrentPrice = 43150.00m,
+                    MarketValue = 21575.00m,
+                    PnL = 575.00m,
+                    PnLPercent = 2.74m,
+                    LastUpdated = DateTime.UtcNow,
+                    IsStableCoin = false,
+                    Change24h = 1.25m,
+                    AllocationPercentage = 55.0m,
+                    Price = 43150.00m,
+                    Amount = 0.5m,
+                    UsdValue = 21575.00m,
+                    Name = "Bitcoin"
                 },
                 new PortfolioHolding
                 {
-                    Symbol = "ETH", 
-                    Name = "Ethereum",
-                    Amount = 1.45m + (decimal)(_random.NextDouble() * 0.1 - 0.05),
-                    Price = _basePrices["ETHUSDT"] * (1 + (decimal)(_random.NextDouble() * 0.02 - 0.01)),
-                    Change24h = (decimal)(_random.NextDouble() * 6 - 3)
+                    Id = 2,
+                    Symbol = "ETH",
+                    Quantity = 5.0m,
+                    AveragePrice = 2600.00m,
+                    CurrentPrice = 2670.75m,
+                    MarketValue = 13353.75m,
+                    PnL = 353.75m,
+                    PnLPercent = 2.72m,
+                    LastUpdated = DateTime.UtcNow,
+                    IsStableCoin = false,
+                    Change24h = 2.72m,
+                    AllocationPercentage = 34.0m,
+                    Price = 2670.75m,
+                    Amount = 5.0m,
+                    UsdValue = 13353.75m,
+                    Name = "Ethereum"
                 },
                 new PortfolioHolding
                 {
-                    Symbol = "ADA",
-                    Name = "Cardano", 
-                    Amount = 1500m + (decimal)(_random.NextDouble() * 100 - 50),
-                    Price = _basePrices["ADAUSDT"] * (1 + (decimal)(_random.NextDouble() * 0.02 - 0.01)),
-                    Change24h = (decimal)(_random.NextDouble() * 8 - 4)
+                    Id = 3,
+                    Symbol = "USDT",
+                    Quantity = 5000.00m,
+                    AveragePrice = 1.00m,
+                    CurrentPrice = 1.00m,
+                    MarketValue = 5000.00m,
+                    PnL = 0.00m,
+                    PnLPercent = 0.00m,
+                    LastUpdated = DateTime.UtcNow,
+                    IsStableCoin = true,
+                    Change24h = 0.00m,
+                    AllocationPercentage = 11.0m,
+                    Price = 1.00m,
+                    Amount = 5000.00m,
+                    UsdValue = 5000.00m,
+                    Name = "Tether USD"
                 }
             };
-
-            // Calculate USD values and allocations
-            foreach (var holding in holdings)
-            {
-                holding.UsdValue = holding.Amount * holding.Price;
-            }
-
-            var totalValue = holdings.Sum(h => h.UsdValue);
-            foreach (var holding in holdings)
-            {
-                holding.AllocationPercentage = totalValue > 0 ? (holding.UsdValue / totalValue) * 100 : 0;
-            }
-
-            return holdings;
         }
 
         public async Task<List<TradeData>> GetRecentTradesAsync()
         {
-            await Task.Delay(50);
+            await Task.Delay(75);
             
-            var trades = new List<TradeData>();
-            var symbols = _basePrices.Keys.ToArray();
-            
-            for (int i = 0; i < 10; i++)
+            return new List<TradeData>
             {
-                var symbol = symbols[_random.Next(symbols.Length)];
-                var isBuy = _random.NextDouble() > 0.5;
-                var basePrice = _basePrices[symbol];
-                var amount = (decimal)(_random.NextDouble() * 0.1);
-                
-                trades.Add(new TradeData
+                new TradeData
                 {
-                    Symbol = symbol,
-                    Side = isBuy ? "BUY" : "SELL",
-                    Amount = amount,
-                    Price = basePrice * (1 + (decimal)(_random.NextDouble() * 0.01 - 0.005)),
-                    Timestamp = DateTime.UtcNow.AddMinutes(-_random.Next(1, 1440)) // Last 24 hours
-                });
-            }
-            
-            return trades.OrderByDescending(t => t.Timestamp).ToList();
+                    Id = 1,
+                    Symbol = "BTCUSDT",
+                    Side = "BUY",
+                    Quantity = 0.1m,
+                    Price = 43000.00m,
+                    ExecutedAt = DateTime.UtcNow.AddMinutes(-15),
+                    Timestamp = DateTime.UtcNow.AddMinutes(-15),
+                    MLPrediction = "BULLISH",
+                    PnL = 15.00m,
+                    PortfolioValueBefore = 39000.00m,
+                    PortfolioValueAfter = 39015.00m,
+                    OrderId = "ORDER_001",
+                    IsPaperTrade = false,
+                    ConfidenceScore = 0.85f,
+                    Status = "FILLED",
+                    Fee = 2.15m,
+                    Amount = 0.1m,
+                    Total = 4300.00m
+                },
+                new TradeData
+                {
+                    Id = 2,
+                    Symbol = "ETHUSDT",
+                    Side = "SELL",
+                    Quantity = 1.0m,
+                    Price = 2665.00m,
+                    ExecutedAt = DateTime.UtcNow.AddMinutes(-45),
+                    Timestamp = DateTime.UtcNow.AddMinutes(-45),
+                    MLPrediction = "BEARISH",
+                    PnL = -25.50m,
+                    PortfolioValueBefore = 39040.50m,
+                    PortfolioValueAfter = 39015.00m,
+                    OrderId = "ORDER_002",
+                    IsPaperTrade = false,
+                    ConfidenceScore = 0.72f,
+                    Status = "FILLED",
+                    Fee = 1.33m,
+                    Amount = 1.0m,
+                    Total = 2665.00m
+                }
+            };
         }
 
         public async Task<TradingBotStatus> GetBotStatusAsync()
@@ -138,33 +183,23 @@ namespace TradeNetics.WebApp.Data
             
             return new TradingBotStatus
             {
-                IsRunning = _random.NextDouble() > 0.3, // 70% chance running
-                TotalProfit = 1234.56 + (double)(_random.NextDouble() * 200 - 100),
-                TotalTrades = 123 + _random.Next(-5, 10),
-                LastUpdate = DateTime.Now.AddMinutes(-_random.Next(1, 30)),
-                Status = _random.NextDouble() > 0.3 ? "Running" : "Stopped"
+                IsRunning = true,
+                LastUpdate = DateTime.UtcNow,
+                CurrentStrategy = "ML_MOMENTUM",
+                TotalPnL = 1245.75m,
+                TotalProfit = 1245.75m,
+                DailyPnL = 85.25m,
+                TotalTrades = 156,
+                DailyTrades = 8,
+                PortfolioValue = 39928.75m,
+                AvailableBalance = 5000.00m,
+                Status = "ACTIVE",
+                LastError = "",
+                LastTradeTime = DateTime.UtcNow.AddMinutes(-15),
+                ModelConfidence = 0.85f,
+                ActiveSymbols = "BTCUSDT,ETHUSDT,ADAUSDT",
+                PaperTradingMode = false
             };
         }
-    }
-
-    public class PortfolioHolding
-    {
-        public string Symbol { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
-        public decimal Amount { get; set; }
-        public decimal Price { get; set; }
-        public decimal UsdValue { get; set; }
-        public decimal AllocationPercentage { get; set; }
-        public decimal Change24h { get; set; }
-    }
-
-    public class TradeData
-    {
-        public string Symbol { get; set; } = string.Empty;
-        public string Side { get; set; } = string.Empty;
-        public decimal Amount { get; set; }
-        public decimal Price { get; set; }
-        public DateTime Timestamp { get; set; }
-        public decimal Total => Amount * Price;
     }
 }

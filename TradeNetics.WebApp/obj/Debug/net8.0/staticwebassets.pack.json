@@ -53,6 +53,18 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/mnt/c/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/wwwroot/images/logo-new.png",
+      "PackagePath": "staticwebassets/images/logo-new.png"
+    },
+    {
+      "Id": "/mnt/c/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/wwwroot/images/logo.png",
+      "PackagePath": "staticwebassets/images/logo.png"
+    },
+    {
+      "Id": "/mnt/c/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/wwwroot/images/user-avatar.png",
+      "PackagePath": "staticwebassets/images/user-avatar.png"
+    },
+    {
       "Id": "obj/Debug/net8.0/staticwebassets/msbuild.TradeNetics.WebApp.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

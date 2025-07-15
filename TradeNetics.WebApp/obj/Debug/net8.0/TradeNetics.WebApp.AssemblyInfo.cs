@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TradeNetics.WebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b0f31c0fb443a1c347a652ccc4f23a67cf3d906c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+11db19903db927ff98d3850e3575a684a4df944c")]
 [assembly: System.Reflection.AssemblyProductAttribute("TradeNetics.WebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TradeNetics.WebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

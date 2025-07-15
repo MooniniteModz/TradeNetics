@@ -1,0 +1,754 @@
+2025-07-15T00:01:23.8748557-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:01:24.1186512-05:00  [INF] Executed DbCommand ("2"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:01:24.1192365-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:01:24.1193726-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:01:24.3670161-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:01:24.3692673-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (DbType = Single), @p1='?' (DbType = Single), @p2='?' (DbType = Decimal), @p3='?' (DbType = Decimal), @p4='?' (DbType = Decimal), @p5='?' (DbType = Single), @p6='?' (DbType = Single), @p7='?' (DbType = Single), @p8='?' (DbType = Decimal), @p9='?' (DbType = Decimal), @p10='?' (DbType = Single), @p11='?' (DbType = Single), @p12='?' (Size = 7), @p13='?' (DbType = DateTime), @p14='?' (DbType = Decimal), @p15='?' (DbType = Decimal), @p16='?' (DbType = Single)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"MarketData\" (\"BollingerLower\", \"BollingerUpper\", \"Close\", \"High\", \"Low\", \"MACD\", \"MovingAverage20\", \"MovingAverage5\", \"Open\", \"PriceChange24h\", \"RSI\", \"Signal\", \"Symbol\", \"Timestamp\", \"Volume\", \"VolumeChange24h\", \"VolumeRatio\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:01:24.3778393-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:01:24.3779430-05:00  [INF] Features - RSI: 26.14, Price Change: -3.08%, Volume Ratio: 0.01 (5fcb6ff4)
+2025-07-15T00:01:24.4918323-05:00  [INF] "BTCUSDT": Price=$"117555.33000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:01:24.4918990-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:01:24.6207715-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:01:24.6217370-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (DbType = Single), @p1='?' (DbType = Single), @p2='?' (DbType = Decimal), @p3='?' (DbType = Decimal), @p4='?' (DbType = Decimal), @p5='?' (DbType = Single), @p6='?' (DbType = Single), @p7='?' (DbType = Single), @p8='?' (DbType = Decimal), @p9='?' (DbType = Decimal), @p10='?' (DbType = Single), @p11='?' (DbType = Single), @p12='?' (Size = 7), @p13='?' (DbType = DateTime), @p14='?' (DbType = Decimal), @p15='?' (DbType = Decimal), @p16='?' (DbType = Single)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"MarketData\" (\"BollingerLower\", \"BollingerUpper\", \"Close\", \"High\", \"Low\", \"MACD\", \"MovingAverage20\", \"MovingAverage5\", \"Open\", \"PriceChange24h\", \"RSI\", \"Signal\", \"Symbol\", \"Timestamp\", \"Volume\", \"VolumeChange24h\", \"VolumeRatio\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:01:24.6262140-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:01:24.6262498-05:00  [INF] Features - RSI: 38.27, Price Change: -2.40%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:01:24.7449058-05:00  [INF] "ETHUSDT": Price=$"2969.09000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:01:24.7449406-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:01:24.9924918-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:01:24.9945301-05:00  [INF] Executed DbCommand ("1"ms) [Parameters=["@p0='?' (DbType = Single), @p1='?' (DbType = Single), @p2='?' (DbType = Decimal), @p3='?' (DbType = Decimal), @p4='?' (DbType = Decimal), @p5='?' (DbType = Single), @p6='?' (DbType = Single), @p7='?' (DbType = Single), @p8='?' (DbType = Decimal), @p9='?' (DbType = Decimal), @p10='?' (DbType = Single), @p11='?' (DbType = Single), @p12='?' (Size = 7), @p13='?' (DbType = DateTime), @p14='?' (DbType = Decimal), @p15='?' (DbType = Decimal), @p16='?' (DbType = Single)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"MarketData\" (\"BollingerLower\", \"BollingerUpper\", \"Close\", \"High\", \"Low\", \"MACD\", \"MovingAverage20\", \"MovingAverage5\", \"Open\", \"PriceChange24h\", \"RSI\", \"Signal\", \"Symbol\", \"Timestamp\", \"Volume\", \"VolumeChange24h\", \"VolumeRatio\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:01:25.0003039-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:01:25.0003753-05:00  [INF] Features - RSI: 44.69, Price Change: -4.67%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:01:25.0502283-05:00  [INF] "ADAUSDT": Price=$"0.72690000", Prediction="SELL" (003cdb88)
+2025-07-15T00:01:25.0503856-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:01:25.1046424-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:01:25.1051369-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:01:25.1057895-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:06:25.1156847-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:06:25.3313189-05:00  [INF] Executed DbCommand ("2"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:06:25.3318379-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:06:25.3319667-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:06:25.5828845-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:06:25.5837488-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:06:25.5959767-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:06:25.5960411-05:00  [INF] Features - RSI: 28.41, Price Change: -3.02%, Volume Ratio: 0.02 (5fcb6ff4)
+2025-07-15T00:06:25.7025206-05:00  [INF] "BTCUSDT": Price=$"117714.80000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:06:25.7025546-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:06:25.9505941-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:06:25.9511113-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:06:25.9643731-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:06:25.9644129-05:00  [INF] Features - RSI: 38.42, Price Change: -2.52%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:06:26.0731148-05:00  [INF] "ETHUSDT": Price=$"2969.53000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:06:26.0731523-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:06:26.1766416-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:06:26.1772528-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:06:26.1953204-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:06:26.1953849-05:00  [INF] Features - RSI: 47.39, Price Change: -4.33%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:06:26.2455096-05:00  [INF] "ADAUSDT": Price=$"0.72990000", Prediction="SELL" (003cdb88)
+2025-07-15T00:06:26.2455509-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:06:26.3554028-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:06:26.3557291-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:06:26.3562970-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:08:19.8283380-05:00  [INF] Application is shutting down... (90f52c38)
+2025-07-15T00:08:19.8596052-05:00  [ERR] Error in trading cycle (5e61812f)
+System.Threading.Tasks.TaskCanceledException: A task was canceled.
+   at TradeNetics.Console.Services.TradingBotService.ExecuteAsync(CancellationToken stoppingToken) in C:\Users\conmo\Repo\TradeNetics\TradeNetics.Console\TradingBotService.cs:line 52
+2025-07-15T00:08:47.0175209-05:00  [INF] Executed DbCommand ("7"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT COUNT(*) FROM \"sqlite_master\" WHERE \"type\" = 'table' AND \"rootpage\" IS NOT NULL;" (0723d8ff)
+2025-07-15T00:08:47.1482057-05:00  [INF] Trading bot service started (e53e8747)
+2025-07-15T00:08:47.3506750-05:00  [INF] Model loaded from "crypto_trading_model.zip" (fb28c3a0)
+2025-07-15T00:08:47.3507468-05:00  [INF] Loaded existing ML model (07069355)
+2025-07-15T00:08:47.3516564-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:08:47.3703887-05:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2025-07-15T00:08:47.3705533-05:00  [INF] Hosting environment: "Production" (bc5a1a4e)
+2025-07-15T00:08:47.3706057-05:00  [INF] Content root path: "C:\Users\conmo\Repo\TradeNetics\TradeNetics.Console" (cc26f24e)
+2025-07-15T00:08:47.4393603-05:00  [INF] Using API keys from shared configuration (cf6087ca)
+2025-07-15T00:08:47.9433971-05:00  [INF] Executed DbCommand ("4"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:08:47.9674451-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:08:47.9683067-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:08:48.1644591-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:08:48.2519707-05:00  [INF] Executed DbCommand ("1"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:08:48.3630965-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:08:48.3642296-05:00  [INF] Features - RSI: 28.78, Price Change: -2.89%, Volume Ratio: 0.02 (5fcb6ff4)
+2025-07-15T00:08:48.4158432-05:00  [INF] "BTCUSDT": Price=$"117741.71000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:08:48.4159409-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:08:48.6076139-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:08:48.6083797-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:08:48.6318065-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:08:48.6318814-05:00  [INF] Features - RSI: 38.03, Price Change: -2.55%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:08:48.6799705-05:00  [INF] "ETHUSDT": Price=$"2967.92000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:08:48.6800675-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:08:48.9265181-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:08:48.9285011-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:08:48.9285526-05:00  [INF] Features - RSI: 47.39, Price Change: -4.33%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:08:49.0360093-05:00  [INF] "ADAUSDT": Price=$"0.72990000", Prediction="SELL" (003cdb88)
+2025-07-15T00:08:49.0371917-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:08:49.0886951-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:08:49.0895675-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:08:49.1343388-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:13:49.1660310-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:13:49.4373384-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:13:49.4387712-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:13:49.4390278-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:13:49.6875689-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:13:49.6895812-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:13:49.7066238-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:13:49.7069847-05:00  [INF] Features - RSI: 28.10, Price Change: -3.05%, Volume Ratio: 0.02 (5fcb6ff4)
+2025-07-15T00:13:49.8155546-05:00  [INF] "BTCUSDT": Price=$"117692.13000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:13:49.8157159-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:13:50.0072654-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:13:50.0101286-05:00  [INF] Executed DbCommand ("1"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:13:50.0244800-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:13:50.0245687-05:00  [INF] Features - RSI: 39.01, Price Change: -2.63%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:13:50.1304182-05:00  [INF] "ETHUSDT": Price=$"2971.33000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:13:50.1306520-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:13:50.2943715-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:13:50.2989764-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:13:50.2991271-05:00  [INF] Features - RSI: 47.39, Price Change: -4.40%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:13:50.3491030-05:00  [INF] "ADAUSDT": Price=$"0.72990000", Prediction="SELL" (003cdb88)
+2025-07-15T00:13:50.3492842-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:13:50.4576324-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:13:50.4581734-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:13:50.4604001-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:18:50.4674387-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:18:50.7651494-05:00  [INF] Executed DbCommand ("5"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:18:50.7673498-05:00  [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:18:50.7680635-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:18:51.0205544-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:18:51.0218822-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:18:51.0440511-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:18:51.0442327-05:00  [INF] Features - RSI: 26.34, Price Change: -3.18%, Volume Ratio: 0.05 (5fcb6ff4)
+2025-07-15T00:18:51.0932479-05:00  [INF] "BTCUSDT": Price=$"117569.31000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:18:51.0933129-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:18:51.3415372-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:18:51.3429762-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:18:51.3595232-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:18:51.3597111-05:00  [INF] Features - RSI: 37.91, Price Change: -2.48%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:18:51.4138989-05:00  [INF] "ETHUSDT": Price=$"2967.35000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:18:51.4140017-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:18:51.6053122-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:18:51.6393071-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:18:51.6395047-05:00  [INF] Features - RSI: 47.39, Price Change: -4.11%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:18:51.7505452-05:00  [INF] "ADAUSDT": Price=$"0.72990000", Prediction="SELL" (003cdb88)
+2025-07-15T00:18:51.7506702-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:18:51.8640416-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:18:51.8649062-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:18:51.8670893-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:23:51.8875828-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:23:52.1220273-05:00  [INF] Executed DbCommand ("1"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:23:52.1223139-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:23:52.1224164-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:23:52.3771801-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:23:52.3781758-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:23:52.3818326-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:23:52.3818721-05:00  [INF] Features - RSI: 24.25, Price Change: -3.78%, Volume Ratio: 0.05 (5fcb6ff4)
+2025-07-15T00:23:52.4304853-05:00  [INF] "BTCUSDT": Price=$"117429.99000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:23:52.4306893-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:23:52.6204270-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:23:52.6210022-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:23:52.6247228-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:23:52.6247609-05:00  [INF] Features - RSI: 37.83, Price Change: -2.70%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:23:52.7313937-05:00  [INF] "ETHUSDT": Price=$"2966.91000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:23:52.7314187-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:23:52.9751748-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:23:52.9771552-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:23:52.9772116-05:00  [INF] Features - RSI: 47.39, Price Change: -4.46%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:23:53.0245750-05:00  [INF] "ADAUSDT": Price=$"0.72990000", Prediction="SELL" (003cdb88)
+2025-07-15T00:23:53.0246222-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:23:53.1345467-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:23:53.1352389-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:23:53.1364847-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:28:53.1543588-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:28:53.3897537-05:00  [INF] Executed DbCommand ("2"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:28:53.3902640-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:28:53.3903443-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:28:53.6415896-05:00  [INF] Executed DbCommand ("1"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:28:53.6431628-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:28:53.6591547-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:28:53.6591783-05:00  [INF] Features - RSI: 25.68, Price Change: -3.95%, Volume Ratio: 0.05 (5fcb6ff4)
+2025-07-15T00:28:53.7076531-05:00  [INF] "BTCUSDT": Price=$"117524.04000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:28:53.7076822-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:28:53.8948686-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:28:53.8955327-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:28:53.8999858-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:28:53.9000575-05:00  [INF] Features - RSI: 38.09, Price Change: -2.56%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:28:53.9488908-05:00  [INF] "ETHUSDT": Price=$"2968.21000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:28:53.9489386-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:28:54.1930929-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:28:54.1958151-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:28:54.1958437-05:00  [INF] Features - RSI: 47.39, Price Change: -4.50%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:28:54.3043025-05:00  [INF] "ADAUSDT": Price=$"0.72990000", Prediction="SELL" (003cdb88)
+2025-07-15T00:28:54.3043778-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:28:54.4141916-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:28:54.4148067-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:28:54.4154518-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:33:54.4186583-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:33:54.6915544-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:33:54.6918969-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:33:54.6919965-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:33:54.9399761-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:33:54.9407365-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:33:54.9539813-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:33:54.9540025-05:00  [INF] Features - RSI: 23.93, Price Change: -4.09%, Volume Ratio: 0.12 (5fcb6ff4)
+2025-07-15T00:33:55.0595310-05:00  [INF] "BTCUSDT": Price=$"117401.63000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:33:55.0595466-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:33:55.2490865-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:33:55.2512565-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:33:55.2512894-05:00  [INF] Features - RSI: 38.09, Price Change: -2.70%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:33:55.3002964-05:00  [INF] "ETHUSDT": Price=$"2968.21000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:33:55.3003326-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:33:55.5477132-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:33:55.5484461-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:33:55.5533921-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:33:55.5534532-05:00  [INF] Features - RSI: 44.69, Price Change: -5.10%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:33:55.6594107-05:00  [INF] "ADAUSDT": Price=$"0.72690000", Prediction="SELL" (003cdb88)
+2025-07-15T00:33:55.6594832-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:33:55.7692299-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:33:55.7695563-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:33:55.7700053-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:38:55.7816971-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:38:56.0427123-05:00  [INF] Executed DbCommand ("3"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:38:56.0444384-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:38:56.0448458-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:38:56.2912879-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:38:56.2917572-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:38:56.3141693-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:38:56.3142301-05:00  [INF] Features - RSI: 22.64, Price Change: -4.24%, Volume Ratio: 0.13 (5fcb6ff4)
+2025-07-15T00:38:56.4217966-05:00  [INF] "BTCUSDT": Price=$"117123.18000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:38:56.4218405-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:38:56.6100582-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:38:56.6117211-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:38:56.6249128-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:38:56.6249456-05:00  [INF] Features - RSI: 37.78, Price Change: -2.49%, Volume Ratio: 0.01 (5fcb6ff4)
+2025-07-15T00:38:56.6738113-05:00  [INF] "ETHUSDT": Price=$"2966.69000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:38:56.6738451-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:38:56.9180104-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:38:56.9252741-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:38:56.9253009-05:00  [INF] Features - RSI: 44.69, Price Change: -5.13%, Volume Ratio: 0.00 (5fcb6ff4)
+2025-07-15T00:38:56.9738935-05:00  [INF] "ADAUSDT": Price=$"0.72690000", Prediction="SELL" (003cdb88)
+2025-07-15T00:38:56.9739239-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:38:57.0831834-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:38:57.0834187-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:38:57.0838870-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:43:57.1009040-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:43:57.3165117-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:43:57.3168202-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:43:57.3168647-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:43:57.5648686-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:43:57.5654060-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:43:57.5785495-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:43:57.5785979-05:00  [INF] Features - RSI: 22.95, Price Change: -4.21%, Volume Ratio: 0.13 (5fcb6ff4)
+2025-07-15T00:43:57.6862428-05:00  [INF] "BTCUSDT": Price=$"117193.72000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:43:57.6862838-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:43:57.8159660-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:43:57.8162781-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:43:57.8277838-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:43:57.8278003-05:00  [INF] Features - RSI: 38.50, Price Change: -2.29%, Volume Ratio: 0.01 (5fcb6ff4)
+2025-07-15T00:43:57.9337482-05:00  [INF] "ETHUSDT": Price=$"2969.78000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:43:57.9337677-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:43:58.0941953-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:43:58.0946827-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:43:58.0982844-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:43:58.0983030-05:00  [INF] Features - RSI: 42.37, Price Change: -5.11%, Volume Ratio: 0.08 (5fcb6ff4)
+2025-07-15T00:43:58.2070256-05:00  [INF] "ADAUSDT": Price=$"0.72370000", Prediction="SELL" (003cdb88)
+2025-07-15T00:43:58.2070449-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:43:58.3147392-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:43:58.3149932-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:43:58.3154472-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:48:58.3256963-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:48:58.5423074-05:00  [INF] Executed DbCommand ("2"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:48:58.5427595-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:48:58.5428523-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:48:58.8033210-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:48:58.8038366-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:48:58.8197019-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:48:58.8197203-05:00  [INF] Features - RSI: 22.82, Price Change: -4.08%, Volume Ratio: 0.15 (5fcb6ff4)
+2025-07-15T00:48:58.9271311-05:00  [INF] "BTCUSDT": Price=$"117164.28000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:48:58.9271707-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:48:59.0550352-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:48:59.0567035-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:48:59.0567333-05:00  [INF] Features - RSI: 38.50, Price Change: -1.96%, Volume Ratio: 0.01 (5fcb6ff4)
+2025-07-15T00:48:59.1656053-05:00  [INF] "ETHUSDT": Price=$"2969.78000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:48:59.1656679-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:48:59.3523427-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:48:59.3541929-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:48:59.3542510-05:00  [INF] Features - RSI: 42.37, Price Change: -4.13%, Volume Ratio: 0.08 (5fcb6ff4)
+2025-07-15T00:48:59.4014770-05:00  [INF] "ADAUSDT": Price=$"0.72370000", Prediction="SELL" (003cdb88)
+2025-07-15T00:48:59.4015359-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:48:59.4519050-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:48:59.4521916-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:48:59.4530798-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:53:59.4587404-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:53:59.6961570-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:53:59.6966658-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:53:59.6967651-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:53:59.9579526-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:53:59.9594956-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:53:59.9595086-05:00  [INF] Features - RSI: 22.82, Price Change: -4.17%, Volume Ratio: 0.15 (5fcb6ff4)
+2025-07-15T00:54:00.0673271-05:00  [INF] "BTCUSDT": Price=$"117164.28000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:54:00.0673426-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:54:00.3214080-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:54:00.3232505-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:54:00.3232676-05:00  [INF] Features - RSI: 38.50, Price Change: -1.92%, Volume Ratio: 0.01 (5fcb6ff4)
+2025-07-15T00:54:00.3919577-05:00  [INF] "ETHUSDT": Price=$"2969.78000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:54:00.3919781-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:54:00.6051324-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:54:00.6058624-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:54:00.6172884-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:54:00.6173045-05:00  [INF] Features - RSI: 43.21, Price Change: -3.59%, Volume Ratio: 0.08 (5fcb6ff4)
+2025-07-15T00:54:00.6718480-05:00  [INF] "ADAUSDT": Price=$"0.72490000", Prediction="SELL" (003cdb88)
+2025-07-15T00:54:00.6718740-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:54:00.7239181-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:54:00.7245902-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:54:00.7253314-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)
+2025-07-15T00:59:00.7350696-05:00  [INF] Starting trading cycle... (12010a71)
+2025-07-15T00:59:00.9565070-05:00  [INF] Executed DbCommand ("3"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:59:00.9571556-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:59:00.9572291-05:00  [INF] Analyzing "BTCUSDT"... (118e65e9)
+2025-07-15T00:59:01.2099120-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:59:01.2104494-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p4='?' (DbType = Int32), @p0='?' (DbType = Decimal), @p1='?' (DbType = Single), @p2='?' (DbType = Single), @p3='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"MarketData\" SET \"Close\" = @p0, \"MACD\" = @p1, \"RSI\" = @p2, \"Volume\" = @p3
+WHERE \"Id\" = @p4
+RETURNING 1;" (0723d8ff)
+2025-07-15T00:59:01.2276663-05:00  [INF] ML Prediction for "BTCUSDT": "HOLD" (c2898308)
+2025-07-15T00:59:01.2276841-05:00  [INF] Features - RSI: 23.74, Price Change: -4.16%, Volume Ratio: 0.24 (5fcb6ff4)
+2025-07-15T00:59:01.3360052-05:00  [INF] "BTCUSDT": Price=$"117363.64000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:59:01.3360713-05:00  [INF] Analyzing "ETHUSDT"... (118e65e9)
+2025-07-15T00:59:01.5221368-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:59:01.5250472-05:00  [INF] ML Prediction for "ETHUSDT": "HOLD" (c2898308)
+2025-07-15T00:59:01.5250629-05:00  [INF] Features - RSI: 38.50, Price Change: -2.24%, Volume Ratio: 0.01 (5fcb6ff4)
+2025-07-15T00:59:01.5728442-05:00  [INF] "ETHUSDT": Price=$"2969.78000000", Prediction="HOLD" (003cdb88)
+2025-07-15T00:59:01.5729132-05:00  [INF] Analyzing "ADAUSDT"... (118e65e9)
+2025-07-15T00:59:01.8299090-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__marketData_Symbol_0='?' (Size = 7), @__marketData_Timestamp_1='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"m\".\"Id\", \"m\".\"BollingerLower\", \"m\".\"BollingerUpper\", \"m\".\"Close\", \"m\".\"High\", \"m\".\"Low\", \"m\".\"MACD\", \"m\".\"MovingAverage20\", \"m\".\"MovingAverage5\", \"m\".\"Open\", \"m\".\"PriceChange24h\", \"m\".\"RSI\", \"m\".\"Signal\", \"m\".\"Symbol\", \"m\".\"Timestamp\", \"m\".\"Volume\", \"m\".\"VolumeChange24h\", \"m\".\"VolumeRatio\"
+FROM \"MarketData\" AS \"m\"
+WHERE \"m\".\"Symbol\" = @__marketData_Symbol_0 AND \"m\".\"Timestamp\" = @__marketData_Timestamp_1
+LIMIT 1" (0723d8ff)
+2025-07-15T00:59:01.8313621-05:00  [INF] ML Prediction for "ADAUSDT": "SELL" (c2898308)
+2025-07-15T00:59:01.8313717-05:00  [INF] Features - RSI: 43.21, Price Change: -3.95%, Volume Ratio: 0.08 (5fcb6ff4)
+2025-07-15T00:59:01.9363970-05:00  [INF] "ADAUSDT": Price=$"0.72490000", Prediction="SELL" (003cdb88)
+2025-07-15T00:59:01.9364319-05:00  [INF] No position to sell for "ADAUSDT" (81c9c9d0)
+2025-07-15T00:59:01.9940230-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@__today_0='?' (DbType = DateTime)"], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= @__today_0" (0723d8ff)
+2025-07-15T00:59:01.9942138-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"t\".\"Id\", \"t\".\"ConfidenceScore\", \"t\".\"ExecutedAt\", \"t\".\"IsPaperTrade\", \"t\".\"MLPrediction\", \"t\".\"OrderId\", \"t\".\"PnL\", \"t\".\"PortfolioValueAfter\", \"t\".\"PortfolioValueBefore\", \"t\".\"Price\", \"t\".\"Quantity\", \"t\".\"Side\", \"t\".\"Symbol\"
+FROM \"TradeRecords\" AS \"t\"
+WHERE \"t\".\"ExecutedAt\" >= rtrim(rtrim(strftime('%Y-%m-%d %H:%M:%f', 'now', CAST(-30.0 AS TEXT) || ' days'), '0'), '.')" (0723d8ff)
+2025-07-15T00:59:01.9946302-05:00  [INF] Executed DbCommand ("0"ms) [Parameters=["@p0='?' (Size = 2), @p1='?' (DbType = Decimal), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = Decimal), @p5='?' (DbType = Decimal)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO \"PortfolioSnapshots\" (\"AssetAllocation\", \"DailyPnL\", \"RiskScore\", \"Timestamp\", \"TotalPnL\", \"TotalValue\")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING \"Id\";" (0723d8ff)

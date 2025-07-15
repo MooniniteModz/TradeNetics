@@ -1,8 +1,7 @@
 @page "/trader"
 @using TradeNetics.WebApp.Data
+@using TradeNetics.Shared.Models
 @inject ICryptoDataService CryptoDataService
-@inject TradingBotStatusService StatusService
-@inject TradeHistoryService TradeHistoryService
 @implements IDisposable
 
 <PageTitle>Trader - TradeNetics</PageTitle>
@@ -93,7 +92,7 @@
                         <p class="card-text">
                             @if (botStatus?.LastUpdate != null)
                             {
-                                <small>@botStatus.LastUpdate.Value.ToString("MMM dd, HH:mm")</small>
+                                <small>@botStatus.LastUpdate.ToString("MMM dd, HH:mm")</small>
                             }
                             else
                             {
@@ -208,28 +207,11 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <dl class="row">
-                            <dt class="col-sm-6">Trading Mode:</dt>
-                            <dd class="col-sm-6">
-                                <span class="badge bg-secondary">Paper Trading</span>
-                            </dd>
-                            
-                            <dt class="col-sm-6">Risk Level:</dt>
-                            <dd class="col-sm-6">
-                                <span class="badge bg-warning text-dark">Medium</span>
-                            </dd>
-                            
-                            <dt class="col-sm-6">Max Position:</dt>
-                            <dd class="col-sm-6">2% of portfolio</dd>
-                            
-                            <dt class="col-sm-6">Stop Loss:</dt>
-                            <dd class="col-sm-6">5%</dd>
-                            
-                            <dt class="col-sm-6">Trading Pairs:</dt>
-                            <dd class="col-sm-6">
-                                <small>BTC/USDT, ETH/USDT, ADA/USDT</small>
-                            </dd>
-                        </dl>
+                        <div class="text-center text-muted py-4">
+                            <i class="oi oi-cog" style="font-size: 24px;"></i>
+                            <p class="mt-2">Bot configuration will appear here</p>
+                            <small>Configure your trading parameters in settings</small>
+                        </div>
                         <div class="d-grid">
                             <a href="/configuration" class="btn btn-outline-primary btn-sm">
                                 Configure Settings

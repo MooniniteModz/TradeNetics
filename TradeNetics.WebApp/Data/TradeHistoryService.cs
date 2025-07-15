@@ -1,6 +1,6 @@
-
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TradeNetics.Shared.Models;
 
@@ -8,18 +8,48 @@ namespace TradeNetics.WebApp.Data
 {
     public class TradeHistoryService
     {
-        public Task<List<TradeRecord>> GetTradesAsync()
-        {
-            // In a real application, you would get the trades from a database.
-            // For now, we'll just return some mock data.
-            var trades = new List<TradeRecord>
-            {
-                new TradeRecord { ExecutedAt = DateTime.Now.AddDays(-1), Symbol = "BTC/USDT", Side = "Buy", Price = 50000, Quantity = 0.1m },
-                new TradeRecord { ExecutedAt = DateTime.Now.AddDays(-2), Symbol = "ETH/USDT", Side = "Sell", Price = 4000, Quantity = 1m },
-                new TradeRecord { ExecutedAt = DateTime.Now.AddDays(-3), Symbol = "BTC/USD", Side = "Buy", Price = 51000, Quantity = 0.2m },
-            };
+        private readonly ICryptoDataService _cryptoDataService;
 
-            return Task.FromResult(trades);
+        public TradeHistoryService(ICryptoDataService cryptoDataService)
+        {
+            _cryptoDataService = cryptoDataService;
+        }
+
+        public async Task<List<TradeData>> GetTradesAsync()
+        {
+            return await _cryptoDataService.GetRecentTradesAsync();
+        }
+
+        public async Task<List<TradeData>> GetTradeHistoryBySymbolAsync(string symbol)
+        {
+            var allTrades = await _cryptoDataService.GetRecentTradesAsync();
+            return allTrades.Where(t => t.Symbol.Contains(symbol, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        public async Task<decimal> GetTotalPnLAsync()
+        {
+            var trades = await _cryptoDataService.GetRecentTradesAsync();
+            return trades.Sum(t => t.PnL);
+        }
+
+        public async Task<decimal> GetDailyPnLAsync()
+        {
+            var trades = await _cryptoDataService.GetRecentTradesAsync();
+            var today = DateTime.UtcNow.Date;
+            return trades.Where(t => t.ExecutedAt.Date == today).Sum(t => t.PnL);
+        }
+
+        public async Task<int> GetTotalTradesCountAsync()
+        {
+            var trades = await _cryptoDataService.GetRecentTradesAsync();
+            return trades.Count;
+        }
+
+        public async Task<int> GetDailyTradesCountAsync()
+        {
+            var trades = await _cryptoDataService.GetRecentTradesAsync();
+            var today = DateTime.UtcNow.Date;
+            return trades.Count(t => t.ExecutedAt.Date == today);
         }
     }
 }

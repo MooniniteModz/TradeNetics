@@ -12,11 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<TradingBotStatusService>();
-builder.Services.AddSingleton<TradeHistoryService>();
 builder.Services.AddHttpClient<RealCryptoDataService>();
 
-// Register ICryptoDataService with real data service
+// Register services
+builder.Services.AddScoped<MockCryptoDataService>();
+builder.Services.AddScoped<TradeHistoryService>();
 builder.Services.AddScoped<ICryptoDataService, RealCryptoDataService>();
 
 // Shared Services

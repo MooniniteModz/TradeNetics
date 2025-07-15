@@ -1,49 +1,108 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">
-        <i class="oi oi-graph text-primary"></i> TradeNetics
-    </a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+﻿<div class="main-sidebar-menu">
+    <nav class="main-menu-wrapper">
+        <div class="nav nav-pills nav-sidebar" id="sidemenu-Tab" role="tablist" aria-orientation="vertical">
+            <div class="main-sidebar-title">Main</div>
+            
+            <!-- Dashboard -->
+            <a class="nav-link @(IsActive("") ? "active" : "")" href="">
+                <i class="sidemenu-icon fe fe-grid"></i>
+                <span class="sidemenu-label">Dashboard</span>
+            </a>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-dashboard" aria-hidden="true"></span> Dashboard
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="crypto-overview">
-                <span class="oi oi-bar-chart" aria-hidden="true"></span> Crypto Overview
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="trader">
-                <span class="oi oi-target" aria-hidden="true"></span> Trader
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="tradehistory">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Trade History
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="configuration">
-                <span class="oi oi-cog" aria-hidden="true"></span> Configuration
-            </NavLink>
-        </li>
-    </ul>
+            <!-- Trading Bot -->
+            <div class="slide-item">
+                <a class="slide-item-link @(IsActiveParent("trader", "bot-status") ? "is-expanded" : "")" data-bs-toggle="collapse" href="#bot-menu" role="button" aria-expanded="@(IsActiveParent("trader", "bot-status") ? "true" : "false")" aria-controls="bot-menu">
+                    <i class="sidemenu-icon fe fe-cpu"></i>
+                    <span class="sidemenu-label">Trading Bot</span>
+                    <i class="angle fe fe-chevron-down"></i>
+                </a>
+                <ul class="slide-menu collapse @(IsActiveParent("trader", "bot-status") ? "show" : "")" id="bot-menu">
+                    <li><a href="trader" class="@(IsActive("trader") ? "active" : "")">Live Trading</a></li>
+                    <li><a href="bot-status" class="@(IsActive("bot-status") ? "active" : "")">Bot Status</a></li>
+                    <li><a href="strategies" class="@(IsActive("strategies") ? "active" : "")">Strategies</a></li>
+                </ul>
+            </div>
+
+            <!-- Trading Portfolio -->
+            <div class="slide-item">
+                <a class="slide-item-link @(IsActiveParent("portfolio", "tradehistory", "analytics") ? "is-expanded" : "")" data-bs-toggle="collapse" href="#portfolio-menu" role="button" aria-expanded="@(IsActiveParent("portfolio", "tradehistory", "analytics") ? "true" : "false")" aria-controls="portfolio-menu">
+                    <i class="sidemenu-icon fe fe-briefcase"></i>
+                    <span class="sidemenu-label">Trading Portfolio</span>
+                    <i class="angle fe fe-chevron-down"></i>
+                </a>
+                <ul class="slide-menu collapse @(IsActiveParent("portfolio", "tradehistory", "analytics") ? "show" : "")" id="portfolio-menu">
+                    <li><a href="portfolio" class="@(IsActive("portfolio") ? "active" : "")">Holdings</a></li>
+                    <li><a href="tradehistory" class="@(IsActive("tradehistory") ? "active" : "")">Trade History</a></li>
+                    <li><a href="analytics" class="@(IsActive("analytics") ? "active" : "")">Performance</a></li>
+                    <li><a href="risk-analysis" class="@(IsActive("risk-analysis") ? "active" : "")">Risk Analysis</a></li>
+                </ul>
+            </div>
+
+            <!-- Configuration -->
+            <a class="nav-link @(IsActive("configuration") ? "active" : "")" href="configuration">
+                <i class="sidemenu-icon fe fe-sliders"></i>
+                <span class="sidemenu-label">Configuration</span>
+            </a>
+
+            <div class="main-sidebar-title">Tools</div>
+
+            <!-- Market Analysis -->
+            <div class="slide-item">
+                <a class="slide-item-link @(IsActiveParent("market-overview", "crypto-overview") ? "is-expanded" : "")" data-bs-toggle="collapse" href="#market-menu" role="button" aria-expanded="@(IsActiveParent("market-overview", "crypto-overview") ? "true" : "false")" aria-controls="market-menu">
+                    <i class="sidemenu-icon fe fe-trending-up"></i>
+                    <span class="sidemenu-label">Market Analysis</span>
+                    <i class="angle fe fe-chevron-down"></i>
+                </a>
+                <ul class="slide-menu collapse @(IsActiveParent("market-overview", "crypto-overview") ? "show" : "")" id="market-menu">
+                    <li><a href="crypto-overview" class="@(IsActive("crypto-overview") ? "active" : "")">Market Overview</a></li>
+                    <li><a href="technical-analysis" class="@(IsActive("technical-analysis") ? "active" : "")">Technical Analysis</a></li>
+                    <li><a href="market-sentiment" class="@(IsActive("market-sentiment") ? "active" : "")">Market Sentiment</a></li>
+                </ul>
+            </div>
+
+            <!-- Trading Tools -->
+            <div class="slide-item">
+                <a class="slide-item-link" data-bs-toggle="collapse" href="#tools-menu" role="button" aria-expanded="false" aria-controls="tools-menu">
+                    <i class="sidemenu-icon fe fe-tool"></i>
+                    <span class="sidemenu-label">Trading Tools</span>
+                    <i class="angle fe fe-chevron-down"></i>
+                </a>
+                <ul class="slide-menu collapse" id="tools-menu">
+                    <li><a href="backtester" class="@(IsActive("backtester") ? "active" : "")">Backtester</a></li>
+                    <li><a href="strategy-builder" class="@(IsActive("strategy-builder") ? "active" : "")">Strategy Builder</a></li>
+                    <li><a href="risk-calculator" class="@(IsActive("risk-calculator") ? "active" : "")">Risk Calculator</a></li>
+                </ul>
+            </div>
+
+            <a class="nav-link" href="help">
+                <i class="sidemenu-icon fe fe-help-circle"></i>
+                <span class="sidemenu-label">Help & Support</span>
+            </a>
+        </div>
+    </nav>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    private string? currentUrl;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    protected override void OnInitialized()
     {
-        collapseNavMenu = !collapseNavMenu;
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+    }
+
+    private bool IsActive(string href)
+    {
+        if (string.IsNullOrEmpty(href))
+        {
+            return string.IsNullOrEmpty(currentUrl) || currentUrl == "/";
+        }
+        return currentUrl?.Equals(href, StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    private bool IsActiveParent(params string[] hrefs)
+    {
+        return hrefs.Any(href => currentUrl?.Equals(href, StringComparison.OrdinalIgnoreCase) == true);
     }
 }
+
+@inject NavigationManager NavigationManager
