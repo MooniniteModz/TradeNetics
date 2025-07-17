@@ -1,0 +1,141 @@
+@page "/strategies"
+
+<PageTitle>Strategies - TradeNetics</PageTitle>
+
+<!-- GitHub-style Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-6">
+    <div>
+        <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px; color: var(--color-fg-default);">Trading Strategies</h1>
+        <p style="margin: 0; color: var(--color-fg-muted); font-size: 16px;">
+            Manage and optimize your automated trading strategies
+        </p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="github-btn">
+            <i class="fe fe-upload github-btn-icon"></i>
+            Import Strategy
+        </button>
+        <button class="github-btn github-btn-primary">
+            <i class="fe fe-plus github-btn-icon"></i>
+            New Strategy
+        </button>
+    </div>
+</div>
+
+<!-- Strategy Cards -->
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: var(--space-6);">
+    <!-- Active Strategy -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">RSI + MACD Combo</h2>
+            <span class="github-label github-label-success">Active</span>
+        </div>
+        <div class="github-card-body">
+            <p style="color: var(--color-fg-muted); margin-bottom: var(--space-4);">
+                Technical analysis strategy combining RSI oversold/overbought signals with MACD crossovers for entry/exit points.
+            </p>
+            
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                <span>Win Rate</span>
+                <span style="font-weight: 600; color: var(--color-success-fg);">72.3%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                <span>Total Return</span>
+                <span style="font-weight: 600; color: var(--color-success-fg);">+18.7%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-4);">
+                <span>Risk Level</span>
+                <span class="github-label github-label-warning">Medium</span>
+            </div>
+            
+            <div class="d-flex gap-2">
+                <button class="github-btn github-btn-sm">
+                    <i class="fe fe-edit github-btn-icon"></i>
+                    Edit
+                </button>
+                <button class="github-btn github-btn-sm">
+                    <i class="fe fe-pause github-btn-icon"></i>
+                    Pause
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Draft Strategy -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Mean Reversion</h2>
+            <span class="github-label">Draft</span>
+        </div>
+        <div class="github-card-body">
+            <p style="color: var(--color-fg-muted); margin-bottom: var(--space-4);">
+                Statistical arbitrage strategy that trades on the assumption that prices will revert to their historical mean.
+            </p>
+            
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                <span>Backtest Win Rate</span>
+                <span style="font-weight: 600;">68.1%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                <span>Expected Return</span>
+                <span style="font-weight: 600;">+12.4%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-4);">
+                <span>Risk Level</span>
+                <span class="github-label github-label-success">Low</span>
+            </div>
+            
+            <div class="d-flex gap-2">
+                <button class="github-btn github-btn-sm github-btn-primary">
+                    <i class="fe fe-play github-btn-icon"></i>
+                    Deploy
+                </button>
+                <button class="github-btn github-btn-sm">
+                    <i class="fe fe-edit github-btn-icon"></i>
+                    Edit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ML Strategy -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Neural Network</h2>
+            <span class="github-label github-label-warning">Testing</span>
+        </div>
+        <div class="github-card-body">
+            <p style="color: var(--color-fg-muted); margin-bottom: var(--space-4);">
+                Deep learning model trained on market patterns, sentiment data, and technical indicators for price prediction.
+            </p>
+            
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                <span>Model Accuracy</span>
+                <span style="font-weight: 600;">87.9%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                <span>Paper Trading P&L</span>
+                <span style="font-weight: 600; color: var(--color-success-fg);">+24.1%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-4);">
+                <span>Risk Level</span>
+                <span class="github-label github-label-danger">High</span>
+            </div>
+            
+            <div class="d-flex gap-2">
+                <button class="github-btn github-btn-sm">
+                    <i class="fe fe-bar-chart-2 github-btn-icon"></i>
+                    Results
+                </button>
+                <button class="github-btn github-btn-sm">
+                    <i class="fe fe-settings github-btn-icon"></i>
+                    Configure
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    // Strategy management page
+}

@@ -1,149 +1,93 @@
 @inherits LayoutComponentBase
 
-<div class="page-wrapper">
-    <!-- Sidebar -->
-    <div class="app-sidebar sidebar-menu-fixed @(sidebarCollapsed ? "collapsed" : "")" 
-         @onmouseenter="() => ExpandSidebar()" 
-         @onmouseleave="() => CollapseSidebar()">
-        <div class="main-sidebar-header">
-            <a class="sidebar-logo" href="/">
-                <img alt="TradeNetics" class="main-logo" src="/TradeNetics Images/ChatGPT Image Jul 14, 2025, 06_32_35 PM.png">
-                <h5 class="main-logo-text">TradeNetics</h5>
+<!-- GitHub-style Header -->
+<header class="github-header">
+    <div class="container-fluid">
+        <div class="github-header-left">
+            <button class="sidebar-toggle" @onclick="ToggleSidebar">
+                <i class="fe fe-menu"></i>
+            </button>
+            <a class="github-logo" href="/">
+                <img alt="TradeNetics" src="/images/tradenetics-logo.png">
+                <span>TradeNetics</span>
             </a>
+            <nav class="github-nav">
+                <a href="/" class="github-nav-link @(IsCurrentPage("/") ? "active" : "")">Dashboard</a>
+                <a href="/trader" class="github-nav-link @(IsCurrentPage("/trader") ? "active" : "")">Trading</a>
+                <a href="/portfolio" class="github-nav-link @(IsCurrentPage("/portfolio") ? "active" : "")">Portfolio</a>
+                <a href="/analytics" class="github-nav-link @(IsCurrentPage("/analytics") ? "active" : "")">Analytics</a>
+            </nav>
         </div>
-        <NavMenu />
-    </div>
-    <!-- /Sidebar -->
 
-    <!-- Main Content -->
-    <div class="app-content @(sidebarCollapsed ? "sidebar-collapsed" : "")">
-        <!-- Header -->
-        <div class="main-header sticky">
-            <div class="container-fluid">
-                <div class="main-header-left">
-                    <div class="responsive-logo">
-                        <a href="/" class="header-logo">
-                            <img src="/TradeNetics Images/ChatGPT Image Jul 14, 2025, 06_32_35 PM.png" class="mobile-logo" alt="TradeNetics">
-                        </a>
-                    </div>
-                    <div class="app-sidebar__toggle" @onclick="ToggleSidebar">
-                        <a class="open-toggle" href="#">
-                            <i class="header-icon fe fe-align-left"></i>
-                        </a>
-                    </div>
-                </div>
+        <div class="github-header-center">
+            <div class="github-search">
+                <i class="fe fe-search github-search-icon"></i>
+                <input type="search" placeholder="Search trades, assets, strategies..." />
+            </div>
+        </div>
 
-                <div class="main-header-center ms-3 d-none d-lg-block">
-                    <input class="form-control" placeholder="Search for trades, assets..." type="search">
-                </div>
-
-                <div class="main-header-right">
-                    <div class="dropdown main-header-notification">
-                        <a class="new nav-link" href="#" data-bs-toggle="dropdown">
-                            <i class="fe fe-bell"></i>
-                            <span class="pulse"></span>
-                        </a>
-                        <div class="dropdown-menu">
-                            <div class="menu-header-content bg-primary">
-                                <div class="d-flex">
-                                    <h6 class="dropdown-title mb-1 text-white fw-semibold">Notifications</h6>
-                                    <span class="badge bg-warning ms-auto">Mark All Read</span>
-                                </div>
-                                <p class="dropdown-title-text text-white op-6 mb-0">You have 3 unread notifications</p>
-                            </div>
-                            <div class="main-notification-list">
-                                <a class="d-flex p-3 border-bottom" href="#">
-                                    <div class="notifyimg bg-success">
-                                        <i class="fe fe-check text-white"></i>
-                                    </div>
-                                    <div class="ms-3">
-                                        <h5 class="notification-label mb-1">Trade Executed Successfully</h5>
-                                        <div class="notification-subtext">BTC/USDT buy order filled at $43,150</div>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <div class="notifytime">2m ago</div>
-                                    </div>
-                                </a>
-                                <a class="d-flex p-3 border-bottom" href="#">
-                                    <div class="notifyimg bg-warning">
-                                        <i class="fe fe-alert-triangle text-white"></i>
-                                    </div>
-                                    <div class="ms-3">
-                                        <h5 class="notification-label mb-1">Risk Alert</h5>
-                                        <div class="notification-subtext">Portfolio volatility increased</div>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <div class="notifytime">15m ago</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="dropdown-footer">
-                                <a href="#">VIEW ALL NOTIFICATIONS</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="dropdown main-profile-menu">
-                        <a class="profile-user d-flex" href="#" data-bs-toggle="dropdown">
-                            <img alt="Profile" src="/images/user-avatar.png" class="rounded-circle">
-                            <div class="user-info d-none d-md-block">
-                                <span class="user-name">Trader</span>
-                                <span class="user-status">Premium</span>
-                            </div>
-                        </a>
-                        <div class="dropdown-menu">
-                            <div class="main-header-profile bg-primary p-3">
-                                <div class="d-flex">
-                                    <div class="main-img-user">
-                                        <img alt="" src="/images/user-avatar.png" class="rounded-circle">
-                                    </div>
-                                    <div class="ms-3 my-auto">
-                                        <h6 class="text-white mb-0">TradeNetics User</h6>
-                                        <span class="text-white-50">Premium Trader</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <a class="dropdown-item" href="#"><i class="fe fe-user me-2"></i>Profile</a>
-                            <a class="dropdown-item" href="#"><i class="fe fe-settings me-2"></i>Settings</a>
-                            <a class="dropdown-item" href="#"><i class="fe fe-help-circle me-2"></i>Help</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"><i class="fe fe-log-out me-2"></i>Sign Out</a>
-                        </div>
-                    </div>
+        <div class="github-header-right">
+            <a href="#" class="github-header-icon" title="Notifications">
+                <i class="fe fe-bell"></i>
+            </a>
+            <a href="#" class="github-header-icon" title="Trading Bot Status">
+                <i class="fe fe-activity"></i>
+            </a>
+            <a href="#" class="github-header-icon" title="Settings">
+                <i class="fe fe-settings"></i>
+            </a>
+            <div class="dropdown">
+                <a href="#" class="github-profile" data-bs-toggle="dropdown">
+                    <img src="https://github.com/identicons/tradenetics.png" alt="Profile">
+                    <i class="fe fe-chevron-down"></i>
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Sign out</a>
                 </div>
             </div>
         </div>
-        <!-- /Header -->
-
-        <!-- Page Content -->
-        <div class="side-app">
-            <div class="main-container container-fluid">
-                @Body
-            </div>
-        </div>
-        <!-- /Page Content -->
     </div>
-    <!-- /Main Content -->
+</header>
+
+<!-- GitHub-style Layout -->
+<div class="github-layout">
+    <!-- Sidebar Navigation -->
+    <nav class="github-sidebar @(sidebarCollapsed ? "collapsed" : "")">
+        <NavMenu SidebarCollapsed="sidebarCollapsed" />
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="github-main @(sidebarCollapsed ? "sidebar-collapsed" : "")">
+        @Body
+    </main>
 </div>
 
 @code {
-    private bool sidebarOpen = false;
+    private string? currentUrl;
     private bool sidebarCollapsed = false;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+    }
+
+    private bool IsCurrentPage(string href)
+    {
+        if (string.IsNullOrEmpty(href) || href == "/")
+        {
+            return string.IsNullOrEmpty(currentUrl) || currentUrl == "/";
+        }
+        return currentUrl?.StartsWith(href.TrimStart('/'), StringComparison.OrdinalIgnoreCase) == true;
+    }
 
     private void ToggleSidebar()
     {
-        sidebarOpen = !sidebarOpen;
-    }
-
-    private void ExpandSidebar()
-    {
-        sidebarCollapsed = false;
-        StateHasChanged();
-    }
-
-    private void CollapseSidebar()
-    {
-        sidebarCollapsed = true;
+        sidebarCollapsed = !sidebarCollapsed;
         StateHasChanged();
     }
 }
+
+@inject NavigationManager NavigationManager

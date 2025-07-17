@@ -1,0 +1,340 @@
+@page "/bot-status"
+@using TradeNetics.WebApp.Data
+@using TradeNetics.Shared.Models
+@inject ICryptoDataService CryptoDataService
+@implements IDisposable
+
+<PageTitle>Bot Status - TradeNetics</PageTitle>
+
+<!-- GitHub-style Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-6">
+    <div>
+        <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px; color: var(--color-fg-default);">Trading Bot Status</h1>
+        <p style="margin: 0; color: var(--color-fg-muted); font-size: 16px;">
+            Monitor and control your automated trading bot
+        </p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="github-btn" @onclick="RefreshStatus">
+            <i class="fe fe-refresh-cw github-btn-icon"></i>
+            Refresh
+        </button>
+        <button class="github-btn @(_botStatus?.IsRunning == true ? "" : "github-btn-primary")" @onclick="ToggleBot">
+            <i class="fe @(_botStatus?.IsRunning == true ? "fe-pause" : "fe-play") github-btn-icon"></i>
+            @(_botStatus?.IsRunning == true ? "Stop Bot" : "Start Bot")
+        </button>
+    </div>
+</div>
+
+<!-- Bot Status Overview -->
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-6);">
+    <!-- Bot Status Card -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Current Status</h2>
+            @if (_botStatus?.IsRunning == true)
+            {
+                <span class="github-label github-label-success">Running</span>
+            }
+            else
+            {
+                <span class="github-label github-label-danger">Stopped</span>
+            }
+        </div>
+        <div class="github-card-body">
+            <div style="text-align: center;">
+                <div style="width: 80px; height: 80px; border-radius: 50%; background: @(_botStatus?.IsRunning == true ? "var(--color-success-fg)" : "var(--color-danger-fg)"); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); color: white; font-size: 32px;">
+                    <i class="fe @(_botStatus?.IsRunning == true ? "fe-play" : "fe-pause")"></i>
+                </div>
+                <h3 style="margin: 0 0 var(--space-2);">@(_botStatus?.IsRunning == true ? "Bot Active" : "Bot Stopped")</h3>
+                <p style="margin: 0; color: var(--color-fg-muted);">
+                    @if (_botStatus?.IsRunning == true)
+                    {
+                        <text>Running for @GetUptime()</text>
+                    }
+                    else
+                    {
+                        <text>Last stopped @(_botStatus?.LastTradeTime.ToString("MMM dd, HH:mm") ?? "N/A")</text>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Card -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Performance</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--color-fg-muted);">Total P&L</span>
+                    <span style="font-weight: 600;" class="@((_botStatus?.TotalPnL ?? 0) >= 0 ? "text-success" : "text-danger")">
+                        $@((_botStatus?.TotalPnL ?? 0).ToString("N2"))
+                    </span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--color-fg-muted);">Daily P&L</span>
+                    <span style="font-weight: 600;" class="@((_botStatus?.DailyPnL ?? 0) >= 0 ? "text-success" : "text-danger")">
+                        $@((_botStatus?.DailyPnL ?? 0).ToString("N2"))
+                    </span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--color-fg-muted);">Win Rate</span>
+                    <span style="font-weight: 600;">68.5%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--color-fg-muted);">Total Trades</span>
+                    <span style="font-weight: 600;">@(_botStatus?.TotalTrades ?? 0)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration Card -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Configuration</h2>
+            <button class="github-btn github-btn-sm">
+                <i class="fe fe-edit github-btn-icon"></i>
+                Edit
+            </button>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--color-fg-muted);">Strategy</span>
+                    <span style="font-weight: 600;">@(_botStatus?.CurrentStrategy ?? "N/A")</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--color-fg-muted);">Trading Pair</span>
+                    <span style="font-weight: 600;">BTC/USDT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--color-fg-muted);">Risk Level</span>
+                    <span class="github-label github-label-warning">Medium</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--color-fg-muted);">Max Position</span>
+                    <span style="font-weight: 600;">$5,000</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bot Activity Log -->
+<div class="github-card">
+    <div class="github-card-header">
+        <h2 class="github-card-title">Recent Bot Activity</h2>
+        <div class="d-flex gap-2">
+            <button class="github-btn github-btn-sm">
+                <i class="fe fe-filter github-btn-icon"></i>
+                Filter
+            </button>
+            <button class="github-btn github-btn-sm">
+                <i class="fe fe-download github-btn-icon"></i>
+                Export Logs
+            </button>
+        </div>
+    </div>
+    <div class="github-card-body" style="padding: 0;">
+        <table class="github-table">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Event Type</th>
+                    <th>Details</th>
+                    <th>Result</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color: var(--color-fg-muted); font-size: 12px;">14:32:15</td>
+                    <td><span class="github-label github-label-success">Trade Executed</span></td>
+                    <td>
+                        <div>
+                            <strong>BUY 0.0234 BTC</strong>
+                            <div style="font-size: 12px; color: var(--color-fg-muted);">Price: $43,250.00</div>
+                        </div>
+                    </td>
+                    <td class="text-success">+$125.43</td>
+                    <td><span class="github-label github-label-success">Success</span></td>
+                </tr>
+                <tr>
+                    <td style="color: var(--color-fg-muted); font-size: 12px;">14:28:42</td>
+                    <td><span class="github-label">Signal Generated</span></td>
+                    <td>
+                        <div>
+                            <strong>BUY Signal</strong>
+                            <div style="font-size: 12px; color: var(--color-fg-muted);">RSI oversold + MACD crossover</div>
+                        </div>
+                    </td>
+                    <td>92% Confidence</td>
+                    <td><span class="github-label github-label-success">Processed</span></td>
+                </tr>
+                <tr>
+                    <td style="color: var(--color-fg-muted); font-size: 12px;">14:15:03</td>
+                    <td><span class="github-label github-label-danger">Trade Executed</span></td>
+                    <td>
+                        <div>
+                            <strong>SELL 1.5678 ETH</strong>
+                            <div style="font-size: 12px; color: var(--color-fg-muted);">Price: $2,580.75</div>
+                        </div>
+                    </td>
+                    <td class="text-success">+$89.22</td>
+                    <td><span class="github-label github-label-success">Success</span></td>
+                </tr>
+                <tr>
+                    <td style="color: var(--color-fg-muted); font-size: 12px;">14:12:18</td>
+                    <td><span class="github-label github-label-warning">Risk Check</span></td>
+                    <td>
+                        <div>
+                            <strong>Portfolio Risk Assessment</strong>
+                            <div style="font-size: 12px; color: var(--color-fg-muted);">Daily loss limit check</div>
+                        </div>
+                    </td>
+                    <td>Within limits</td>
+                    <td><span class="github-label github-label-success">Passed</span></td>
+                </tr>
+                <tr>
+                    <td style="color: var(--color-fg-muted); font-size: 12px;">14:08:55</td>
+                    <td><span class="github-label">Market Analysis</span></td>
+                    <td>
+                        <div>
+                            <strong>Technical Indicators Update</strong>
+                            <div style="font-size: 12px; color: var(--color-fg-muted);">5-minute timeframe analysis</div>
+                        </div>
+                    </td>
+                    <td>Bullish trend</td>
+                    <td><span class="github-label github-label-success">Completed</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Bot Settings and Controls -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+    <!-- Model Confidence -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Model Performance</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="margin-bottom: var(--space-4);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                    <span style="color: var(--color-fg-muted);">Current Confidence</span>
+                    <span style="font-weight: 600;">@((_botStatus?.ModelConfidence * 100 ?? 0).ToString("N1"))%</span>
+                </div>
+                <div style="width: 100%; background: var(--color-canvas-inset); height: 12px; border-radius: 6px;">
+                    <div style="width: @((_botStatus?.ModelConfidence * 100 ?? 0).ToString("N1"))%; background: var(--color-success-fg); height: 100%; border-radius: 6px;"></div>
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--color-fg-muted);">Model Accuracy</span>
+                    <span style="font-weight: 600;">87.3%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--color-fg-muted);">Predictions Today</span>
+                    <span style="font-weight: 600;">143</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--color-fg-muted);">Last Training</span>
+                    <span style="font-weight: 600;">2 hours ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bot Controls -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Quick Controls</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <button class="github-btn" style="justify-content: center;">
+                    <i class="fe fe-pause github-btn-icon"></i>
+                    Emergency Stop
+                </button>
+                <button class="github-btn" style="justify-content: center;">
+                    <i class="fe fe-refresh-cw github-btn-icon"></i>
+                    Restart Bot
+                </button>
+                <button class="github-btn" style="justify-content: center;">
+                    <i class="fe fe-settings github-btn-icon"></i>
+                    Bot Configuration
+                </button>
+                <button class="github-btn" style="justify-content: center;">
+                    <i class="fe fe-database github-btn-icon"></i>
+                    Retrain Model
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private TradingBotStatus? _botStatus;
+    private Timer? _refreshTimer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBotStatus();
+        
+        // Set up auto-refresh every 5 seconds for real-time status
+        _refreshTimer = new Timer(async _ => await InvokeAsync(LoadBotStatus), null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+    }
+
+    private async Task LoadBotStatus()
+    {
+        try
+        {
+            _botStatus = await CryptoDataService.GetBotStatusAsync();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading bot status: {ex.Message}");
+        }
+    }
+
+    private async Task RefreshStatus()
+    {
+        await LoadBotStatus();
+    }
+
+    private async Task ToggleBot()
+    {
+        // Toggle bot logic would go here
+        if (_botStatus != null)
+        {
+            _botStatus.IsRunning = !_botStatus.IsRunning;
+            StateHasChanged();
+        }
+    }
+
+    private string GetUptime()
+    {
+        if (_botStatus?.IsRunning != true) return "Not running";
+        
+        // Calculate uptime (mock calculation)
+        var uptime = DateTime.Now - _botStatus.LastTradeTime;
+        if (uptime.TotalDays >= 1)
+            return $"{uptime.Days}d {uptime.Hours}h";
+        else if (uptime.TotalHours >= 1)
+            return $"{uptime.Hours}h {uptime.Minutes}m";
+        else
+            return $"{uptime.Minutes}m";
+    }
+
+    public void Dispose()
+    {
+        _refreshTimer?.Dispose();
+    }
+}

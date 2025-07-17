@@ -1,0 +1,199 @@
+@page "/backtester"
+
+<PageTitle>Backtester - TradeNetics</PageTitle>
+
+<!-- GitHub-style Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-6">
+    <div>
+        <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px; color: var(--color-fg-default);">Strategy Backtester</h1>
+        <p style="margin: 0; color: var(--color-fg-muted); font-size: 16px;">
+            Test your trading strategies against historical market data
+        </p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="github-btn">
+            <i class="fe fe-upload github-btn-icon"></i>
+            Load Strategy
+        </button>
+        <button class="github-btn github-btn-primary">
+            <i class="fe fe-play github-btn-icon"></i>
+            Run Backtest
+        </button>
+    </div>
+</div>
+
+<!-- Backtest Configuration -->
+<div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); margin-bottom: var(--space-6);">
+    <!-- Configuration Panel -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Configuration</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                <div>
+                    <label style="display: block; margin-bottom: var(--space-1); font-weight: 600;">Strategy</label>
+                    <select style="width: 100%; padding: var(--space-2); border: 1px solid var(--color-border-default); border-radius: var(--border-radius); background: var(--color-canvas-default);">
+                        <option>RSI + MACD Combo</option>
+                        <option>Mean Reversion</option>
+                        <option>Neural Network</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: var(--space-1); font-weight: 600;">Trading Pair</label>
+                    <select style="width: 100%; padding: var(--space-2); border: 1px solid var(--color-border-default); border-radius: var(--border-radius); background: var(--color-canvas-default);">
+                        <option>BTC/USDT</option>
+                        <option>ETH/USDT</option>
+                        <option>SOL/USDT</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: var(--space-1); font-weight: 600;">Time Range</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2);">
+                        <input type="date" value="2024-01-01" style="padding: var(--space-2); border: 1px solid var(--color-border-default); border-radius: var(--border-radius); background: var(--color-canvas-default);">
+                        <input type="date" value="2024-12-31" style="padding: var(--space-2); border: 1px solid var(--color-border-default); border-radius: var(--border-radius); background: var(--color-canvas-default);">
+                    </div>
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: var(--space-1); font-weight: 600;">Initial Capital</label>
+                    <input type="number" value="10000" placeholder="$10,000" style="width: 100%; padding: var(--space-2); border: 1px solid var(--color-border-default); border-radius: var(--border-radius); background: var(--color-canvas-default);">
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: var(--space-1); font-weight: 600;">Commission</label>
+                    <input type="number" value="0.1" step="0.01" placeholder="0.1%" style="width: 100%; padding: var(--space-2); border: 1px solid var(--color-border-default); border-radius: var(--border-radius); background: var(--color-canvas-default);">
+                </div>
+                
+                <button class="github-btn github-btn-primary" style="justify-content: center;">
+                    <i class="fe fe-play github-btn-icon"></i>
+                    Start Backtest
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Overview -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Backtest Results</h2>
+            <span class="github-label github-label-success">Completed</span>
+        </div>
+        <div class="github-card-body">
+            <!-- Performance Chart Simulation -->
+            <div style="height: 200px; background: var(--color-canvas-inset); border-radius: var(--border-radius); margin-bottom: var(--space-4); position: relative; display: flex; align-items: center; justify-content: center;">
+                <svg width="100%" height="100%" style="position: absolute;">
+                    <polyline points="20,180 60,160 100,140 140,120 180,100 220,80 260,60 300,40 340,30" 
+                            fill="none" stroke="var(--color-success-fg)" stroke-width="3" opacity="0.8"/>
+                    <polyline points="20,180 60,170 100,175 140,165 180,170 220,160 260,155 300,150 340,145" 
+                            fill="none" stroke="var(--color-accent-fg)" stroke-width="2" opacity="0.6"/>
+                </svg>
+                <div style="position: absolute; bottom: 10px; left: 20px; font-size: 12px; color: var(--color-fg-muted);">
+                    <span style="color: var(--color-success-fg);">● Strategy</span>
+                    <span style="color: var(--color-accent-fg); margin-left: var(--space-4);">● Buy & Hold</span>
+                </div>
+            </div>
+            
+            <!-- Key Metrics -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+                <div style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: 600; color: var(--color-success-fg);">+28.7%</div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted);">Total Return</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: 600;">1.85</div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted);">Sharpe Ratio</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: 600;">74.2%</div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted);">Win Rate</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 24px; font-weight: 600; color: var(--color-danger-fg);">-8.5%</div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted);">Max Drawdown</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detailed Results -->
+<div class="github-card">
+    <div class="github-card-header">
+        <h2 class="github-card-title">Detailed Performance Metrics</h2>
+        <button class="github-btn github-btn-sm">
+            <i class="fe fe-download github-btn-icon"></i>
+            Export Results
+        </button>
+    </div>
+    <div class="github-card-body" style="padding: 0;">
+        <table class="github-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Strategy</th>
+                    <th>Buy & Hold</th>
+                    <th>Difference</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Total Return</strong></td>
+                    <td class="text-success">+28.7%</td>
+                    <td>+15.2%</td>
+                    <td class="text-success">+13.5%</td>
+                    <td><span class="github-label github-label-success">Better</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Annualized Return</strong></td>
+                    <td class="text-success">+34.8%</td>
+                    <td>+18.5%</td>
+                    <td class="text-success">+16.3%</td>
+                    <td><span class="github-label github-label-success">Better</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Volatility</strong></td>
+                    <td>22.1%</td>
+                    <td>28.7%</td>
+                    <td class="text-success">-6.6%</td>
+                    <td><span class="github-label github-label-success">Lower</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Sharpe Ratio</strong></td>
+                    <td>1.85</td>
+                    <td>0.87</td>
+                    <td class="text-success">+0.98</td>
+                    <td><span class="github-label github-label-success">Better</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Max Drawdown</strong></td>
+                    <td class="text-danger">-8.5%</td>
+                    <td class="text-danger">-15.3%</td>
+                    <td class="text-success">+6.8%</td>
+                    <td><span class="github-label github-label-success">Better</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Win Rate</strong></td>
+                    <td>74.2%</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td><span class="github-label github-label-success">High</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Total Trades</strong></td>
+                    <td>247</td>
+                    <td>2</td>
+                    <td>+245</td>
+                    <td><span class="github-label">Active</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    // Backtesting functionality page
+}

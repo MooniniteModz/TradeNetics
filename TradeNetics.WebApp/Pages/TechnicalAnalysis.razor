@@ -1,0 +1,225 @@
+@page "/technical-analysis"
+
+<PageTitle>Technical Analysis - TradeNetics</PageTitle>
+
+<!-- GitHub-style Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-6">
+    <div>
+        <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px; color: var(--color-fg-default);">Technical Analysis</h1>
+        <p style="margin: 0; color: var(--color-fg-muted); font-size: 16px;">
+            Advanced charting and technical indicators for market analysis
+        </p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="github-btn">
+            <i class="fe fe-layers github-btn-icon"></i>
+            Indicators
+        </button>
+        <button class="github-btn github-btn-primary">
+            <i class="fe fe-share github-btn-icon"></i>
+            Share Analysis
+        </button>
+    </div>
+</div>
+
+<!-- Chart and Analysis -->
+<div style="display: grid; grid-template-columns: 3fr 1fr; gap: var(--space-6); margin-bottom: var(--space-6);">
+    <!-- Main Chart -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">BTC/USDT Chart</h2>
+            <div class="d-flex gap-2">
+                <button class="github-btn github-btn-sm">1H</button>
+                <button class="github-btn github-btn-sm">4H</button>
+                <button class="github-btn github-btn-sm">1D</button>
+                <button class="github-btn github-btn-sm">1W</button>
+            </div>
+        </div>
+        <div class="github-card-body">
+            <!-- Simulated Trading Chart -->
+            <div style="height: 400px; background: var(--color-canvas-inset); border-radius: var(--border-radius); position: relative; display: flex; align-items: center; justify-content: center;">
+                <svg width="100%" height="100%" style="position: absolute;">
+                    <!-- Price line -->
+                    <polyline points="50,350 80,320 110,280 140,240 170,200 200,160 230,120 260,100 290,80 320,60 350,40 380,30 410,25" 
+                            fill="none" stroke="var(--color-accent-fg)" stroke-width="3"/>
+                    
+                    <!-- Support/Resistance lines -->
+                    <line x1="50" y1="200" x2="450" y2="200" stroke="var(--color-success-fg)" stroke-width="2" stroke-dasharray="5,5" opacity="0.7"/>
+                    <line x1="50" y1="100" x2="450" y2="100" stroke="var(--color-danger-fg)" stroke-width="2" stroke-dasharray="5,5" opacity="0.7"/>
+                    
+                    <!-- Volume bars -->
+                    <rect x="50" y="380" width="8" height="15" fill="var(--color-fg-muted)" opacity="0.5"/>
+                    <rect x="70" y="375" width="8" height="20" fill="var(--color-fg-muted)" opacity="0.5"/>
+                    <rect x="90" y="370" width="8" height="25" fill="var(--color-fg-muted)" opacity="0.5"/>
+                    <rect x="110" y="365" width="8" height="30" fill="var(--color-fg-muted)" opacity="0.5"/>
+                </svg>
+                
+                <!-- Chart Labels -->
+                <div style="position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.7); padding: var(--space-2); border-radius: var(--border-radius); color: white;">
+                    <div><strong>$43,250.00</strong></div>
+                    <div style="font-size: 12px; color: var(--color-success-fg);">+2.34% (+$1,012)</div>
+                </div>
+                
+                <div style="position: absolute; top: 20px; right: 20px;">
+                    <div style="font-size: 12px; color: var(--color-success-fg);">● Support: $42,000</div>
+                    <div style="font-size: 12px; color: var(--color-danger-fg);">● Resistance: $44,500</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technical Indicators -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Indicators</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                <!-- RSI -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-1);">
+                        <span style="font-weight: 600;">RSI (14)</span>
+                        <span style="font-weight: 600; color: var(--color-warning-fg);">67.8</span>
+                    </div>
+                    <div style="width: 100%; background: var(--color-canvas-inset); height: 8px; border-radius: 4px; position: relative;">
+                        <div style="position: absolute; left: 30%; top: 0; width: 2px; height: 100%; background: var(--color-danger-fg); opacity: 0.5;"></div>
+                        <div style="position: absolute; left: 70%; top: 0; width: 2px; height: 100%; background: var(--color-danger-fg); opacity: 0.5;"></div>
+                        <div style="width: 67.8%; background: var(--color-warning-fg); height: 100%; border-radius: 4px;"></div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted); margin-top: var(--space-1);">Approaching overbought</div>
+                </div>
+                
+                <!-- MACD -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-1);">
+                        <span style="font-weight: 600;">MACD</span>
+                        <span style="font-weight: 600; color: var(--color-success-fg);">Bullish</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span>MACD: 234.5</span>
+                        <span>Signal: 198.7</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted);">Histogram: +35.8</div>
+                </div>
+                
+                <!-- Moving Averages -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-1);">
+                        <span style="font-weight: 600;">Moving Averages</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: var(--space-1);">
+                        <span>SMA 20:</span>
+                        <span style="color: var(--color-success-fg);">$42,890</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: var(--space-1);">
+                        <span>SMA 50:</span>
+                        <span style="color: var(--color-success-fg);">$41,567</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span>EMA 12:</span>
+                        <span style="color: var(--color-success-fg);">$43,012</span>
+                    </div>
+                </div>
+                
+                <!-- Bollinger Bands -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-1);">
+                        <span style="font-weight: 600;">Bollinger Bands</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: var(--space-1);">
+                        <span>Upper:</span>
+                        <span>$44,780</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: var(--space-1);">
+                        <span>Middle:</span>
+                        <span>$42,890</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span>Lower:</span>
+                        <span>$41,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Analysis Summary -->
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-6);">
+    <!-- Signal Summary -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Signal Summary</h2>
+            <span class="github-label github-label-success">Bullish</span>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Trend Direction</span>
+                    <span class="github-label github-label-success">Uptrend</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Momentum</span>
+                    <span class="github-label github-label-success">Strong</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Volume</span>
+                    <span class="github-label github-label-warning">Average</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Volatility</span>
+                    <span class="github-label github-label-warning">Medium</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support & Resistance -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Key Levels</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div>
+                    <div style="font-weight: 600; color: var(--color-danger-fg); margin-bottom: var(--space-1);">Resistance Levels</div>
+                    <div style="font-size: 14px; margin-bottom: var(--space-1);">$44,500 (Strong)</div>
+                    <div style="font-size: 14px; margin-bottom: var(--space-1);">$43,800 (Weak)</div>
+                </div>
+                <div>
+                    <div style="font-weight: 600; color: var(--color-success-fg); margin-bottom: var(--space-1);">Support Levels</div>
+                    <div style="font-size: 14px; margin-bottom: var(--space-1);">$42,000 (Strong)</div>
+                    <div style="font-size: 14px; margin-bottom: var(--space-1);">$41,200 (Weak)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trade Ideas -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Trade Ideas</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div style="padding: var(--space-3); background: var(--color-canvas-inset); border-radius: var(--border-radius);">
+                    <div style="font-weight: 600; margin-bottom: var(--space-1);">Long Entry</div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted); margin-bottom: var(--space-1);">Entry: $43,100-$43,300</div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted); margin-bottom: var(--space-1);">Target: $44,200</div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted);">Stop: $42,500</div>
+                </div>
+                
+                <div style="padding: var(--space-3); background: var(--color-canvas-inset); border-radius: var(--border-radius);">
+                    <div style="font-weight: 600; margin-bottom: var(--space-1);">Breakout Play</div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted); margin-bottom: var(--space-1);">Entry: Above $44,500</div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted); margin-bottom: var(--space-1);">Target: $46,000</div>
+                    <div style="font-size: 12px; color: var(--color-fg-muted);">Stop: $43,800</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    // Technical analysis and charting page
+}

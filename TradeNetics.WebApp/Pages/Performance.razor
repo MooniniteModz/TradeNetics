@@ -1,0 +1,246 @@
+@page "/performance"
+@using TradeNetics.WebApp.Data
+@using TradeNetics.Shared.Models
+@inject ICryptoDataService CryptoDataService
+@implements IDisposable
+
+<PageTitle>Performance - TradeNetics</PageTitle>
+
+<!-- GitHub-style Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-6">
+    <div>
+        <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px; color: var(--color-fg-default);">Performance</h1>
+        <p style="margin: 0; color: var(--color-fg-muted); font-size: 16px;">
+            Detailed analysis of your trading performance and metrics
+        </p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="github-btn">
+            <i class="fe fe-calendar github-btn-icon"></i>
+            Last 30 days
+        </button>
+        <button class="github-btn github-btn-primary">
+            <i class="fe fe-download github-btn-icon"></i>
+            Export Report
+        </button>
+    </div>
+</div>
+
+<!-- Performance Metrics Grid -->
+<div class="github-stats-grid">
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-trending-up"></i>
+        </div>
+        <div class="github-stat-content">
+            <h3 class="text-success">+15.7%</h3>
+            <p>Total Return</p>
+        </div>
+    </div>
+    
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-zap"></i>
+        </div>
+        <div class="github-stat-content">
+            <h3>1.42</h3>
+            <p>Sharpe Ratio</p>
+        </div>
+    </div>
+    
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-target"></i>
+        </div>
+        <div class="github-stat-content">
+            <h3>68.5%</h3>
+            <p>Win Rate</p>
+        </div>
+    </div>
+    
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-bar-chart-2"></i>
+        </div>
+        <div class="github-stat-content">
+            <h3>-12.3%</h3>
+            <p>Max Drawdown</p>
+        </div>
+    </div>
+</div>
+
+<!-- Performance Charts and Analysis -->
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-6); margin-bottom: var(--space-6);">
+    <!-- Performance Chart Card -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Portfolio Performance</h2>
+            <div class="d-flex gap-2">
+                <button class="github-btn github-btn-sm">1D</button>
+                <button class="github-btn github-btn-sm">7D</button>
+                <button class="github-btn github-btn-sm">30D</button>
+                <button class="github-btn github-btn-sm">1Y</button>
+            </div>
+        </div>
+        <div class="github-card-body">
+            <div style="height: 300px; display: flex; align-items: center; justify-content: center; background: var(--color-canvas-inset); border-radius: var(--border-radius); position: relative;">
+                <!-- Simulated Chart Area -->
+                <div style="position: absolute; top: 20px; left: 20px; right: 20px; bottom: 40px;">
+                    <!-- Y-axis labels -->
+                    <div style="position: absolute; left: -40px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-between; font-size: 12px; color: var(--color-fg-muted);">
+                        <span>$12,000</span>
+                        <span>$11,000</span>
+                        <span>$10,000</span>
+                        <span>$9,000</span>
+                        <span>$8,000</span>
+                    </div>
+                    
+                    <!-- Chart line simulation -->
+                    <svg width="100%" height="100%" style="position: absolute;">
+                        <polyline points="0,200 50,180 100,160 150,140 200,120 250,100 300,80 350,60 400,50" 
+                                fill="none" stroke="var(--color-success-fg)" stroke-width="3" opacity="0.8"/>
+                        <polyline points="0,200 50,180 100,160 150,140 200,120 250,100 300,80 350,60 400,50" 
+                                fill="none" stroke="url(#gradient)" stroke-width="1" opacity="0.3"/>
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:var(--color-success-fg);stop-opacity:0.3" />
+                                <stop offset="100%" style="stop-color:var(--color-success-fg);stop-opacity:0" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    
+                    <!-- X-axis labels -->
+                    <div style="position: absolute; bottom: -30px; left: 0; right: 0; display: flex; justify-content: space-between; font-size: 12px; color: var(--color-fg-muted);">
+                        <span>Jan</span>
+                        <span>Feb</span>
+                        <span>Mar</span>
+                        <span>Apr</span>
+                        <span>May</span>
+                    </div>
+                </div>
+                
+                <div style="text-align: center;">
+                    <i class="fe fe-trending-up" style="font-size: 24px; color: var(--color-success-fg); margin-bottom: var(--space-2);"></i>
+                    <p style="margin: 0; color: var(--color-fg-muted);">Portfolio value trending upward</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly Performance Card -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Monthly Returns</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--color-fg-muted);">May 2025</span>
+                    <span class="github-label github-label-success">+8.3%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--color-fg-muted);">April 2025</span>
+                    <span class="github-label github-label-success">+12.1%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--color-fg-muted);">March 2025</span>
+                    <span class="github-label github-label-danger">-2.4%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--color-fg-muted);">February 2025</span>
+                    <span class="github-label github-label-success">+5.7%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--color-fg-muted);">January 2025</span>
+                    <span class="github-label github-label-success">+9.2%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Performance Metrics Table -->
+<div class="github-card">
+    <div class="github-card-header">
+        <h2 class="github-card-title">Detailed Performance Metrics</h2>
+    </div>
+    <div class="github-card-body" style="padding: 0;">
+        <table class="github-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                    <th>Benchmark</th>
+                    <th>Percentile</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Total Return</strong></td>
+                    <td class="text-success">+15.7%</td>
+                    <td class="text-muted">+8.2%</td>
+                    <td>85th</td>
+                    <td><span class="github-label github-label-success">Excellent</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Annualized Return</strong></td>
+                    <td class="text-success">+22.4%</td>
+                    <td class="text-muted">+12.1%</td>
+                    <td>78th</td>
+                    <td><span class="github-label github-label-success">Good</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Volatility</strong></td>
+                    <td>18.3%</td>
+                    <td class="text-muted">24.5%</td>
+                    <td>92nd</td>
+                    <td><span class="github-label github-label-success">Low Risk</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Sharpe Ratio</strong></td>
+                    <td>1.42</td>
+                    <td class="text-muted">0.87</td>
+                    <td>89th</td>
+                    <td><span class="github-label github-label-success">Excellent</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Max Drawdown</strong></td>
+                    <td class="text-danger">-12.3%</td>
+                    <td class="text-muted">-18.7%</td>
+                    <td>76th</td>
+                    <td><span class="github-label github-label-success">Good</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Win Rate</strong></td>
+                    <td>68.5%</td>
+                    <td class="text-muted">52.3%</td>
+                    <td>94th</td>
+                    <td><span class="github-label github-label-success">Excellent</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Profit Factor</strong></td>
+                    <td>2.34</td>
+                    <td class="text-muted">1.45</td>
+                    <td>87th</td>
+                    <td><span class="github-label github-label-success">Excellent</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private Timer? _refreshTimer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Set up auto-refresh every 60 seconds for performance data
+        _refreshTimer = new Timer(async _ => await InvokeAsync(StateHasChanged), null, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
+    }
+
+    public void Dispose()
+    {
+        _refreshTimer?.Dispose();
+    }
+}

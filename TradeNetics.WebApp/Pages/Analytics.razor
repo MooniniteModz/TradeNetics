@@ -1,0 +1,280 @@
+@page "/analytics"
+@using TradeNetics.WebApp.Data
+@using TradeNetics.Shared.Models
+@inject ICryptoDataService CryptoDataService
+
+<PageTitle>Analytics - TradeNetics</PageTitle>
+
+<!-- GitHub-style Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-6">
+    <div>
+        <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px; color: var(--color-fg-default);">Analytics</h1>
+        <p style="margin: 0; color: var(--color-fg-muted); font-size: 16px;">
+            Advanced trading analytics and pattern recognition
+        </p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="github-btn">
+            <i class="fe fe-filter github-btn-icon"></i>
+            Filters
+        </button>
+        <button class="github-btn github-btn-primary">
+            <i class="fe fe-brain github-btn-icon"></i>
+            Run ML Analysis
+        </button>
+    </div>
+</div>
+
+<!-- Analytics Dashboard -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-6);">
+    <!-- Trading Patterns Card -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Pattern Recognition</h2>
+            <span class="github-label github-label-success">AI Powered</span>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-canvas-inset); border-radius: var(--border-radius);">
+                    <div>
+                        <strong>Double Bottom</strong>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">BTC/USDT - 4h chart</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: 600; color: var(--color-success-fg);">92% Confidence</div>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">Bullish signal</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-canvas-inset); border-radius: var(--border-radius);">
+                    <div>
+                        <strong>Head & Shoulders</strong>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">ETH/USDT - 1h chart</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: 600; color: var(--color-danger-fg);">87% Confidence</div>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">Bearish signal</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-canvas-inset); border-radius: var(--border-radius);">
+                    <div>
+                        <strong>Ascending Triangle</strong>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">SOL/USDT - 2h chart</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: 600; color: var(--color-success-fg);">78% Confidence</div>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">Bullish breakout</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Market Sentiment Card -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Market Sentiment</h2>
+            <button class="github-btn github-btn-sm">
+                <i class="fe fe-refresh-cw github-btn-icon"></i>
+                Refresh
+            </button>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                <!-- Fear & Greed Index -->
+                <div style="text-align: center;">
+                    <div style="font-size: 48px; font-weight: 700; color: var(--color-warning-fg); margin-bottom: var(--space-2);">68</div>
+                    <div style="font-weight: 600; margin-bottom: var(--space-1);">Fear & Greed Index</div>
+                    <span class="github-label github-label-warning">Greed</span>
+                </div>
+                
+                <!-- Sentiment Indicators -->
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; color: var(--color-success-fg); margin-bottom: var(--space-1);">↗</div>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">Social Sentiment</div>
+                        <div style="font-weight: 600;">Bullish</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; color: var(--color-danger-fg); margin-bottom: var(--space-1);">↘</div>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">Whale Activity</div>
+                        <div style="font-weight: 600;">Selling</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; color: var(--color-success-fg); margin-bottom: var(--space-1);">↗</div>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">Volume</div>
+                        <div style="font-weight: 600;">High</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Trading Signals and Recommendations -->
+<div class="github-card">
+    <div class="github-card-header">
+        <h2 class="github-card-title">AI Trading Signals</h2>
+        <div class="d-flex gap-2">
+            <span class="github-label github-label-success">5 Active</span>
+            <button class="github-btn github-btn-sm">View All</button>
+        </div>
+    </div>
+    <div class="github-card-body" style="padding: 0;">
+        <table class="github-table">
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Signal Type</th>
+                    <th>Confidence</th>
+                    <th>Entry Price</th>
+                    <th>Target</th>
+                    <th>Stop Loss</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="crypto-symbol">₿</span>
+                            <strong>BTC/USDT</strong>
+                        </div>
+                    </td>
+                    <td><span class="github-label github-label-success">Long</span></td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: var(--space-2);">
+                            <div style="width: 60px; background: var(--color-canvas-inset); height: 6px; border-radius: 3px;">
+                                <div style="width: 92%; background: var(--color-success-fg); height: 100%; border-radius: 3px;"></div>
+                            </div>
+                            <span style="font-size: 12px;">92%</span>
+                        </div>
+                    </td>
+                    <td class="crypto-price">$43,150</td>
+                    <td class="crypto-price text-success">$45,200</td>
+                    <td class="crypto-price text-danger">$41,800</td>
+                    <td><span class="github-label github-label-success">Active</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="crypto-symbol">Ξ</span>
+                            <strong>ETH/USDT</strong>
+                        </div>
+                    </td>
+                    <td><span class="github-label github-label-danger">Short</span></td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: var(--space-2);">
+                            <div style="width: 60px; background: var(--color-canvas-inset); height: 6px; border-radius: 3px;">
+                                <div style="width: 87%; background: var(--color-warning-fg); height: 100%; border-radius: 3px;"></div>
+                            </div>
+                            <span style="font-size: 12px;">87%</span>
+                        </div>
+                    </td>
+                    <td class="crypto-price">$2,580</td>
+                    <td class="crypto-price text-success">$2,420</td>
+                    <td class="crypto-price text-danger">$2,680</td>
+                    <td><span class="github-label github-label-warning">Pending</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="crypto-symbol">◎</span>
+                            <strong>SOL/USDT</strong>
+                        </div>
+                    </td>
+                    <td><span class="github-label github-label-success">Long</span></td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: var(--space-2);">
+                            <div style="width: 60px; background: var(--color-canvas-inset); height: 6px; border-radius: 3px;">
+                                <div style="width: 78%; background: var(--color-success-fg); height: 100%; border-radius: 3px;"></div>
+                            </div>
+                            <span style="font-size: 12px;">78%</span>
+                        </div>
+                    </td>
+                    <td class="crypto-price">$98.45</td>
+                    <td class="crypto-price text-success">$105.00</td>
+                    <td class="crypto-price text-danger">$94.20</td>
+                    <td><span class="github-label github-label-success">Active</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Analytics Insights -->
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-6);">
+    <!-- Volume Analysis -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Volume Analysis</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="text-align: center; margin-bottom: var(--space-4);">
+                <div style="font-size: 32px; font-weight: 600; color: var(--color-accent-fg);">$2.4B</div>
+                <div style="color: var(--color-fg-muted); font-size: 14px;">24h Volume</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                <span style="font-size: 14px;">vs Yesterday</span>
+                <span style="font-weight: 600; color: var(--color-success-fg);">+18.5%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <span style="font-size: 14px;">vs 7d Average</span>
+                <span style="font-weight: 600; color: var(--color-success-fg);">+12.3%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Price Correlation -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Asset Correlation</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>BTC vs ETH</span>
+                    <span style="font-weight: 600; color: var(--color-success-fg);">0.87</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>BTC vs SOL</span>
+                    <span style="font-weight: 600; color: var(--color-warning-fg);">0.72</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>ETH vs SOL</span>
+                    <span style="font-weight: 600; color: var(--color-success-fg);">0.81</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Market vs SPY</span>
+                    <span style="font-weight: 600; color: var(--color-danger-fg);">-0.23</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Risk Metrics -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Risk Metrics</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="text-align: center; margin-bottom: var(--space-4);">
+                <div style="font-size: 32px; font-weight: 600; color: var(--color-warning-fg);">Medium</div>
+                <div style="color: var(--color-fg-muted); font-size: 14px;">Portfolio Risk</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                <span style="font-size: 14px;">VaR (95%)</span>
+                <span style="font-weight: 600;">-$2,340</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <span style="font-size: 14px;">Beta</span>
+                <span style="font-weight: 600;">1.23</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    // Analytics page - displays trading patterns, sentiment, and AI signals
+}

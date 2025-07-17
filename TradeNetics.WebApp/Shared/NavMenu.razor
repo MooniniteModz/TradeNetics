@@ -1,88 +1,151 @@
-﻿<div class="main-sidebar-menu">
-    <nav class="main-menu-wrapper">
-        <div class="nav nav-pills nav-sidebar" id="sidemenu-Tab" role="tablist" aria-orientation="vertical">
-            <div class="main-sidebar-title">Main</div>
-            
-            <!-- Dashboard -->
-            <a class="nav-link @(IsActive("") ? "active" : "")" href="">
-                <i class="sidemenu-icon fe fe-grid"></i>
-                <span class="sidemenu-label">Dashboard</span>
+<!-- GitHub-style Sidebar Navigation -->
+<div class="github-nav-section">
+    <h3 class="github-nav-title @(SidebarCollapsed ? "collapsed" : "")">Dashboard</h3>
+    <ul class="github-nav-list">
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("") ? "active" : "")" href="" title="Overview">
+                <i class="fe fe-home github-nav-icon"></i>
+                <span class="nav-text">Overview</span>
             </a>
-
-            <!-- Trading Bot -->
-            <div class="slide-item">
-                <a class="slide-item-link @(IsActiveParent("trader", "bot-status") ? "is-expanded" : "")" data-bs-toggle="collapse" href="#bot-menu" role="button" aria-expanded="@(IsActiveParent("trader", "bot-status") ? "true" : "false")" aria-controls="bot-menu">
-                    <i class="sidemenu-icon fe fe-cpu"></i>
-                    <span class="sidemenu-label">Trading Bot</span>
-                    <i class="angle fe fe-chevron-down"></i>
-                </a>
-                <ul class="slide-menu collapse @(IsActiveParent("trader", "bot-status") ? "show" : "")" id="bot-menu">
-                    <li><a href="trader" class="@(IsActive("trader") ? "active" : "")">Live Trading</a></li>
-                    <li><a href="bot-status" class="@(IsActive("bot-status") ? "active" : "")">Bot Status</a></li>
-                    <li><a href="strategies" class="@(IsActive("strategies") ? "active" : "")">Strategies</a></li>
-                </ul>
-            </div>
-
-            <!-- Trading Portfolio -->
-            <div class="slide-item">
-                <a class="slide-item-link @(IsActiveParent("portfolio", "tradehistory", "analytics") ? "is-expanded" : "")" data-bs-toggle="collapse" href="#portfolio-menu" role="button" aria-expanded="@(IsActiveParent("portfolio", "tradehistory", "analytics") ? "true" : "false")" aria-controls="portfolio-menu">
-                    <i class="sidemenu-icon fe fe-briefcase"></i>
-                    <span class="sidemenu-label">Trading Portfolio</span>
-                    <i class="angle fe fe-chevron-down"></i>
-                </a>
-                <ul class="slide-menu collapse @(IsActiveParent("portfolio", "tradehistory", "analytics") ? "show" : "")" id="portfolio-menu">
-                    <li><a href="portfolio" class="@(IsActive("portfolio") ? "active" : "")">Holdings</a></li>
-                    <li><a href="tradehistory" class="@(IsActive("tradehistory") ? "active" : "")">Trade History</a></li>
-                    <li><a href="analytics" class="@(IsActive("analytics") ? "active" : "")">Performance</a></li>
-                    <li><a href="risk-analysis" class="@(IsActive("risk-analysis") ? "active" : "")">Risk Analysis</a></li>
-                </ul>
-            </div>
-
-            <!-- Configuration -->
-            <a class="nav-link @(IsActive("configuration") ? "active" : "")" href="configuration">
-                <i class="sidemenu-icon fe fe-sliders"></i>
-                <span class="sidemenu-label">Configuration</span>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("performance") ? "active" : "")" href="performance" title="Performance">
+                <i class="fe fe-trending-up github-nav-icon"></i>
+                <span class="nav-text">Performance</span>
             </a>
-
-            <div class="main-sidebar-title">Tools</div>
-
-            <!-- Market Analysis -->
-            <div class="slide-item">
-                <a class="slide-item-link @(IsActiveParent("market-overview", "crypto-overview") ? "is-expanded" : "")" data-bs-toggle="collapse" href="#market-menu" role="button" aria-expanded="@(IsActiveParent("market-overview", "crypto-overview") ? "true" : "false")" aria-controls="market-menu">
-                    <i class="sidemenu-icon fe fe-trending-up"></i>
-                    <span class="sidemenu-label">Market Analysis</span>
-                    <i class="angle fe fe-chevron-down"></i>
-                </a>
-                <ul class="slide-menu collapse @(IsActiveParent("market-overview", "crypto-overview") ? "show" : "")" id="market-menu">
-                    <li><a href="crypto-overview" class="@(IsActive("crypto-overview") ? "active" : "")">Market Overview</a></li>
-                    <li><a href="technical-analysis" class="@(IsActive("technical-analysis") ? "active" : "")">Technical Analysis</a></li>
-                    <li><a href="market-sentiment" class="@(IsActive("market-sentiment") ? "active" : "")">Market Sentiment</a></li>
-                </ul>
-            </div>
-
-            <!-- Trading Tools -->
-            <div class="slide-item">
-                <a class="slide-item-link" data-bs-toggle="collapse" href="#tools-menu" role="button" aria-expanded="false" aria-controls="tools-menu">
-                    <i class="sidemenu-icon fe fe-tool"></i>
-                    <span class="sidemenu-label">Trading Tools</span>
-                    <i class="angle fe fe-chevron-down"></i>
-                </a>
-                <ul class="slide-menu collapse" id="tools-menu">
-                    <li><a href="backtester" class="@(IsActive("backtester") ? "active" : "")">Backtester</a></li>
-                    <li><a href="strategy-builder" class="@(IsActive("strategy-builder") ? "active" : "")">Strategy Builder</a></li>
-                    <li><a href="risk-calculator" class="@(IsActive("risk-calculator") ? "active" : "")">Risk Calculator</a></li>
-                </ul>
-            </div>
-
-            <a class="nav-link" href="help">
-                <i class="sidemenu-icon fe fe-help-circle"></i>
-                <span class="sidemenu-label">Help & Support</span>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("analytics") ? "active" : "")" href="analytics" title="Analytics">
+                <i class="fe fe-bar-chart-2 github-nav-icon"></i>
+                <span class="nav-text">Analytics</span>
             </a>
-        </div>
-    </nav>
+        </li>
+    </ul>
+</div>
+
+<div class="github-nav-section">
+    <h3 class="github-nav-title @(SidebarCollapsed ? "collapsed" : "")">Trading</h3>
+    <ul class="github-nav-list">
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("trader") ? "active" : "")" href="trader" title="Live Trading">
+                <i class="fe fe-activity github-nav-icon"></i>
+                <span class="nav-text">Live Trading</span>
+            </a>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("bot-status") ? "active" : "")" href="bot-status" title="Bot Status">
+                <i class="fe fe-cpu github-nav-icon"></i>
+                <span class="nav-text">Bot Status</span>
+            </a>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("strategies") ? "active" : "")" href="strategies" title="Strategies">
+                <i class="fe fe-layers github-nav-icon"></i>
+                <span class="nav-text">Strategies</span>
+            </a>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("tradehistory") ? "active" : "")" href="tradehistory" title="Trade History">
+                <i class="fe fe-clock github-nav-icon"></i>
+                <span class="nav-text">Trade History</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="github-nav-section">
+    <h3 class="github-nav-title @(SidebarCollapsed ? "collapsed" : "")">Portfolio</h3>
+    <ul class="github-nav-list">
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("portfolio") ? "active" : "")" href="portfolio" title="Holdings">
+                <i class="fe fe-pie-chart github-nav-icon"></i>
+                <span class="nav-text">Holdings</span>
+            </a>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("portfolio-performance") ? "active" : "")" href="portfolio-performance" title="Performance">
+                <i class="fe fe-trending-up github-nav-icon"></i>
+                <span class="nav-text">Performance</span>
+            </a>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("risk-analysis") ? "active" : "")" href="risk-analysis" title="Risk Analysis">
+                <i class="fe fe-shield github-nav-icon"></i>
+                <span class="nav-text">Risk Analysis</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="github-nav-section">
+    <h3 class="github-nav-title @(SidebarCollapsed ? "collapsed" : "")">Market</h3>
+    <ul class="github-nav-list">
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("crypto-overview") ? "active" : "")" href="crypto-overview" title="Market Overview">
+                <i class="fe fe-globe github-nav-icon"></i>
+                <span class="nav-text">Market Overview</span>
+            </a>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("technical-analysis") ? "active" : "")" href="technical-analysis" title="Technical Analysis">
+                <i class="fe fe-target github-nav-icon"></i>
+                <span class="nav-text">Technical Analysis</span>
+            </a>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("market-sentiment") ? "active" : "")" href="market-sentiment" title="Sentiment">
+                <i class="fe fe-heart github-nav-icon"></i>
+                <span class="nav-text">Sentiment</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="github-nav-section">
+    <h3 class="github-nav-title @(SidebarCollapsed ? "collapsed" : "")">Tools</h3>
+    <ul class="github-nav-list">
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("backtester") ? "active" : "")" href="backtester" title="Backtester">
+                <i class="fe fe-rewind github-nav-icon"></i>
+                <span class="nav-text">Backtester</span>
+            </a>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("strategy-builder") ? "active" : "")" href="strategy-builder" title="Strategy Builder">
+                <i class="fe fe-tool github-nav-icon"></i>
+                <span class="nav-text">Strategy Builder</span>
+            </a>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("risk-calculator") ? "active" : "")" href="risk-calculator" title="Risk Calculator">
+                <i class="fe fe-calculator github-nav-icon"></i>
+                <span class="nav-text">Risk Calculator</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="github-nav-section">
+    <h3 class="github-nav-title @(SidebarCollapsed ? "collapsed" : "")">Settings</h3>
+    <ul class="github-nav-list">
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("configuration") ? "active" : "")" href="configuration" title="Configuration">
+                <i class="fe fe-settings github-nav-icon"></i>
+                <span class="nav-text">Configuration</span>
+            </a>
+        </li>
+        <li class="github-nav-item">
+            <a class="github-nav-item-link @(IsActive("help") ? "active" : "")" href="help" title="Help & Support">
+                <i class="fe fe-help-circle github-nav-icon"></i>
+                <span class="nav-text">Help & Support</span>
+            </a>
+        </li>
+    </ul>
 </div>
 
 @code {
+    [Parameter] public bool SidebarCollapsed { get; set; }
+    
     private string? currentUrl;
 
     protected override void OnInitialized()
@@ -97,11 +160,6 @@
             return string.IsNullOrEmpty(currentUrl) || currentUrl == "/";
         }
         return currentUrl?.Equals(href, StringComparison.OrdinalIgnoreCase) == true;
-    }
-
-    private bool IsActiveParent(params string[] hrefs)
-    {
-        return hrefs.Any(href => currentUrl?.Equals(href, StringComparison.OrdinalIgnoreCase) == true);
     }
 }
 

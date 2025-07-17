@@ -8,584 +8,298 @@
 
 <PageTitle>TradeNetics Dashboard</PageTitle>
 
-<!-- Page Header -->
-<div class="d-flex justify-content-between align-items-center mb-4">
+<!-- GitHub-style Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-6">
     <div>
-        <h3 class="fw-semibold mb-1">Dashboard</h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="#">TradeNetics</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
-        </nav>
+        <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px; color: var(--color-fg-default);">Dashboard</h1>
+        <p style="margin: 0; color: var(--color-fg-muted); font-size: 16px;">
+            Overview of your trading performance and portfolio status
+        </p>
     </div>
     <div class="d-flex gap-2">
-        <button class="btn btn-outline-primary btn-sm">
-            <i class="fe fe-download me-2"></i>Export
+        <button class="github-btn">
+            <i class="fe fe-download github-btn-icon"></i>
+            Export Data
         </button>
-        <button class="btn btn-primary btn-sm">
-            <i class="fe fe-plus me-2"></i>New Trade
+        <button class="github-btn github-btn-primary">
+            <i class="fe fe-plus github-btn-icon"></i>
+            New Trade
         </button>
     </div>
 </div>
 
-<!-- Crypto Trading Dashboard Cards -->
-<div class="row mb-4">
-    <!-- Trending Coins Section -->
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-        <div class="crypto-card trending-coins-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h6 class="text-primary fw-semibold mb-0">🔥 Trending Coins</h6>
-                    <span class="badge badge-success">+15.2%</span>
-                </div>
-                <div class="trending-coin-item d-flex align-items-center mb-2">
-                    <div class="crypto-icon-wrapper me-2">
-                        <div class="crypto-icon crypto-icon-btc">₿</div>
-                    </div>
-                    <div class="flex-1">
-                        <span class="fw-semibold text-white">BTC</span>
-                        <div class="crypto-price text-success">$43,250.00</div>
-                    </div>
-                    <span class="text-success">+2.1%</span>
-                </div>
-                <div class="trending-coin-item d-flex align-items-center mb-2">
-                    <div class="crypto-icon-wrapper me-2">
-                        <div class="crypto-icon crypto-icon-eth">Ξ</div>
-                    </div>
-                    <div class="flex-1">
-                        <span class="fw-semibold text-white">ETH</span>
-                        <div class="crypto-price text-success">$2,580.75</div>
-                    </div>
-                    <span class="text-success">+4.5%</span>
-                </div>
-                <div class="trending-coin-item d-flex align-items-center">
-                    <div class="crypto-icon-wrapper me-2">
-                        <div class="crypto-icon crypto-icon-sol">◎</div>
-                    </div>
-                    <div class="flex-1">
-                        <span class="fw-semibold text-white">SOL</span>
-                        <div class="crypto-price text-success">$98.45</div>
-                    </div>
-                    <span class="text-success">+8.7%</span>
-                </div>
-            </div>
+<!-- GitHub-style Stats Grid -->
+<div class="github-stats-grid">
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-dollar-sign"></i>
+        </div>
+        <div class="github-stat-content">
+            <h3>$@(_totalPortfolioValue.ToString("N0"))</h3>
+            <p>Total Portfolio Value</p>
         </div>
     </div>
     
-    <!-- Market Overview Widget -->
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-        <div class="crypto-card market-overview-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h6 class="text-info fw-semibold mb-0">📊 Market Overview</h6>
-                    <div class="pulse-indicator"></div>
-                </div>
-                <div class="market-stat mb-2">
-                    <div class="d-flex justify-content-between">
-                        <span class="text-secondary">Market Cap</span>
-                        <span class="text-white fw-semibold">$2.1T</span>
-                    </div>
-                </div>
-                <div class="market-stat mb-2">
-                    <div class="d-flex justify-content-between">
-                        <span class="text-secondary">24h Volume</span>
-                        <span class="text-white fw-semibold">$89.5B</span>
-                    </div>
-                </div>
-                <div class="market-stat mb-2">
-                    <div class="d-flex justify-content-between">
-                        <span class="text-secondary">BTC Dominance</span>
-                        <span class="text-warning fw-semibold">52.3%</span>
-                    </div>
-                </div>
-                <div class="market-stat">
-                    <div class="d-flex justify-content-between">
-                        <span class="text-secondary">Fear & Greed</span>
-                        <span class="text-success fw-semibold">68 (Greed)</span>
-                    </div>
-                </div>
-            </div>
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-trending-up"></i>
+        </div>
+        <div class="github-stat-content">
+            <h3 class="@(_dailyPnL >= 0 ? "text-success" : "text-danger")">
+                @(_dailyPnL >= 0 ? "+" : "")@(_dailyPnL.ToString("N2"))%
+            </h3>
+            <p>24h Performance</p>
         </div>
     </div>
-
-    <!-- Portfolio Panel -->
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-        <div class="crypto-card portfolio-panel-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h6 class="text-warning fw-semibold mb-0">💼 Portfolio</h6>
-                    <span class="badge badge-success">+$2,340</span>
-                </div>
-                <div class="portfolio-stat mb-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-secondary">Total Value</span>
-                        <span class="text-white fw-bold">$@(_totalPortfolioValue.ToString("N0"))</span>
-                    </div>
-                </div>
-                <div class="portfolio-stat mb-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-secondary">24h P&L</span>
-                        <span class="@(_dailyPnL >= 0 ? "text-success" : "text-danger") fw-semibold">
-                            @(_dailyPnL >= 0 ? "+" : "")@(_dailyPnL.ToString("N2"))%
-                        </span>
-                    </div>
-                </div>
-                <div class="portfolio-allocation">
-                    <div class="progress mb-1" style="height: 6px;">
-                        <div class="progress-bar bg-warning" style="width: 45%"></div>
-                        <div class="progress-bar bg-info" style="width: 30%"></div>
-                        <div class="progress-bar bg-success" style="width: 25%"></div>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <small class="text-warning">BTC 45%</small>
-                        <small class="text-info">ETH 30%</small>
-                        <small class="text-success">Others 25%</small>
-                    </div>
-                </div>
-            </div>
+    
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-activity"></i>
+        </div>
+        <div class="github-stat-content">
+            <h3>@(_botStatus?.TotalTrades ?? 0)</h3>
+            <p>Total Trades</p>
         </div>
     </div>
-
-    <!-- Top Traders Widget -->
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-        <div class="crypto-card top-traders-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h6 class="text-success fw-semibold mb-0">🏆 Top Traders</h6>
-                    <span class="text-muted">24h</span>
-                </div>
-                <div class="trader-item d-flex align-items-center mb-2">
-                    <div class="trader-rank me-2">
-                        <span class="badge bg-warning rounded-pill">1</span>
-                    </div>
-                    <div class="flex-1">
-                        <span class="text-white fw-semibold">CryptoBot_AI</span>
-                        <div class="text-secondary small">47 trades</div>
-                    </div>
-                    <span class="text-success fw-semibold">+15.8%</span>
-                </div>
-                <div class="trader-item d-flex align-items-center mb-2">
-                    <div class="trader-rank me-2">
-                        <span class="badge bg-secondary rounded-pill">2</span>
-                    </div>
-                    <div class="flex-1">
-                        <span class="text-white fw-semibold">TradeNetics</span>
-                        <div class="text-secondary small">@(_botStatus?.DailyTrades ?? 0) trades</div>
-                    </div>
-                    <span class="text-success fw-semibold">+@((_botStatus?.DailyPnL ?? 0.0m).ToString("N1"))%</span>
-                </div>
-                <div class="trader-item d-flex align-items-center">
-                    <div class="trader-rank me-2">
-                        <span class="badge bg-dark rounded-pill">3</span>
-                    </div>
-                    <div class="flex-1">
-                        <span class="text-white fw-semibold">QuantumTrade</span>
-                        <div class="text-secondary small">23 trades</div>
-                    </div>
-                    <span class="text-success fw-semibold">+8.4%</span>
-                </div>
-            </div>
+    
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-cpu"></i>
         </div>
-    </div>
-</div>
-
-<!-- Featured Markets Tile Grid -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="crypto-card featured-markets-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h5 class="text-primary fw-semibold mb-0">⭐ Featured Markets</h5>
-                    <button class="btn btn-outline-primary btn-sm">
-                        <i class="fe fe-refresh-cw me-1"></i>Refresh
-                    </button>
-                </div>
-                <div class="row">
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
-                        <div class="market-tile text-center">
-                            <div class="crypto-icon-large crypto-icon-btc mb-2">₿</div>
-                            <h6 class="text-white mb-1">BTC/USDT</h6>
-                            <div class="crypto-price text-success mb-1">$43,250.00</div>
-                            <span class="badge badge-success">+2.1%</span>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
-                        <div class="market-tile text-center">
-                            <div class="crypto-icon-large crypto-icon-eth mb-2">Ξ</div>
-                            <h6 class="text-white mb-1">ETH/USDT</h6>
-                            <div class="crypto-price text-success mb-1">$2,580.75</div>
-                            <span class="badge badge-success">+4.5%</span>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
-                        <div class="market-tile text-center">
-                            <div class="crypto-icon-large crypto-icon-sol mb-2">◎</div>
-                            <h6 class="text-white mb-1">SOL/USDT</h6>
-                            <div class="crypto-price text-success mb-1">$98.45</div>
-                            <span class="badge badge-success">+8.7%</span>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
-                        <div class="market-tile text-center">
-                            <div class="crypto-icon-large crypto-icon-ada mb-2">₳</div>
-                            <h6 class="text-white mb-1">ADA/USDT</h6>
-                            <div class="crypto-price text-danger mb-1">$0.485</div>
-                            <span class="badge badge-danger">-1.2%</span>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
-                        <div class="market-tile text-center">
-                            <div class="crypto-icon-large crypto-icon-dot mb-2">●</div>
-                            <h6 class="text-white mb-1">DOT/USDT</h6>
-                            <div class="crypto-price text-success mb-1">$7.25</div>
-                            <span class="badge badge-success">+3.8%</span>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
-                        <div class="market-tile text-center">
-                            <div class="crypto-icon-large crypto-icon-link mb-2">⧉</div>
-                            <h6 class="text-white mb-1">LINK/USDT</h6>
-                            <div class="crypto-price text-success mb-1">$15.68</div>
-                            <span class="badge badge-success">+6.2%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Wallet Summary Module -->
-<div class="row mb-4">
-    <div class="col-xl-4 col-lg-6">
-        <div class="crypto-card wallet-summary-card">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h6 class="text-purple fw-semibold mb-0">👛 Wallet Summary</h6>
-                    <button class="btn btn-outline-primary btn-sm">
-                        <i class="fe fe-eye me-1"></i>View All
-                    </button>
-                </div>
-                <div class="wallet-balance mb-3">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-secondary">Available Balance</span>
-                        <span class="text-white fw-bold">$@(_botStatus?.AvailableBalance.ToString("N2") ?? "0.00")</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-secondary">In Orders</span>
-                        <span class="text-warning fw-semibold">$1,250.00</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-secondary">Total Balance</span>
-                        <span class="text-success fw-bold">$@(((_botStatus?.AvailableBalance ?? 0m) + 1250m).ToString("N2"))</span>
-                    </div>
-                </div>
-                <div class="wallet-actions d-grid gap-2">
-                    <button class="btn btn-primary btn-sm">
-                        <i class="fe fe-plus me-2"></i>Deposit
-                    </button>
-                    <button class="btn btn-outline-primary btn-sm">
-                        <i class="fe fe-minus me-2"></i>Withdraw
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <!-- Portfolio Holdings -->
-    <div class="col-xl-8 col-lg-7">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">Portfolio Holdings</h5>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        <i class="fe fe-filter me-1"></i>Filter
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">All Assets</a></li>
-                        <li><a class="dropdown-item" href="#">Cryptocurrencies</a></li>
-                        <li><a class="dropdown-item" href="#">Stablecoins</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                @if (_portfolioHoldings.Any())
+        <div class="github-stat-content">
+            <h3>
+                @if (_botStatus?.IsRunning == true)
                 {
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th class="border-top-0">Asset</th>
-                                    <th class="border-top-0">Amount</th>
-                                    <th class="border-top-0">Value</th>
-                                    <th class="border-top-0">24h Change</th>
-                                    <th class="border-top-0">Allocation</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var holding in _portfolioHoldings.Take(5))
-                                {
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="crypto-icon-wrapper me-3">
-                                                    <div class="crypto-icon crypto-icon-@(holding.Symbol.Replace("USDT", "").ToLower())">@GetCryptoSymbol(holding.Symbol)</div>
-                                                </div>
-                                                <div>
-                                                    <h6 class="mb-0">@holding.Symbol</h6>
-                                                    <small class="text-muted">@holding.Name</small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <span class="fw-semibold">@holding.Quantity.ToString("N4")</span>
-                                                <br>
-                                                <small class="text-muted">@($"${holding.CurrentPrice:N2}")</small>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="fw-semibold">$@holding.MarketValue.ToString("N2")</span>
-                                        </td>
-                                        <td>
-                                            <span class="@(holding.Change24h >= 0 ? "text-success" : "text-danger")">
-                                                <i class="fe @(holding.Change24h >= 0 ? "fe-trending-up" : "fe-trending-down") me-1"></i>
-                                                @holding.Change24h.ToString("N2")%
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-fill">
-                                                    <div class="progress" style="height: 6px;">
-                                                        <div class="progress-bar bg-primary" style="width: @(holding.AllocationPercentage)%"></div>
-                                                    </div>
-                                                </div>
-                                                <span class="ms-2 small">@holding.AllocationPercentage.ToString("N1")%</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                    <span class="github-label github-label-success">Active</span>
                 }
                 else
                 {
-                    <div class="text-center py-5">
-                        <div class="avatar avatar-lg bg-light rounded-circle mx-auto mb-3">
-                            <i class="fe fe-pie-chart text-muted"></i>
-                        </div>
-                        <h6 class="mb-1">No Portfolio Data</h6>
-                        <p class="text-muted mb-0">Your portfolio holdings will appear here once trades are executed.</p>
-                    </div>
+                    <span class="github-label github-label-danger">Inactive</span>
                 }
+            </h3>
+            <p>Bot Status</p>
+        </div>
+    </div>
+</div>
+
+<!-- GitHub-style Cards Layout -->
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-6); margin-bottom: var(--space-6);">
+    <!-- Portfolio Holdings Card -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Portfolio Holdings</h2>
+            <div class="d-flex gap-2">
+                <button class="github-btn github-btn-sm">
+                    <i class="fe fe-filter github-btn-icon"></i>
+                    Filter
+                </button>
+                <button class="github-btn github-btn-sm">
+                    <i class="fe fe-refresh-cw github-btn-icon"></i>
+                    Refresh
+                </button>
             </div>
+        </div>
+        <div class="github-card-body" style="padding: 0;">
+            @if (_portfolioHoldings.Any())
+            {
+                <table class="github-table">
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Amount</th>
+                            <th>Value</th>
+                            <th>24h Change</th>
+                            <th>Allocation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var holding in _portfolioHoldings.Take(8))
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <span class="crypto-symbol">@GetCryptoSymbol(holding.Symbol)</span>
+                                        <div>
+                                            <strong>@holding.Symbol</strong>
+                                            <div class="text-muted" style="font-size: 12px;">@holding.Name</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div class="crypto-price">@holding.Quantity.ToString("N4")</div>
+                                        <div class="text-muted" style="font-size: 12px;">$@holding.CurrentPrice.ToString("N2")</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>$@holding.MarketValue.ToString("N2")</strong>
+                                </td>
+                                <td>
+                                    <span class="@(holding.Change24h >= 0 ? "github-label github-label-success" : "github-label github-label-danger")">
+                                        @(holding.Change24h >= 0 ? "+" : "")@holding.Change24h.ToString("N2")%
+                                    </span>
+                                </td>
+                                <td>
+                                    <div style="width: 60px; background: var(--color-canvas-inset); height: 6px; border-radius: 3px; position: relative;">
+                                        <div style="width: @(holding.AllocationPercentage)%; background: var(--color-accent-fg); height: 100%; border-radius: 3px;"></div>
+                                    </div>
+                                    <div style="font-size: 12px; margin-top: 4px;">@holding.AllocationPercentage.ToString("N1")%</div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div style="text-align: center; padding: var(--space-8); color: var(--color-fg-muted);">
+                    <i class="fe fe-pie-chart" style="font-size: 48px; opacity: 0.3; margin-bottom: var(--space-4);"></i>
+                    <h3 style="margin: 0 0 var(--space-2); color: var(--color-fg-muted);">No portfolio data</h3>
+                    <p style="margin: 0;">Your portfolio holdings will appear here once trades are executed.</p>
+                </div>
+            }
         </div>
     </div>
 
-    <!-- Trading Bot Status -->
-    <div class="col-xl-4 col-lg-5">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Trading Bot</h5>
-            </div>
-            <div class="card-body">
-                @if (_botStatus != null)
-                {
-                    <div class="text-center mb-4">
-                        <div class="avatar avatar-xl @(_botStatus.IsRunning ? "bg-success-light" : "bg-danger-light") rounded-circle mx-auto mb-3">
-                            <i class="fe @(_botStatus.IsRunning ? "fe-play" : "fe-pause") @(_botStatus.IsRunning ? "text-success" : "text-danger")"></i>
-                        </div>
-                        <h5 class="mb-1">@(_botStatus.IsRunning ? "Bot Active" : "Bot Stopped")</h5>
-                        <p class="text-muted mb-0">Strategy: @_botStatus.CurrentStrategy</p>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="text-center">
-                                <h4 class="text-primary mb-1">@_botStatus.TotalTrades</h4>
-                                <p class="small text-muted mb-0">Total Trades</p>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-center">
-                                <h4 class="@(_botStatus.TotalPnL >= 0 ? "text-success" : "text-danger") mb-1">
-                                    $@_botStatus.TotalPnL.ToString("N2")
-                                </h4>
-                                <p class="small text-muted mb-0">Total P&L</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">Model Confidence</span>
-                        <span class="fw-semibold">@((_botStatus.ModelConfidence * 100).ToString("N1"))%</span>
-                    </div>
-                    <div class="progress mb-3" style="height: 8px;">
-                        <div class="progress-bar bg-primary" style="width: @((_botStatus.ModelConfidence * 100).ToString("N1"))%"></div>
-                    </div>
-
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">Available Balance</span>
-                        <span class="fw-semibold">$@_botStatus.AvailableBalance.ToString("N2")</span>
-                    </div>
-
-                    <div class="d-flex justify-content-between mb-3">
-                        <span class="text-muted">Last Trade</span>
-                        <span class="small">@_botStatus.LastTradeTime.ToString("MMM dd, HH:mm")</span>
-                    </div>
-
-                    @if (_botStatus.PaperTradingMode)
-                    {
-                        <div class="alert alert-info alert-sm mb-3">
-                            <i class="fe fe-info me-2"></i>Paper Trading Mode
-                        </div>
-                    }
-
-                    <div class="d-grid gap-2">
-                        <button class="btn @(_botStatus.IsRunning ? "btn-danger" : "btn-success") btn-sm">
-                            <i class="fe @(_botStatus.IsRunning ? "fe-pause" : "fe-play") me-2"></i>
-                            @(_botStatus.IsRunning ? "Stop Bot" : "Start Bot")
-                        </button>
-                        <button class="btn btn-outline-primary btn-sm">
-                            <i class="fe fe-settings me-2"></i>Configure
-                        </button>
-                    </div>
-                }
-                else
-                {
-                    <div class="text-center py-4">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="text-muted mt-2">Loading bot status...</p>
-                    </div>
-                }
-            </div>
+    <!-- Trading Bot Status Card -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Trading Bot</h2>
+            <button class="github-btn github-btn-sm">
+                <i class="fe fe-settings github-btn-icon"></i>
+            </button>
         </div>
-
-        <!-- Quick Actions -->
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Quick Actions</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-grid gap-2">
-                    <a href="/trader" class="btn btn-outline-primary btn-sm">
-                        <i class="fe fe-trending-up me-2"></i>Live Trading
-                    </a>
-                    <a href="/tradehistory" class="btn btn-outline-secondary btn-sm">
-                        <i class="fe fe-list me-2"></i>Trade History
-                    </a>
-                    <a href="/configuration" class="btn btn-outline-info btn-sm">
-                        <i class="fe fe-settings me-2"></i>Settings
-                    </a>
+        <div class="github-card-body">
+            @if (_botStatus != null)
+            {
+                <div style="text-align: center; margin-bottom: var(--space-6);">
+                    <div style="width: 64px; height: 64px; border-radius: 50%; background: @(_botStatus.IsRunning ? "var(--color-success-fg)" : "var(--color-danger-fg)"); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-3); color: white; font-size: 24px;">
+                        <i class="fe @(_botStatus.IsRunning ? "fe-play" : "fe-pause")"></i>
+                    </div>
+                    <h3 style="margin: 0 0 var(--space-1); font-size: 18px;">@(_botStatus.IsRunning ? "Bot Active" : "Bot Stopped")</h3>
+                    <p style="margin: 0; color: var(--color-fg-muted);">Strategy: @_botStatus.CurrentStrategy</p>
                 </div>
-            </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-bottom: var(--space-6);">
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; font-weight: 600; color: var(--color-accent-fg); margin-bottom: var(--space-1);">@_botStatus.DailyTrades</div>
+                        <div style="font-size: 12px; color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: 0.5px;">Trades Today</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; font-weight: 600; margin-bottom: var(--space-1);" class="@(_botStatus.TotalPnL >= 0 ? "text-success" : "text-danger")">
+                            $@_botStatus.TotalPnL.ToString("N0")
+                        </div>
+                        <div style="font-size: 12px; color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: 0.5px;">Total P&L</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: var(--space-4);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                        <span style="color: var(--color-fg-muted); font-size: 14px;">Model Confidence</span>
+                        <span style="font-weight: 600; font-size: 14px;">@((_botStatus.ModelConfidence * 100).ToString("N1"))%</span>
+                    </div>
+                    <div style="width: 100%; background: var(--color-canvas-inset); height: 8px; border-radius: 4px;">
+                        <div style="width: @((_botStatus.ModelConfidence * 100).ToString("N1"))%; background: var(--color-accent-fg); height: 100%; border-radius: 4px;"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: var(--space-4);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                        <span style="color: var(--color-fg-muted); font-size: 14px;">Available Balance</span>
+                        <span style="font-weight: 600; font-size: 14px;">$@_botStatus.AvailableBalance.ToString("N2")</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--color-fg-muted); font-size: 14px;">Last Trade</span>
+                        <span style="font-size: 14px;">@_botStatus.LastTradeTime.ToString("MMM dd, HH:mm")</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+                    <button class="github-btn @(_botStatus.IsRunning ? "" : "github-btn-primary")" style="justify-content: center;">
+                        <i class="fe @(_botStatus.IsRunning ? "fe-pause" : "fe-play") github-btn-icon"></i>
+                        @(_botStatus.IsRunning ? "Stop Bot" : "Start Bot")
+                    </button>
+                    <button class="github-btn" style="justify-content: center;">
+                        <i class="fe fe-settings github-btn-icon"></i>
+                        Configure
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div style="text-align: center; padding: var(--space-6);">
+                    <div style="width: 32px; height: 32px; border: 2px solid var(--color-accent-fg); border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; margin: 0 auto var(--space-3);"></div>
+                    <p style="margin: 0; color: var(--color-fg-muted);">Loading bot status...</p>
+                </div>
+            }
         </div>
+    </div>
+</div>
+
+<!-- Recent Activity Card -->
+<div class="github-card">
+    <div class="github-card-header">
+        <h2 class="github-card-title">Recent Trading Activity</h2>
+        <a href="/tradehistory" class="github-btn github-btn-sm">
+            View all
+            <i class="fe fe-arrow-right github-btn-icon"></i>
+        </a>
+    </div>
+    <div class="github-card-body" style="padding: 0;">
+        <table class="github-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Pair</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color: var(--color-fg-muted); font-size: 12px;">2 min ago</td>
+                    <td>
+                        <span class="crypto-symbol">₿</span>
+                        <strong>BTC/USDT</strong>
+                    </td>
+                    <td><span class="github-label github-label-success">Buy</span></td>
+                    <td>0.0234</td>
+                    <td class="crypto-price">$43,250.00</td>
+                    <td><span class="github-label github-label-success">Filled</span></td>
+                </tr>
+                <tr>
+                    <td style="color: var(--color-fg-muted); font-size: 12px;">15 min ago</td>
+                    <td>
+                        <span class="crypto-symbol">Ξ</span>
+                        <strong>ETH/USDT</strong>
+                    </td>
+                    <td><span class="github-label github-label-danger">Sell</span></td>
+                    <td>1.5678</td>
+                    <td class="crypto-price">$2,580.75</td>
+                    <td><span class="github-label github-label-success">Filled</span></td>
+                </tr>
+                <tr>
+                    <td style="color: var(--color-fg-muted); font-size: 12px;">1 hour ago</td>
+                    <td>
+                        <span class="crypto-symbol">◎</span>
+                        <strong>SOL/USDT</strong>
+                    </td>
+                    <td><span class="github-label github-label-success">Buy</span></td>
+                    <td>12.345</td>
+                    <td class="crypto-price">$98.45</td>
+                    <td><span class="github-label github-label-warning">Pending</span></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
 <style>
-.stats-card {
-    transition: all 0.3s ease;
-    border: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.stats-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.stats-icon {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    font-size: 20px;
-}
-
-.bg-primary-light {
-    background-color: rgba(247, 147, 26, 0.1) !important;
-}
-
-.bg-success-light {
-    background-color: rgba(40, 167, 69, 0.1) !important;
-}
-
-.bg-warning-light {
-    background-color: rgba(255, 193, 7, 0.1) !important;
-}
-
-.bg-info-light {
-    background-color: rgba(23, 162, 184, 0.1) !important;
-}
-
-.bg-danger-light {
-    background-color: rgba(220, 53, 69, 0.1) !important;
-}
-
-.avatar {
-    width: 3rem;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-}
-
-.avatar-lg {
-    width: 4rem;
-    height: 4rem;
-    font-size: 1.5rem;
-}
-
-.avatar-xl {
-    width: 5rem;
-    height: 5rem;
-    font-size: 2rem;
-}
-
-.crypto-icon img {
-    background: #f8f9fa;
-    padding: 4px;
-}
-
-.progress {
-    background-color: #e9ecef;
-}
-
-.alert-sm {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-}
-
-.breadcrumb {
-    background: none;
-    padding: 0;
-    margin: 0;
-}
-
-.breadcrumb-item + .breadcrumb-item::before {
-    content: '/';
-    color: #6c757d;
-}
-
-.breadcrumb-item a {
-    color: #6c757d;
-    text-decoration: none;
-}
-
-.breadcrumb-item.active {
-    color: #495057;
+@@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 </style>
 

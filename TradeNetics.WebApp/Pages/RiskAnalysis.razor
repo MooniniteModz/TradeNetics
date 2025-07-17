@@ -1,0 +1,236 @@
+@page "/risk-analysis"
+
+<PageTitle>Risk Analysis - TradeNetics</PageTitle>
+
+<!-- GitHub-style Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-6">
+    <div>
+        <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px; color: var(--color-fg-default);">Risk Analysis</h1>
+        <p style="margin: 0; color: var(--color-fg-muted); font-size: 16px;">
+            Comprehensive risk assessment and portfolio risk management
+        </p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="github-btn">
+            <i class="fe fe-calendar github-btn-icon"></i>
+            Time Period
+        </button>
+        <button class="github-btn github-btn-primary">
+            <i class="fe fe-download github-btn-icon"></i>
+            Risk Report
+        </button>
+    </div>
+</div>
+
+<!-- Risk Metrics Grid -->
+<div class="github-stats-grid">
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-shield"></i>
+        </div>
+        <div class="github-stat-content">
+            <h3 style="color: var(--color-warning-fg);">7.2</h3>
+            <p>Risk Score</p>
+        </div>
+    </div>
+    
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-trending-down"></i>
+        </div>
+        <div class="github-stat-content">
+            <h3 class="text-danger">-12.3%</h3>
+            <p>Max Drawdown</p>
+        </div>
+    </div>
+    
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-zap"></i>
+        </div>
+        <div class="github-stat-content">
+            <h3>18.7%</h3>
+            <p>Volatility</p>
+        </div>
+    </div>
+    
+    <div class="github-stat-card">
+        <div class="github-stat-icon">
+            <i class="fe fe-dollar-sign"></i>
+        </div>
+        <div class="github-stat-content">
+            <h3 class="text-danger">-$2,340</h3>
+            <p>VaR (95%)</p>
+        </div>
+    </div>
+</div>
+
+<!-- Risk Analysis Details -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-6);">
+    <!-- Risk Breakdown -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Risk Breakdown</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                        <span>Market Risk</span>
+                        <span style="font-weight: 600; color: var(--color-danger-fg);">High</span>
+                    </div>
+                    <div style="width: 100%; background: var(--color-canvas-inset); height: 8px; border-radius: 4px;">
+                        <div style="width: 75%; background: var(--color-danger-fg); height: 100%; border-radius: 4px;"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                        <span>Liquidity Risk</span>
+                        <span style="font-weight: 600; color: var(--color-success-fg);">Low</span>
+                    </div>
+                    <div style="width: 100%; background: var(--color-canvas-inset); height: 8px; border-radius: 4px;">
+                        <div style="width: 25%; background: var(--color-success-fg); height: 100%; border-radius: 4px;"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                        <span>Concentration Risk</span>
+                        <span style="font-weight: 600; color: var(--color-warning-fg);">Medium</span>
+                    </div>
+                    <div style="width: 100%; background: var(--color-canvas-inset); height: 8px; border-radius: 4px;">
+                        <div style="width: 60%; background: var(--color-warning-fg); height: 100%; border-radius: 4px;"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                        <span>Correlation Risk</span>
+                        <span style="font-weight: 600; color: var(--color-warning-fg);">Medium</span>
+                    </div>
+                    <div style="width: 100%; background: var(--color-canvas-inset); height: 8px; border-radius: 4px;">
+                        <div style="width: 55%; background: var(--color-warning-fg); height: 100%; border-radius: 4px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Position Sizing -->
+    <div class="github-card">
+        <div class="github-card-header">
+            <h2 class="github-card-title">Position Sizing</h2>
+        </div>
+        <div class="github-card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-canvas-inset); border-radius: var(--border-radius);">
+                    <div>
+                        <strong>BTC/USDT</strong>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">45% of portfolio</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="github-label github-label-warning">Overweight</span>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">Recommended: 35%</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-canvas-inset); border-radius: var(--border-radius);">
+                    <div>
+                        <strong>ETH/USDT</strong>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">30% of portfolio</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="github-label github-label-success">Optimal</span>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">Recommended: 25-35%</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-canvas-inset); border-radius: var(--border-radius);">
+                    <div>
+                        <strong>SOL/USDT</strong>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">15% of portfolio</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="github-label github-label-success">Optimal</span>
+                        <div style="font-size: 12px; color: var(--color-fg-muted);">Recommended: 10-20%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Risk Management Rules -->
+<div class="github-card">
+    <div class="github-card-header">
+        <h2 class="github-card-title">Risk Management Rules</h2>
+        <button class="github-btn github-btn-sm">
+            <i class="fe fe-settings github-btn-icon"></i>
+            Configure
+        </button>
+    </div>
+    <div class="github-card-body" style="padding: 0;">
+        <table class="github-table">
+            <thead>
+                <tr>
+                    <th>Rule Type</th>
+                    <th>Current Setting</th>
+                    <th>Status</th>
+                    <th>Last Triggered</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Daily Loss Limit</strong></td>
+                    <td>5% of portfolio</td>
+                    <td><span class="github-label github-label-success">Active</span></td>
+                    <td style="color: var(--color-fg-muted);">Never</td>
+                    <td>
+                        <button class="github-btn github-btn-sm">
+                            <i class="fe fe-edit github-btn-icon"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Position Size Limit</strong></td>
+                    <td>$5,000 per trade</td>
+                    <td><span class="github-label github-label-success">Active</span></td>
+                    <td style="color: var(--color-fg-muted);">2 hours ago</td>
+                    <td>
+                        <button class="github-btn github-btn-sm">
+                            <i class="fe fe-edit github-btn-icon"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Stop Loss</strong></td>
+                    <td>3% per position</td>
+                    <td><span class="github-label github-label-success">Active</span></td>
+                    <td style="color: var(--color-fg-muted);">Yesterday</td>
+                    <td>
+                        <button class="github-btn github-btn-sm">
+                            <i class="fe fe-edit github-btn-icon"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Correlation Limit</strong></td>
+                    <td>Max 80% correlation</td>
+                    <td><span class="github-label github-label-warning">Warning</span></td>
+                    <td style="color: var(--color-fg-muted);">1 hour ago</td>
+                    <td>
+                        <button class="github-btn github-btn-sm">
+                            <i class="fe fe-edit github-btn-icon"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    // Risk analysis and management page
+}

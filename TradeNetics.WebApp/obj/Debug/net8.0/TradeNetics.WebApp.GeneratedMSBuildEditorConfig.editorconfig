@@ -24,6 +24,18 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/Pages/Analytics.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQW5hbHl0aWNzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/Pages/Backtester.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmFja3Rlc3Rlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/Pages/BotStatus.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm90U3RhdHVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/Pages/Configuration.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -38,6 +50,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/Pages/Performance.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGVyZm9ybWFuY2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/Pages/Portfolio.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUG9ydGZvbGlvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/Pages/RiskAnalysis.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmlza0FuYWx5c2lzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/Pages/Strategies.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RyYXRlZ2llcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/Pages/TechnicalAnalysis.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVjaG5pY2FsQW5hbHlzaXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/conmo/Repo/TradeNetics/TradeNetics.WebApp/Pages/TradeHistory.razor]
