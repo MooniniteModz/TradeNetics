@@ -124,14 +124,16 @@ html, body {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
 }
 
 .github-header-left {
     display: flex;
     align-items: center;
     gap: var(--space-4);
+    position: relative;
 }
 
 .github-logo {
@@ -180,6 +182,7 @@ html, body {
     flex: 1;
     max-width: 544px;
     margin: 0 var(--space-6);
+    margin-left: 200px;
 }
 
 .github-search {
@@ -282,19 +285,38 @@ html, body {
 
 /* ===== COLLAPSIBLE SIDEBAR ===== */
 .sidebar-toggle {
-    background: none;
-    border: none;
+    background: var(--color-btn-bg);
+    border: 1px solid var(--color-border-default);
     color: var(--color-fg-default);
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
     padding: var(--space-2);
-    margin-right: var(--space-3);
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 36px;
 }
 
 .sidebar-toggle:hover {
     background: var(--color-btn-hover-bg);
+}
+
+/* Header Corner Styling */
+.header-corner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0 var(--space-2);
+    background: var(--color-canvas-default);
+    height: var(--header-height);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1001;
 }
 
 .github-sidebar {
@@ -315,25 +337,11 @@ html, body {
 }
 
 .github-sidebar.collapsed .github-nav-title {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.github-sidebar.collapsed .github-nav-title.collapsed {
-    opacity: 1;
-    visibility: visible;
-    text-align: center;
-    margin: 0 0 var(--space-3);
-    font-size: 8px;
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
+    display: none !important;
 }
 
 .github-sidebar.collapsed .nav-text {
-    opacity: 0;
-    visibility: hidden;
-    width: 0;
-    overflow: hidden;
+    display: none !important;
 }
 
 .github-sidebar.collapsed .github-nav-item-link {

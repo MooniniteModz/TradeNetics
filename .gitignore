@@ -1,2 +1,33 @@
-.
-\.claude
+# Dependencies
+/bin/
+/obj/
+
+# User-specific files
+*.user
+*.suo
+.vscode/
+.claude/
+
+# Local configuration and secrets
+appsettings.Development.json
+secrets.json
+
+# Local database files
+*.db
+*.db-shm
+*.db-wal
+
+# Log files
+*.log
+logs/
+
+# Rider & Resharper
+.idea/
+*.sln.iml
+
+# Visual Studio
+.vs/
+
+# OS-generated files
+[Tt]humbs.db
+*.DS_Store

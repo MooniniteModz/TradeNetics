@@ -1697,7 +1697,7 @@
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "Icon.png",
+        ".png",
         "LICENSE.TXT",
         "PACKAGE.md",
         "THIRD-PARTY-NOTICES.TXT",

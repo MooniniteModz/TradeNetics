@@ -4,18 +4,15 @@
 <header class="github-header">
     <div class="container-fluid">
         <div class="github-header-left">
-            <button class="sidebar-toggle" @onclick="ToggleSidebar">
-                <i class="fe fe-menu"></i>
-            </button>
-            <a class="github-logo" href="/">
-                <img alt="TradeNetics" src="/images/tradenetics-logo.png">
-            </a>
-            <nav class="github-nav">
-                <a href="/" class="github-nav-link @(IsCurrentPage("/") ? "active" : "")">Dashboard</a>
-                <a href="/trader" class="github-nav-link @(IsCurrentPage("/trader") ? "active" : "")">Trading</a>
-                <a href="/portfolio" class="github-nav-link @(IsCurrentPage("/portfolio") ? "active" : "")">Portfolio</a>
-                <a href="/analytics" class="github-nav-link @(IsCurrentPage("/analytics") ? "active" : "")">Analytics</a>
-            </nav>
+            <!-- Logo and Hamburger Corner -->
+            <div class="header-corner">
+                <button class="sidebar-toggle" @onclick="ToggleSidebar" title="Toggle Sidebar">
+                    ☰
+                </button>
+                <a class="github-logo" href="/">
+                    <img alt="TradeNetics" src="/images/tradenetics-logo.png">
+                </a>
+            </div>
         </div>
 
         <div class="github-header-center">
