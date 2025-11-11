@@ -1,4 +1,4 @@
-# 🚀 TradeNetics
+# TradeNetics
 
 > **AI-Powered Cryptocurrency Trading Bot** with Real-time Dashboard & Machine Learning
 
@@ -9,24 +9,24 @@
 
 ---
 
-## ✨ Features
+##  Features
 
-**🤖 Automated Trading**  
+** Automated Trading**  
 ML-powered buy/sell decisions with configurable risk management
 
-**📊 Real-time Dashboard**  
+** Real-time Dashboard**  
 Live portfolio tracking, dynamic charts, and trading activity
 
-**🧠 Machine Learning**  
+** Machine Learning**  
 ML.NET models trained on market data for intelligent predictions
 
-**⚡ Dual Architecture**  
+** Dual Architecture**  
 Console app for automated trading + Web dashboard for monitoring
 
-**🛡️ Risk Management**  
+** Risk Management**  
 Stop-loss, position sizing, and daily loss limits
 
-**🔄 Live Data Integration**  
+** Live Data Integration**  
 Real-time portfolio sync with Binance API
 
 ---
@@ -65,20 +65,20 @@ dotnet run
 
 ---
 
-## 🎯 Architecture
+##  Architecture
 
 ```
 TradeNetics/
-├── 🖥️  TradeNetics.Console     # Automated trading engine
-├── 🌐  TradeNetics.WebApp      # Real-time dashboard  
-└── 📦  TradeNetics.Shared      # Common models & services
+├──   TradeNetics.Console     # Automated trading engine
+├──   TradeNetics.WebApp      # Real-time dashboard  
+└──   TradeNetics.Shared      # Common models & services
 ```
 
 **Shared Library Design** eliminates code duplication and ensures consistency across applications.
 
 ---
 
-## 💡 Dashboard Features
+##  Dashboard Features
 
 | Feature | Description |
 |---------|-------------|
@@ -90,7 +90,7 @@ TradeNetics/
 
 ---
 
-## 🔧 Configuration
+##  Configuration
 
 ### Environment Variables (Optional)
 ```bash
@@ -107,7 +107,7 @@ All settings can be configured through the **Web Dashboard**:
 
 ---
 
-## 📈 Machine Learning
+##  Machine Learning
 
 **Supported Algorithms:**
 - FastTree
@@ -123,7 +123,7 @@ All settings can be configured through the **Web Dashboard**:
 
 ---
 
-## 🛡️ Safety Features
+##  Safety Features
 
 ✅ **Paper Trading Mode** - Test without real money  
 ✅ **Geographic Compliance** - Binance.us support  
@@ -133,7 +133,7 @@ All settings can be configured through the **Web Dashboard**:
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
