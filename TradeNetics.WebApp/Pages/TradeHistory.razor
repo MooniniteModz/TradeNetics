@@ -19,6 +19,8 @@ else
                 <th>Side</th>
                 <th>Price</th>
                 <th>Quantity</th>
+                <th>Stop Loss</th>
+                <th>PnL</th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +32,8 @@ else
                     <td>@trade.Side</td>
                     <td>@trade.Price.ToString("C")</td>
                     <td>@trade.Quantity</td>
+                    <td>@(trade.StopLoss?.ToString("C") ?? "N/A")</td>
+                    <td>@trade.PnL.ToString("C")</td>
                 </tr>
             }
         </tbody>
@@ -37,7 +41,7 @@ else
 }
 
 @code {
-    private List<TradeData> _trades;
+    private List<TradeRecord> _trades;
 
     protected override async Task OnInitializedAsync()
     {

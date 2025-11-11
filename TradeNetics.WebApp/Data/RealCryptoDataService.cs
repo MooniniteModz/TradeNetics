@@ -161,24 +161,24 @@ namespace TradeNetics.WebApp.Data
             }
         }
 
-        public async Task<List<TradeData>> GetRecentTradesAsync()
+        public async Task<List<TradeRecord>> GetRecentTradesAsync()
         {
             try
             {
                 var config = await GetConfigurationAsync();
                 if (string.IsNullOrEmpty(config.ApiKey) || string.IsNullOrEmpty(config.ApiSecret))
                 {
-                    return new List<TradeData>();
+                    return new List<TradeRecord>();
                 }
 
                 // For now, return empty list - would need to implement actual trade history API
                 // This would require calling GET /api/v3/myTrades for each symbol
-                return new List<TradeData>();
+                return new List<TradeRecord>();
             }
             catch
             {
                 // Return empty list instead of mock data
-                return new List<TradeData>();
+                return new List<TradeRecord>();
             }
         }
 

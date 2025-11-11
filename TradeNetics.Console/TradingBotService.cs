@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TradeNetics.Shared.Data;
@@ -139,15 +140,19 @@ namespace TradeNetics.Console.Services
         {
             _logger.LogInformation("Analyzing {Symbol}...", symbol);
 
-            var prediction = await _traderService.GetMLPredictionAsync(symbol);
             var currentPrice = await _traderService.GetPriceAsync(symbol);
-
             if (currentPrice == null)
             {
                 _logger.LogWarning("Could not get price for {Symbol}", symbol);
                 return;
             }
 
+            // Check for take-profit or stop-loss conditions first
+            bool executed = await CheckProfitLossConditions(symbol, currentPrice.PriceDecimal, portfolio);
+            if (executed) return;
+
+            // If no TP/SL, use ML prediction
+            var prediction = await _traderService.GetMLPredictionAsync(symbol);
             _logger.LogInformation("{Symbol}: Price=${Price:F2}, Prediction={Prediction}",
                 symbol, currentPrice.Price, prediction);
 
@@ -157,7 +162,8 @@ namespace TradeNetics.Console.Services
             }
             else if (prediction == "SELL")
             {
-                await ExecuteSellOrderAsync(symbol, currentPrice.PriceDecimal, portfolio);
+                // Ensure the sale is still profitable
+                await ExecuteSellOrderAsync(symbol, currentPrice.PriceDecimal, portfolio, true);
             }
         }
 
@@ -191,36 +197,76 @@ namespace TradeNetics.Console.Services
             }
         }
 
-        private async Task ExecuteSellOrderAsync(string symbol, decimal price, Portfolio portfolio)
+        private async Task<bool> CheckProfitLossConditions(string symbol, decimal currentPrice, Portfolio portfolio)
         {
-            // Check if we have position to sell
-            var balance = portfolio.Balances.FirstOrDefault(b => b.Asset == symbol.Replace("USDT", ""));
+            var lastBuy = await _context.TradeRecords
+                .Where(t => t.Symbol == symbol && t.Side == "BUY")
+                .OrderByDescending(t => t.ExecutedAt)
+                .FirstOrDefaultAsync();
 
-            if (balance?.FreeDecimal > 0)
+            if (lastBuy != null)
             {
-                var quantity = Math.Min(balance.FreeDecimal, _config.SymbolQuantities.GetValueOrDefault(symbol, 0.001m));
+                var profit = (currentPrice - lastBuy.Price) / lastBuy.Price;
 
-                var orderRequest = new OrderRequest
+                // Take Profit
+                if (profit >= _config.TakeProfitPercent)
                 {
-                    Symbol = symbol,
-                    Side = "SELL",
-                    Type = "MARKET",
-                    Quantity = quantity,
-                    TimeInForce = "GTC"
-                };
+                    _logger.LogInformation("TAKE PROFIT triggered for {Symbol} at {Profit:P2}", symbol, profit);
+                    await ExecuteSellOrderAsync(symbol, currentPrice, portfolio);
+                    return true;
+                }
 
-                var orderResponse = await _traderService.PlaceOrderAsync(orderRequest);
-
-                if (orderResponse != null)
+                // Stop Loss
+                if (_config.StopLossPercent.HasValue && profit <= -_config.StopLossPercent.Value)
                 {
-                    await RecordTradeAsync(orderResponse, "SELL", portfolio.TotalValue);
-                    _logger.LogInformation("SELL order executed: {OrderId} for {Quantity} {Symbol}",
-                        orderResponse.OrderId, orderResponse.ExecutedQty, symbol);
+                    _logger.LogInformation("STOP LOSS triggered for {Symbol} at {Loss:P2}", symbol, profit);
+                    await ExecuteSellOrderAsync(symbol, currentPrice, portfolio);
+                    return true;
                 }
             }
-            else
+
+            return false;
+        }
+
+        private async Task ExecuteSellOrderAsync(string symbol, decimal price, Portfolio portfolio, bool checkProfit = false)
+        {
+            var balance = portfolio.Balances.FirstOrDefault(b => b.Asset == symbol.Replace("USDT", ""));
+            if (balance?.FreeDecimal <= 0)
             {
                 _logger.LogInformation("No position to sell for {Symbol}", symbol);
+                return;
+            }
+
+            if (checkProfit)
+            {
+                var lastBuy = await _context.TradeRecords
+                    .Where(t => t.Symbol == symbol && t.Side == "BUY")
+                    .OrderByDescending(t => t.ExecutedAt)
+                    .FirstOrDefaultAsync();
+
+                if (lastBuy != null && price < lastBuy.Price)
+                {
+                    _logger.LogInformation("SELL signal for {Symbol} ignored due to unprofitable price", symbol);
+                    return;
+                }
+            }
+
+            var quantity = Math.Min(balance.FreeDecimal, _config.SymbolQuantities.GetValueOrDefault(symbol, 0.001m));
+            var orderRequest = new OrderRequest
+            {
+                Symbol = symbol,
+                Side = "SELL",
+                Type = "MARKET",
+                Quantity = quantity,
+                TimeInForce = "GTC"
+            };
+
+            var orderResponse = await _traderService.PlaceOrderAsync(orderRequest);
+            if (orderResponse != null)
+            {
+                await RecordTradeAsync(orderResponse, "SELL", portfolio.TotalValue);
+                _logger.LogInformation("SELL order executed: {OrderId} for {Quantity} {Symbol}",
+                    orderResponse.OrderId, orderResponse.ExecutedQty, symbol);
             }
         }
 
@@ -236,8 +282,25 @@ namespace TradeNetics.Console.Services
                 OrderId = orderResponse.OrderId.ToString(),
                 IsPaperTrade = _config.PaperTradingMode,
                 PortfolioValueBefore = portfolioValue,
-                MLPrediction = side
+                MLPrediction = side,
             };
+
+            if (side == "BUY" && _config.StopLossPercent.HasValue)
+            {
+                trade.StopLoss = orderResponse.Price * (1 - _config.StopLossPercent.Value);
+            }
+            else if (side == "SELL")
+            {
+                var lastBuy = await _context.TradeRecords
+                    .Where(t => t.Symbol == orderResponse.Symbol && t.Side == "BUY")
+                    .OrderByDescending(t => t.ExecutedAt)
+                    .FirstOrDefaultAsync();
+
+                if (lastBuy != null)
+                {
+                    trade.PnL = (orderResponse.Price - lastBuy.Price) * orderResponse.ExecutedQty;
+                }
+            }
 
             _context.TradeRecords.Add(trade);
             await _context.SaveChangesAsync();

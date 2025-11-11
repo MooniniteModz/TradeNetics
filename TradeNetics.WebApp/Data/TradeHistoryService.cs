@@ -15,12 +15,12 @@ namespace TradeNetics.WebApp.Data
             _cryptoDataService = cryptoDataService;
         }
 
-        public async Task<List<TradeData>> GetTradesAsync()
+        public async Task<List<TradeRecord>> GetTradesAsync()
         {
             return await _cryptoDataService.GetRecentTradesAsync();
         }
 
-        public async Task<List<TradeData>> GetTradeHistoryBySymbolAsync(string symbol)
+        public async Task<List<TradeRecord>> GetTradeHistoryBySymbolAsync(string symbol)
         {
             var allTrades = await _cryptoDataService.GetRecentTradesAsync();
             return allTrades.Where(t => t.Symbol.Contains(symbol, StringComparison.OrdinalIgnoreCase)).ToList();
