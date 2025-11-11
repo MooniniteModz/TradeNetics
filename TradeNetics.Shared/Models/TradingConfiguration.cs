@@ -11,7 +11,8 @@ namespace TradeNetics.Shared.Models
         public bool TradingEnabled { get; set; } = false;
         public TimeSpan ModelRetrainingInterval { get; set; } = TimeSpan.FromDays(7);
         public decimal MaxPositionSize { get; set; } = 0.02m; // 2% of portfolio
-        public decimal StopLossPercent { get; set; } = 0.05m; // 5% stop loss
+        public decimal? StopLossPercent { get; set; } = 0.05m; // 5% stop loss
+        public decimal TakeProfitPercent { get; set; } = 0.10m; // 10% take profit
         public decimal MaxDailyLoss { get; set; } = 0.10m; // 10% daily loss limit
         public string[] TradingSymbols { get; set; } = { "BTCUSDT", "ETHUSDT", "ADAUSDT" };
         public decimal BacktestInitialBalance { get; set; } = 10000m;

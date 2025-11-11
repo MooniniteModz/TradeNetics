@@ -126,13 +126,13 @@ namespace TradeNetics.WebApp.Data
             };
         }
 
-        public async Task<List<TradeData>> GetRecentTradesAsync()
+        public async Task<List<TradeRecord>> GetRecentTradesAsync()
         {
             await Task.Delay(75);
-            
-            return new List<TradeData>
+
+            return new List<TradeRecord>
             {
-                new TradeData
+                new TradeRecord
                 {
                     Id = 1,
                     Symbol = "BTCUSDT",
@@ -140,7 +140,6 @@ namespace TradeNetics.WebApp.Data
                     Quantity = 0.1m,
                     Price = 43000.00m,
                     ExecutedAt = DateTime.UtcNow.AddMinutes(-15),
-                    Timestamp = DateTime.UtcNow.AddMinutes(-15),
                     MLPrediction = "BULLISH",
                     PnL = 15.00m,
                     PortfolioValueBefore = 39000.00m,
@@ -148,12 +147,8 @@ namespace TradeNetics.WebApp.Data
                     OrderId = "ORDER_001",
                     IsPaperTrade = false,
                     ConfidenceScore = 0.85f,
-                    Status = "FILLED",
-                    Fee = 2.15m,
-                    Amount = 0.1m,
-                    Total = 4300.00m
                 },
-                new TradeData
+                new TradeRecord
                 {
                     Id = 2,
                     Symbol = "ETHUSDT",
@@ -161,7 +156,6 @@ namespace TradeNetics.WebApp.Data
                     Quantity = 1.0m,
                     Price = 2665.00m,
                     ExecutedAt = DateTime.UtcNow.AddMinutes(-45),
-                    Timestamp = DateTime.UtcNow.AddMinutes(-45),
                     MLPrediction = "BEARISH",
                     PnL = -25.50m,
                     PortfolioValueBefore = 39040.50m,
@@ -169,10 +163,6 @@ namespace TradeNetics.WebApp.Data
                     OrderId = "ORDER_002",
                     IsPaperTrade = false,
                     ConfidenceScore = 0.72f,
-                    Status = "FILLED",
-                    Fee = 1.33m,
-                    Amount = 1.0m,
-                    Total = 2665.00m
                 }
             };
         }

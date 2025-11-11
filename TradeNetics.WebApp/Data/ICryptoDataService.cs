@@ -8,7 +8,7 @@ namespace TradeNetics.WebApp.Data
     {
         Task<List<MarketData>> GetMarketDataAsync();
         Task<List<PortfolioHolding>> GetPortfolioHoldingsAsync();
-        Task<List<TradeData>> GetRecentTradesAsync();
+        Task<List<TradeRecord>> GetRecentTradesAsync();
         Task<TradingBotStatus> GetBotStatusAsync();
     }
 }
