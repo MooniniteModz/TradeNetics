@@ -241,29 +241,25 @@
                                             <th>Time</th>
                                             <th>Symbol</th>
                                             <th>Side</th>
-                                            <th>Amount</th>
+                                            <th>Quantity</th>
                                             <th>Price</th>
-                                            <th>Total</th>
-                                            <th>Status</th>
+                                            <th>PnL</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var trade in recentTrades)
                                         {
                                             <tr>
-                                                <td>@trade.Timestamp.ToString("MMM dd, HH:mm:ss")</td>
+                                                <td>@trade.ExecutedAt.ToString("MMM dd, HH:mm:ss")</td>
                                                 <td><strong>@trade.Symbol</strong></td>
                                                 <td>
                                                     <span class="badge @(trade.Side == "BUY" ? "bg-success" : "bg-danger")">
                                                         @trade.Side
                                                     </span>
                                                 </td>
-                                                <td>@trade.Amount.ToString("F6")</td>
+                                                <td>@trade.Quantity.ToString("F6")</td>
                                                 <td>$@trade.Price.ToString("N2")</td>
-                                                <td>$@trade.Total.ToString("N2")</td>
-                                                <td>
-                                                    <span class="badge bg-success">Completed</span>
-                                                </td>
+                                                <td>$@trade.PnL.ToString("N2")</td>
                                             </tr>
                                         }
                                     </tbody>
@@ -287,7 +283,7 @@
 
 @code {
     private TradingBotStatus? botStatus;
-    private List<TradeData>? recentTrades;
+    private List<TradeRecord>? recentTrades;
     private bool isLoading = true;
     private Timer? refreshTimer;
 
@@ -315,15 +311,15 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error loading trader data: {ex.Message}");
-            botStatus = new TradingBotStatus 
-            { 
-                IsRunning = false, 
+            botStatus = new TradingBotStatus
+            {
+                IsRunning = false,
                 Status = "Error loading status",
                 TotalProfit = 0,
                 TotalTrades = 0,
                 LastUpdate = DateTime.Now
             };
-            recentTrades = new List<TradeData>();
+            recentTrades = new List<TradeRecord>();
         }
         finally
         {
