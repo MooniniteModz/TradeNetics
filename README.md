@@ -31,7 +31,7 @@ Real-time portfolio sync with Binance API
 
 ---
 
-## 🏃‍♂️ Quick Start
+##  Quick Start
 
 ### Prerequisites
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
@@ -154,7 +154,5 @@ MIT License - see [LICENSE](LICENSE) for details.
 **⚠️ Trading Disclaimer**  
 Cryptocurrency trading involves substantial risk. This software is for educational purposes.  
 Always start with paper trading and never invest more than you can afford to lose.
-
-**Made with ❤️ using .NET 8 & Blazor**
 
 </div>
